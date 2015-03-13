@@ -1,0 +1,53 @@
+\subsection{Use case 7}
+I denne use case kalibreres pH-proben, som er tilsluttet et kar. Dette skal gøres en gang hver måned samt ved oprettelse af et kar. Systemet viser selv en advarsel på forsiden med, at proben skal kalibreres, og viser hvilket kar den hører til.
+\begin{usecase}
+
+\addtitle{Use Case 7}{Kalibrer pH-probe} 
+
+\additemizedfield{Mål:}{
+\item At kalibrere en pH-probe
+}
+
+\addfield{Initieret af:}{
+	Tekniker   
+}
+
+\additemizedfield{Aktører:}{\item Primær: Tekniker}
+
+\addfield{Samtidige forekomster:}{1}
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{Systemet fremviser en advarsel med, at en pH-probe skal kalibreres. En rød LED lyser på styringen tilhørende pH-proben. Teknikeren er i besiddelse af buffer-væske med en pH-værdi på henholdsvis 4 og 7}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{pH-proben er kalibreret og en grøn LED lyser på styringen tilhørende pH-proben }
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenarie:}{
+	\item Tekniker holder trykknappen "Kalibrer" nede i 5 sekunder eller mere på styringen tilhørende pH-proben
+	\item Rød LED på styringen til pH-proben blinker i et interval på 250ms 		
+	\item Tekniker tager probe ud af karet og sætter den i buffer-væske med en pH-værdi på 7
+	\item Tekniker venter i 5-10 minutter 
+	\item Tekniker trykker på knappen "pH7" på styringen til 
+		  pH-proben
+	\item Styringen til pH-proben indlæser værdien fra proben
+	\item Tekniker sætter proben i buffer-væske med en pH-værdi på 4
+	\item Tekniker venter i 5-10 minutter 
+	\item Tekniker trykker på knappen "pH4" på styringen til 
+		  pH-proben
+	\item Styringen til pH-proben indlæser værdien fra proben  
+	\item Styringen til pH-proben giver besked til systemet om at proben er kalibreret  
+	\item Styringen til pH-proben slukker for rød LED og tænder grøn LED 
+	\item Systemet fjerner advarslen om at proben skal kalibrers 			
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
+
+
+\end{usecase}

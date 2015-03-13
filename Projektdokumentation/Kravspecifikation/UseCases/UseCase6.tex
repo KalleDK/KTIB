@@ -1,0 +1,47 @@
+\subsection{Use case 6}
+I denne use case sletter Tekniker et kar.
+\begin{usecase}
+
+\addtitle{Use Case 6}{Slet kar} 
+
+\additemizedfield{Mål:}{
+\item At slette et kar i systemet
+}
+
+\addfield{Initieret af:}{
+	Tekniker   
+}
+
+\additemizedfield{Aktører:}{\item Primær: Tekniker}
+
+\addfield{Samtidige forekomster:}{1}
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{Der er oprettet et kar i systemet}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{Der er slettet et kar }
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenarie:}{
+	\item Tekniker trykker på "Service" i GUI 
+	\item Systemet viser service-menu
+	\item Tekniker trykker på "Slet kar" knap
+	\item Systemet viser en liste over oprettede kar
+	\item Tekniker trykker på slet ud for det kar han ønsker at slette
+	\item Systemet spørger om Teknikeren er sikker i en dialog
+	\item Tekniker trykker "Ok"
+	\item Systemet sletter karet
+	\item Systemet returnerer Tekniker til listen over oprettede kar, og skriver at karret er slettet.
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
+
+
+\end{usecase}

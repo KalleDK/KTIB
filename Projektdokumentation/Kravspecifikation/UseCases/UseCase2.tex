@@ -1,34 +1,44 @@
 \subsection{Use case 2}
-En bruger kan indtaste de ønskede data der er til de forskellige set-punkter. Denne use case kan kun styres af en bruger da der kun er en \gls{gui}. For at dette kan gennemløbes skal  systemet være operativt. Efter usecasen er gennemløbet forventes data at være indtastet og gemt i systemmet.   
+I denne use case ønsker brugeren at tilføre vand manuelt til planterne. Denne use case kan kun tilgås af en person. For at denne use case kan gennemføres skal der være vand i det kar der ønskes at vande fra samt at dette er tilføjet til systemet. Karet skal være koblet på mindst en sensor ø.
 \begin{usecase}
 
-\addtitle{Use Case 2}{Indtast data} 
+\addtitle{Use Case 2}{Manuel vanding} 
 
-\addfield{Mål:}{Indtastet data for diverse setpunkter}
+\addfield{Mål:}{At tilføre vand til planterne}
 
 \additemizedfield{Initieret af:}{
 	\item Bruger
-	\item Tekniker
 }
 
-\additemizedfield{Aktør:}{
-	\item Primær: Bruger
-	\item sekundær: Tekniker
-}
+\addfield{Aktør:}{Bruger}
 
 \addfield{Samtidige forekomster:}{1}
 
 %Preconditions: What must be true on start and worth telling the reader?
-\addfield{Prækondition:}{Systemet er operativt}
+\addfield{Prækondition:}{Der skal være vand i det kar der ønskes at vande fra og der skal være tilkoblet mindst en sonsor ø. GUI'en befinder sig i hovedmenuen}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkondition:}{Data er indtastet}
+\addfield{Postkonditions:}{Der er vand ved planterne}
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
-\addscenario{Hovedscenarie:}{
-	\item bruger tilgår systemet via \glslink{gui}{gui'en}
-	\item Bruger indtaster ønskede data
-	\item bruger gemmer værdier 	
+\addscenario{Hovedscenario:}{
+	\item Bruger trykker på "Kar X" i GUI
+	\item Systemet viser et skærmbillede hvor der kan vælges manuel vanding
+	\item Bruger trykker på "Manuel vanding"
+	\item Systemet begynder at vande
+	\item Systemet ændre knappen for manuel vanding til stop maunel vanding
+	\item[ ] [Ex.1 Karret er tomt]
+	\item Når der ikke ønskes at vande længere trykker bruger på "Stop manuel vanding"
+	\item Systemet stopper med at vande
 }
+
+%Extensions: Alternate scenarios of success or failure.
+\addscenario{Udvidelser:}{
+	\item[Ex.1] Karret er tomt:
+		\begin{enumerate}
+		\item[1.] Systemet stopper med at vande
+		\end{enumerate}
+}
+
 
 \end{usecase}
