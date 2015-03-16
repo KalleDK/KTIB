@@ -1,52 +1,46 @@
-\subsection{Usecase 4}
-Karstyringen bliver anvendt til at styre vandkaret for at sikre at PH-værdien er vedligeholdt. Use casen kan kun køres af én af gangen, da der kun er et interface. For at use casen kan gennemløbes skal sensorer tilkoblet til systemet være funktionelle. Efter use casen er gennemløbet, er der indtastet en PH-værdi og en volumen på karet. Use casen har et main scenarie som er et happy path scenarie, samt en extension hvor teknikeren kun ønsker at aflæse værdier.
+\subsection{Use case 4}
+I denne use case vil brugeren indtaste volumen på karret for at systemet kan vide hvor meget gødning, der skal doseres. Der kan også ændres på volumen i perioder, hvor der bruges lidt vand, for at undgå vandet bliver dårligt. For at use casen kan gennemføres skal teknikeren have oprettet et kar, som er tilkoblet systemet.
 \begin{usecase}
 
-\addtitle{Use Case 4}{Karstyring} 
+\addtitle{Use Case 4}{Indtast volumen} 
 
 \additemizedfield{Mål:}{
-\item Styre vandkaret så en brugerdefineret PH-værdi holdes stabil i vandet
-\item Sikre at der konstant er et flow i vandet
+\item Indtaste volumen på et vandkar
 }
 
 \addfield{Initieret af:}{
-	Tekniker  
+	Bruger   
 }
 
-\addfield{Aktører:}{Primær: Tekniker}
+\additemizedfield{Aktører:}{\item Primær: Bruger}
 
 \addfield{Samtidige forekomster:}{1}
 
 %Preconditions: What must be true on start and worth telling the reader?
-\addfield{Prækondition:}{Sensorer er tilkoblet og systemet er funktionelt}
+\addfield{Prækondition:}{Der er oprettet et kar i systemet og det er tilkoblet}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkondition:}{Der er indtastet PH-værdi og volumen på karet }
+\addfield{Postkondition:}{Systemet er opdateret med volumen på karret }
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
 \addscenario{Hovedscenarie:}{
-	\item Teknikeren trykker på "Karstyring" på 				  					  interfacet 
-	\begin{itemize}
-	\item Ex.1 (Teknikeren ønsker kun at aflæse 				    					værdier)
-	\end{itemize}	 	
-	\item Teknikeren trykker på "PH-Værdi"
-	\item Teknikeren indtaster en ønsket værdi
-	\item Teknikeren trykker på "OK"
-	\item Teknikeren trykker på "Volumen"
-	\item Teknikeren indtaster en ønsket værdi
-	\item Teknikeren trykker på "OK"
-	\item Teknikeren trykker på "OK"
-	\item Systemet opdaterer automatisk karets PH-værdi 
-	\item Systemet starter for flow i vandet
+	\item Bruger trykker på "Kar X" i GUI
+	\item Systemet viser et skærmbillede hvor det er muligt at indtaste en volumen
+	\item Bruger trykker på "volumen"
+	\item Systemet viser en cursor i skrivefeltet tilhørende
+	      volumen
+	\item Bruger indtaster en volumen i liter
+	\item Bruger trykker på "Gem" 
+	\item Systemet gemmer volumen
 }
 
 %Extensions: Alternate scenarios of success or failure.
-\addscenario{Udvidelser:}{
-	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
-		\begin{enumerate}
-		\item[1.] Teknikeren trykker på "OK"
-		\end{enumerate}
-}
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
 
 
 \end{usecase}

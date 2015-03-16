@@ -1,36 +1,45 @@
 \subsection{Use case 3}
-I denne use case ønsker brugeren at tilføre vand manuelt til planterne. Denne use case kan kun tilgås en person, der der kun er en interface. For at denne use case kan gennemløbes skal der være vand i det kar der ønskes at vandes fra og der er indtastet systemdata som blev indtastet i use case 2.
+I denne use case ønsker brugeren at ændre på pH-værdien i karret. 
 \begin{usecase}
 
-\addtitle{Use Case 3}{Manuel vanding} 
+\addtitle{Use Case }{Indtast pH-værdi} 
 
-\addfield{Mål:}{At tilføre planterne vand}
-
-\additemizedfield{Initieret af:}{
-	\item Bruger
+\additemizedfield{Mål:}{
+\item At ændre pH-værdien på blandingen i karret 
 }
 
-\addfield{Aktør:}{Bruger}
+\addfield{Initieret af:}{
+	Bruger   
+}
 
-\addfield{Samtidige forekomster:}{1-Antal \gls{vandkar}}
+\additemizedfield{Aktører:}{\item Primær: Bruger}
+
+\addfield{Samtidige forekomster:}{1}
 
 %Preconditions: What must be true on start and worth telling the reader?
-\addfield{Prækondition:}{Der skal være vand i det kar der ønskes at vande fra. Der er indtastet system data fra UC2.}
+\addfield{Prækondition:}{Et kar er oprettet og systemet er funktionelt}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkonditions:}{Der er vand ved planterne}
+\addfield{Postkondition:}{Systemet er opdateret med pH-værdi }
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
-\addscenario{Hovedscenario:}{
-	\item Bruger tilgår systemet via \glslink{gui}{gui'en}
-	\item Bruger vælger i menuen "Manuel vanding".
-	\item System tilføre vand til \glslink{plante}{planterne}
-	\item System stopper når den ønskede fugtighed i \glslink{gromedie}{gromediet} er nået.
+\addscenario{Hovedscenarie:}{
+	\item Bruger trykker på "Kar X" i GUI
+	\item Systemet viser et skærmbillede hvor det er muligt at indtaste en pH-værdi 	
+	\item Bruger trykker på "pH-Værdi"
+	\item Systemet viser en cursor i skrivefeltet tilhørende
+	      pH-værdien
+	\item Bruger indtaster en pH-værdi
+	\item Bruger trykker på "Gem" 
+	\item Systemet gemmer pH-værdien
 }
 
 %Extensions: Alternate scenarios of success or failure.
-%\addscenario{Extensions:}{
-
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
 %}
 
 
