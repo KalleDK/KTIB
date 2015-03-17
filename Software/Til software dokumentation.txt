@@ -1,0 +1,1 @@
+gitignore filen der ligger i roden her skal flyttes med ind i de mapper hvor der er brugt PSoC creator!
