@@ -11,7 +11,7 @@
 
 
 
-\subsection{System IBD}
+\subsection{KarControl IBD}
 
 \begin{figure}[H]
 	\centering
@@ -20,6 +20,43 @@
 	\caption{Internal Block Diagram af KarControl}
 \end{figure}
 
+\subsection{Signal beskrivelser}
+
+\begin{table}[H]
+\centering
+{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
+\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
+\setlength{\tabcolsep}{10pt}						 %indryk i celle 
+\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
+\center
+\begin{tabular}{|p{20mm}|p{40mm}|p{30mm}|p{30mm}|}		 %længden på alle rum
+\hline
+
+\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{14.20cm}|}{\textcolor{white}{\large{\textbf{Signal beskrivelser}}}} \\\hline
+\rowcolor{white!70!black!60}
+\textcolor{black}{\large{\textbf{Navn}}}&
+\textcolor{black}{\large{\textbf{Definition}}}&	
+\textcolor{black}{\large{\textbf{Område}}}&
+\textcolor{black}{\large{\textbf{Kommentar}}}\\
+\hline
+KarBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
+OeBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
+Data485				& RS485 bus til kommunikation mellem enheder &	 	& internt signal   \\
+UART232				& RS485 konverteret til logisk niveau		 &	 	& Signal efter konvertering  \\
+EnableIndløb		& Signal til at lukke vand ind i kar		 & 0-5V	& Signal til at styre magnetventil   \\
+EnableAfløb			& Signal til at lukke vand ud af kar		 & 0-5V	& Signal til at styre magnetventil	\\
+EnableVandpumpe		& Styre signal til pumpe			   	     & 0-5V & PWM styret signal	\\
+Puls				& Takt tæller af flow				   	 	 & 0-5V & 	\\
+pH					& Analog signal fra pH måler			 	 & fra -420 til 420 mV  & Analogt signal	\\
+indløb				& vandstyring i kar							 &    	& Til at lukke vand ind i kar	\\
+Afløb				& vandstyring i kar	 						 &   	& Til at lukke vand ud af kar	\\
+dossering			& vandstyring til planter					 &      & Til at dosere vand til planterne	\\
+\hline
+\end{tabular}
+}
+\caption{signal beskrivelser for KarControl}
+\label{table:SignalBeskrivelserKarControl}
+\end{table}
 
 
 \subsection{KarControl Allokeringsdiagram}
