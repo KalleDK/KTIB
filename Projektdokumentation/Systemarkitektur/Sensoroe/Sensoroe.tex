@@ -27,7 +27,34 @@ Sensor er en generalisering af alle slags sensorer, som kan tilsluttes Sensor Ø
 	\caption{Internal Block Diagram af Sensoroe}
 \end{figure}
 
+\begin{table}[H]
+\centering
+{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
+\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
+\setlength{\tabcolsep}{10pt}						 %indryk i celle 
+\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
+\center
+\begin{tabular}{|p{20mm}|p{40mm}|p{30mm}|p{30mm}|}		 %længden på alle rum
+\hline
 
+\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{14.20cm}|}{\textcolor{white}{\large{\textbf{Signal beskrivelser}}}} \\\hline
+\rowcolor{white!70!black!60}
+\textcolor{black}{\large{\textbf{Navn}}}&
+\textcolor{black}{\large{\textbf{Definition}}}&	
+\textcolor{black}{\large{\textbf{Område}}}&
+\textcolor{black}{\large{\textbf{Kommentar}}}\\
+\hline
+OeData				& buskommunikation efter konvertering fra 485 &	 	& UART kommunikation fra 485 bussen  \\
+OeBus				& RS485 bus til kommunikation mellem enheder  &	 	& Differentielt bussystem  \\
+SensorData			& Signal på I2C bus							  &	 	& Kan være flere forskellige signaler alt efter sensor type   \\
+ventilCtrl			& Signal til styring af doserings ventil	  &	0-5V& Bruges til at styre mængden af vand til planterne \\
+vand				& Dette er flow'et af vand 					  &		& \\
+\hline
+\end{tabular}
+}
+\caption{signal beskrivelser for KarControl}
+\label{table:SignalBeskrivelserKarControl}
+\end{table}
 
 \subsection{Sensoroe Allokeringsdiagram}
 
