@@ -18,13 +18,13 @@
 	description={ computer med Windows 7+ styresystem, samt Google Chrome som browser}
 }
 
-\newglossaryentry{sensor}{
-	name=sensor,
+\newglossaryentry{I2CSensor}{
+	name=I2CSensor,
 	description={ er en samlet generisk beskrivelse af måleinstrumenter, der kan tilsluttes en Sensor Ø}
 }
 
-\newglossaryentry{vandkar}{
-    name=vandkar,
+\newglossaryentry{kar}{
+    name=kar,
     description={ er en beholder, der kan indeholde gødningsmix }
 }
 
@@ -48,49 +48,49 @@
     description={ gemmer brugerens indstillinger samt log}
 }
 
-\newglossaryentry{centralcontrol}{
-    name=CentralControl,
+\newglossaryentry{centralcontroller}{
+    name=CentralController,
     description={ er systemets centrale computer}
 }
 
 \newglossaryentry{kargruppe}{
     name=KarGruppe,
-    description={ er et vandkar med tilhørende styring og vanding}
+    description={ er et vandkar med tilhørende karkontroller og sensor ø'er}
 }
 
-\newglossaryentry{karcontrol}{
-    name=KarControl,
-    description={ er en lokal styring af et kar med vanding og blanding af gøsningsmix }
+\newglossaryentry{karcontroller}{
+    name=KarController,
+    description={ styrer tilgangen af vand, gødning og pH-væske samt de sensor ø'er der er tilkoblet denne}
 }
 
 \newglossaryentry{rsconverter}{
     name=RSConverter,
-    description={ et elektronisk print, som kan konvertere fra RS232 til RS485, og fra RS485 til RS232}
+    description={ et elektronisk print, som kan konvertere mellem UART 232 og RS485}
 }
 
 \newglossaryentry{ventilstyring}{
     name=VentilStyring,
-    description={ en ventil, der kan åbnes og lukkes vha. et 5V-signal. Ventilen er tilsluttet 12V eller 24V }
+    description={ en ventil, der kan åbnes og lukkes vha. et 5V-signal. Ventilen er tilsluttet 12V }
 }
 
 \newglossaryentry{sensoroe}{
     name=Sensor Ø,
-    description={ består af en controller samt en række sensorer, som måler fra et begrænset området }
+    description={ består af en Sensor Ø Controller, en række I2CSensorer, som måler fra et begrænset området, og en Doseringsventil }
 }
 
 \newglossaryentry{sensoroecontroller}{
-    name=Sensor Ø Control,
-    description={ er controlleren i en Sensor Ø }
+    name=Sensor Ø Controller,
+    description={ er controlleren i en Sensor Ø, som opsamler data fra sensorerne og kan styre Doseringsventilen }
 }
 
 \newglossaryentry{doseringsventil}{
     name=doseringsventil,
-    description={ åbner og lukker for tilførslen af vand til en bestemt Sensor Ø }
+    description={ åbner og lukker for tilførslen af gødningsmix til en bestemt Sensor Ø }
 }
 
 \newglossaryentry{flowmaaler}{
     name=flowmåler,
-    description={ måler mængden af vand som løber gennem denl}
+    description={ måler mængden af vand som løber gennem denne}
 }
 
 
