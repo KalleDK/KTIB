@@ -1,5 +1,41 @@
 %!TEX root = ../main.tex
 
+\newcommand{\systemBDD}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_BDD.png}
+	\label{fig:#2_BDD}
+	\caption{Block Definition Diagram af #3}
+\end{figure}
+}
+
+\newcommand{\systemIBD}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_IBD.png}
+	\label{fig:#2_IBD}
+	\caption{Internal Block Diagram af #3}
+\end{figure}
+}
+
+\newcommand{\systemDomainModel}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_Domain_Model.png}
+	\label{fig:#2_Domain_Model}
+	\caption{Domænemodel af #3}
+\end{figure}
+}
+
+\newcommand{\systemAllokeringsDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_AllokeringsDiagram.png}
+	\label{fig:#2_Allokeringsdiagram}
+	\caption{Allokeringsdiagram af #3}
+\end{figure}
+}
+
 \chapter{Systemarkitektur}
 
 \begin{table}[H]
@@ -37,7 +73,7 @@ Alle	& 0.1	 	& 17-03-2015  \\
 
 \section{CentralControl diagrammer}
 
-\input{Systemarkitektur/CentralStyring/CentralStyring}
+\input{Systemarkitektur/CentralControl/CentralControl}
 
 \newpage
 
@@ -49,7 +85,7 @@ Alle	& 0.1	 	& 17-03-2015  \\
 
 \section{Sensor Ø diagrammer}
 
-\input{Systemarkitektur/Sensoroe/Sensoroe}
+\input{Systemarkitektur/Sensor_oe/Sensor_oe}
 
 \newpage
 
@@ -61,19 +97,19 @@ Alle	& 0.1	 	& 17-03-2015  \\
 
 \section{Jordfugt sensor diagrammer}
 
-\input{Systemarkitektur/Sensor_jordfugtighed/Sensor_jordfugtighed}
+\input{Systemarkitektur/Sensor_Jordfugt/Sensor_Jordfugt}
 
 \newpage
 
-\section{Ventil diagrammer}
+\section{Ventilstyring diagrammer}
 
-\input{Systemarkitektur/Ventiler/Ventiler}
+\input{Systemarkitektur/Ventilstyring/Ventilstyring}
 
 \newpage
 
-\section{Vandpumpe diagrammer}
+\section{Vandpumpestyring diagrammer}
 
-\input{Systemarkitektur/Vandpumpe/Vandpumpe}
+\input{Systemarkitektur/Vandpumpestyring/Vandpumpestyring}
 
 \newpage
 %\section{RS485 Converter diagrammer}

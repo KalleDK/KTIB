@@ -2,23 +2,11 @@
 
 \subsection{System Domænemodel}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/System/AVS_domain_model.png}
-	\label{fig:System BDD}
-	\caption{Domain model af AVS}
-\end{figure}
-
-
+\systemDomainModel{0.82}{System}{AVS}
 
 \subsection{System BDD}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/System/AVS_SystemdiagramBDD.png}
-	\label{fig:System BDD}
-	\caption{Block Definition Diagram af AVS}
-\end{figure}
+\systemBDD{0.82}{System}{AVS}
 
 \subsubsection{CentralControl}
 CentralControl er systemets centrale computer. Det er gennem dette delsystem, at brugerens interaktion bliver behandlet og formidlet videre til andre delsystemer. CentralControl driver en webserver med dertilhørende web-applikation (GUI), som tillader brugeren at interagere med systemet gennem sin web-browser. Webserveren kommunikerer med et stykke centralt software, FlexPMS.
@@ -42,14 +30,9 @@ Sensor Ø’er giver mulighed for at måle (f.eks. jordfugtighed) over et størr
 RSConverter konverterer fra RS485 til RS232 når der modtages data, og fra RS232 til RS485 når der afsendes data.
 
 
-\subsection{Allokeringsdiagram}
+\subsection{System Allokeringsdiagram}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth]{Systemarkitektur/System/AVS_Allokeringsdiagram.png}
-	\label{fig:System BDD}
-	\caption{Allokeringsdiagram af AVS}
-\end{figure}
+\systemAllokeringsDiagram{0.82}{System}{AVS}
 
 
 

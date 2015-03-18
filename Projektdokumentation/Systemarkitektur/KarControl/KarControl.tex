@@ -2,12 +2,7 @@
 
 \subsection{KarControl BDD}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/KarControl/KarControl_BDD.png}
-	\label{fig:KarControl BDD}
-	\caption{Block Definition Diagram af KarControl}
-\end{figure}
+\systemBDD{0.82}{KarControl}{KarControl}
 
 \subsubsection{KarGruppe}
 KarGruppe er den overordnede betegnelse for et vandkar med tilførende pH-værdi og gødningskoncentration. KarGruppen består af diverse sensorer og aktuatorer, og styrer et vilkårligt antal Sensor Ø’er. KarGruppen er styret af en controller, KarControl.
@@ -30,12 +25,7 @@ Flowmåleren måler mængden af vand, som tilføres karret gennem Indløbsventil
 
 \subsection{KarControl IBD}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/KarControl/KarControl_IBD.png}
-	\label{fig:KarControl IBD}
-	\caption{Internal Block Diagram af KarControl}
-\end{figure}
+\systemIBD{0.82}{KarControl}{KarControl}
 
 \subsubsection{RSIn}
 RSConverter konverterer fra RS485 til RS232 når der modtages data fra CentralControl, og fra RS232 til RS485 når der afsendes data til CentralControl.
