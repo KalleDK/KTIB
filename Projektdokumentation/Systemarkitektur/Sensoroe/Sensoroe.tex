@@ -1,12 +1,12 @@
 %!TEX root = ../../main.tex
 
-\subsection{Sensoroe BDD}
+\subsection{Sensor Ø BDD}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.82\textwidth]{Systemarkitektur/Sensoroe/Sensoroe_BDD.png}
 	\label{fig:Sensoroe BDD}
-	\caption{Block Definition Diagram af Sensoroe}
+	\caption{Block Definition Diagram af Sensor Ø}
 \end{figure}
 
 \subsubsection*{Sensor Ø Control}
@@ -15,16 +15,16 @@ Sensor Ø Control tager imod kommandoer fra KarControl, som instruerer omkring �
 \subsubsection{Doseringsventil}
 Doseringsventilen åbner og lukker for vandtilførslen til planterne i området omkring Sensor Ø’en, som Doseringsventilen er tilkoblet. Når KarControl tænder for Vandpumpen kan de enkelte Sensor Ø’ers Doseringsventiler være åbne eller lukkede alt efter, om planterne omkring Sensor Ø’en har brug for vand.
 
-\subsubsection{Sensor}
-Sensor er en generalisering af alle slags sensorer, som kan tilsluttes Sensor Ø’en. Vilkårligt mange sensorer kan tilkobles en bus, og kommunikere med Sensor Ø Control gennem en standardiseret protokol. Sensor kan kun aflevere målinger når de bliver bedt om at levere dem.
+\subsubsection{FieldSensor}
+FieldSensor er en generalisering af alle slags sensorer, som kan tilsluttes Sensor Ø’en. Vilkårligt mange sensorer kan tilkobles en bus, og kommunikere med Sensor Ø Control gennem en standardiseret protokol. Sensor kan kun aflevere målinger når de bliver bedt om at levere dem.
 
-\subsection{Sensoroe IBD}
+\subsection{Sensor Ø IBD}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.82\textwidth]{Systemarkitektur/Sensoroe/Sensoroe_IBD.png}
 	\label{fig:Sensoroe BDD}
-	\caption{Internal Block Diagram af Sensoroe}
+	\caption{Internal Block Diagram af Sensor Ø}
 \end{figure}
 
 \begin{table}[H]
@@ -44,9 +44,9 @@ Sensor er en generalisering af alle slags sensorer, som kan tilsluttes Sensor Ø
 \textcolor{black}{\large{\textbf{Område}}}&
 \textcolor{black}{\large{\textbf{Kommentar}}}\\
 \hline
-OeData				& buskommunikation efter konvertering fra 485 &	 	& UART kommunikation fra 485 bussen  \\
-OeBus				& RS485 bus til kommunikation mellem enheder  &	 	& Differentielt bussystem  \\
-SensorData			& Signal på I2C bus							  &	 	& Kan være flere forskellige signaler alt efter sensor type   \\
+oeData				& buskommunikation efter konvertering fra 485 &	 	& UART kommunikation fra 485 bussen  \\
+oeBus				& RS485 bus til kommunikation mellem enheder  &	 	& Differentielt bussystem  \\
+sensorData			& Signal på I2C bus							  &	 	& Kan være flere forskellige signaler alt efter sensor type   \\
 ventilCtrl			& Signal til styring af doserings ventil	  &	0-5V& Bruges til at styre mængden af vand til planterne \\
 vand				& Dette er flow'et af vand 					  &		& \\
 \hline
@@ -56,11 +56,11 @@ vand				& Dette er flow'et af vand 					  &		& \\
 \label{table:SignalBeskrivelserKarControl}
 \end{table}
 
-\subsection{Sensoroe Allokeringsdiagram}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/Sensoroe/Sensoroe_Allokeringsdiagram.png}
-	\label{fig:Sensoroe BDD}
-	\caption{Allokeringsdiagram af Sensoroe}
-\end{figure}
+%\subsection{Sensoroe Allokeringsdiagram}
+%
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.82\textwidth]{Systemarkitektur/Sensoroe/Sensoroe_Allokeringsdiagram.png}
+%	\label{fig:Sensoroe BDD}
+%	\caption{Allokeringsdiagram af Sensoroe}
+%\end{figure}

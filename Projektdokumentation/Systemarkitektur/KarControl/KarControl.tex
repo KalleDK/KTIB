@@ -28,11 +28,6 @@ Vandpumpen pumper vand fra karret ud til Sensor Ø’erne.
 Flowmåleren måler mængden af vand, som tilføres karret gennem Indløbsventilen.
 
 
-\subsubsection{RSConverter}
-RSConverter konverterer fra RS485 til RS232 når der modtages data, og fra RS232 til RS485 når der afsendes data.
-
-
-
 \subsection{KarControl IBD}
 
 \begin{figure}[H]
@@ -70,15 +65,15 @@ RSConverter konverterer fra RS485 til RS232 når der modtages data fra KarContro
 KarBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
 OeBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
 Data485				& RS485 bus til kommunikation mellem enheder &	 	& internt signal   \\
-UART232				& RS485 konverteret til logisk niveau		 &	 	& Signal efter konvertering  \\
+Data232				& RS485 konverteret til logisk niveau		 &	 	& Signal efter konvertering  \\
 EnableIndløb		& Signal til at lukke vand ind i kar		 & 0-5V	& Signal til at styre magnetventil   \\
 EnableAfløb			& Signal til at lukke vand ud af kar		 & 0-5V	& Signal til at styre magnetventil	\\
 EnableVandpumpe		& Styre signal til pumpe			   	     & 0-5V & PWM styret signal	\\
 Puls				& Takt tæller af flow				   	 	 & 0-5V & 	\\
 pH					& Analog signal fra pH måler			 	 & fra -420 til 420 mV  & Analogt signal	\\
-indløb				& vandstyring i kar							 &    	& Til at lukke vand ind i kar	\\
+Indløb				& vandstyring i kar							 &    	& Til at lukke vand ind i kar	\\
 Afløb				& vandstyring i kar	 						 &   	& Til at lukke vand ud af kar	\\
-dossering			& vandstyring til planter					 &      & Til at dosere vand til planterne	\\
+Dossering			& vandstyring til planter					 &      & Til at dosere vand til planterne	\\
 \hline
 \end{tabular}
 }
@@ -87,11 +82,11 @@ dossering			& vandstyring til planter					 &      & Til at dosere vand til plant
 \end{table}
 
 
-\subsection{KarControl Allokeringsdiagram}
+%\subsection{KarControl Allokeringsdiagram}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.82\textwidth]{Systemarkitektur/KarControl/KarControl_Allokeringsdiagram.png}
-	\label{fig:KarControl AD}
-	\caption{Allokeringsdiagram af KarControl}
-\end{figure}
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.82\textwidth]{Systemarkitektur/KarControl/KarControl_Allokeringsdiagram.png}
+%	\label{fig:KarControl AD}
+%	\caption{Allokeringsdiagram af KarControl}
+%\end{figure}
