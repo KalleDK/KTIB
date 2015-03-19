@@ -1,23 +1,6 @@
 %!TEX root = ../main.tex
 
-\begin{table}[H]
-\centering
-{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
-\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
-\setlength{\tabcolsep}{10pt}						 %indryk i celle 
-\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
-\center
-\small
-\begin{tabular}{|p{4cm}|p{4cm}|p{3cm}|p{2.5cm}|}		 %længden på alle rum
-\hline
-
-\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{15.67cm}|}{\textcolor{white}{\large{\textbf{Accepttest Use Case 2 Indlæs Data}}}} \\\hline
-\rowcolor{white!70!black!60}
-\textcolor{black}{\large{\textbf{Test}}}&
-\textcolor{black}{\large{\textbf{Forventet resultat}}}&	
-\textcolor{black}{\large{\textbf{Resultat}}}&
-\textcolor{black}{\large{\textbf{Godkendt Kommentar}}}\\
-\hline
+\accepttest[UC2]{Use Case 2 Indlæs Data}{
 Bruger tilgår webinterfacet ved at indtaste url i en browser 	& Bruger indtaster \gls{mgmturl}	 	&  	& \\
 Systemmet viser interface forside	 			& Visuel test forsiden fremkommer 	& 	&  \\
 Bruger indtaster ønskede data i interfacet	 	& Fugtighed sætter til 34&  	& \\
@@ -29,10 +12,4 @@ Bruger gemmer data i systemmet  				& Bruger trykker på 'Gem værdier'	& 	& \\
 Bruger lukker og åbner browser 					& Bruger lukker browseren og bruger åbner browseren igen & & \\
 Bruger tilgår webinterfacet ved at indtaste url i en browser 	& Bruger indtaster \gls{mgmturl}	 	&  	& \\
 Bruger aflæser værdierne 						& Brugeren sammenligner værdierne med de forige indtastede, disse skal være ens & & \\
-
-\hline
-\end{tabular}
 }
-\caption{Accepttest 2}
-\label{table:Atest2}
-\end{table}

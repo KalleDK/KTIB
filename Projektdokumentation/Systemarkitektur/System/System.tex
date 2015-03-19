@@ -1,12 +1,10 @@
 %!TEX root = ../../main.tex
 
 \subsection{System Domænemodel}
-
 \systemDomainModel{0.82}{System}{AVS}
 
 \subsection{System BDD}
-
-\systemBDD{0.82}{System}{AVS}
+\systemBDD[System]{0.82}{AVS}
 
 \subsubsection{CentralControl}
 CentralControl er systemets centrale computer. Det er gennem dette delsystem, at brugerens interaktion bliver behandlet og formidlet videre til andre delsystemer. CentralControl driver en webserver med dertilhørende web-applikation (GUI), som tillader brugeren at interagere med systemet gennem sin web-browser. Webserveren kommunikerer med et stykke centralt software, FlexPMS.
@@ -27,11 +25,9 @@ KarControl er en styring, som formidler og håndterer al datakommunikation og ko
 Sensor Ø’er giver mulighed for at måle (f.eks. jordfugtighed) over et større areal ved, at Sensor Ø’erne spredes over området, hvor planterne gror, og har hver især tilsluttet sensorer. Dermed kan man måle jordfugtighed lokalt for området omkring Sensor Ø’en og styre vandtilførslen specifikt for planterne, som står i området.
 
 \subsubsection{RSConverter}
-RSConverter konverterer fra RS485 til RS232 når der modtages data, og fra RS232 til RS485 når der afsendes data.
-
+RSConverter konverterer mellem RS485 og UART 232.
 
 \subsection{System Allokeringsdiagram}
-
 \systemAllokeringsDiagram{0.82}{System}{AVS}
 
 

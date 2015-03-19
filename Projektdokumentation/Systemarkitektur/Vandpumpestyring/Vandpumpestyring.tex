@@ -3,15 +3,18 @@
 Vi bruger en vandpumpe på alle vores kar.
 
 \subsection{Vandpumpestyring BDD}
-
 Her under ses et diagram over den generalle opbygning af vandpumpe styringen denne gør sig gældende for alle vandpumper i systemet
 
-\systemBDD{0.5}{Vandpumpestyring}{Vandpumpestyring}
-
-Her ses så de interne forbindelser i Vandpumpestyringen 
+\systemBDD{0.5}{Vandpumpestyring}
 
 \subsection{Vandpumpestyring IBD}
-
 Her ses så de interne forbindelser i Vandpumpestyringen 
 
 \systemIBD{0.5}{Vandpumpestyring}{Vandpumpestyring}
+
+\subsection{Signal beskrivelser}
+\systemSignaler{Vandpumpestyring}{
+cV				& Pwm signal til Mosfet kredsløbet 			&	0-5V 	&  Bestemmer om Vandpumpen roterer \\
+Vandpumpe\_cV		& Pwm signal til Vandpumpen		  			&	0-12V 	&  Får Vandpumpen til at rotere \\
+vand			& Vand der flyder gennem Vandpumpen				&			&	\\
+}

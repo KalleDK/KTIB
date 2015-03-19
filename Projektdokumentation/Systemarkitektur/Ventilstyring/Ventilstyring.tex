@@ -3,16 +3,19 @@
 Da vi bruger ventiler flere steder i systemet er dette en general beskrivelse af dem.
 
 \subsection{Ventilstyring BDD}
-
 Her under ses et diagram over den generalle opbygning af ventil styringen denne gør sig gældende for alle ventilerne i systemet
 
-\systemBDD{0.5}{Ventilstyring}{Ventilstyring}
-
-Her ses så de interne forbindelser i Ventilstyringen 
+\systemBDD{0.5}{Ventilstyring}
 
 \subsection{Ventilstyring IBD}
-
 Her ses så de interne forbindelser i Ventilstyringen 
 
 \systemIBD{0.5}{Ventilstyring}{Ventilstyring}
+
+\subsection{Signal beskrivelser}
+\systemSignaler{Ventilstyring}{
+cV				& On/Off signal til Mosfet kredsløbet 			&	0-5V 	&  Bestemmer om Ventilen skal være åben \\
+Ventil\_cV		& On Off signal til Ventilen		  			&	0-12V 	&  Åbner Lukker Ventilen \\
+vand			& Vand der flyder gennem ventilen				&			&	\\
+}
 

@@ -1,121 +1,52 @@
 %!TEX root = ../main.tex
 
-\newcommand{\systemBDD}[3]{
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_BDD.png}
-	\label{fig:#2_BDD}
-	\caption{Block Definition Diagram af #3}
-\end{figure}
-}
+\chapter{System Arkitektur}
 
-\newcommand{\systemIBD}[3]{
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_IBD.png}
-	\label{fig:#2_IBD}
-	\caption{Internal Block Diagram af #3}
-\end{figure}
-}
-
-\newcommand{\systemDomainModel}[3]{
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_Domain_Model.png}
-	\label{fig:#2_Domain_Model}
-	\caption{Domænemodel af #3}
-\end{figure}
-}
-
-\newcommand{\systemAllokeringsDiagram}[3]{
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_AllokeringsDiagram.png}
-	\label{fig:#2_Allokeringsdiagram}
-	\caption{Allokeringsdiagram af #3}
-\end{figure}
-}
-
-\chapter{Systemarkitektur}
-
-\begin{table}[H]
-\centering
-{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
-\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
-\setlength{\tabcolsep}{10pt}						 %indryk i celle 
-\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
-\center
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}		 %længden på alle rum
-\hline
-
-\multicolumn{3}{|>{\columncolor{white!20!black!90}}m{13.44cm}|}{\textcolor{white}{\large{\textbf{Revision}}}} \\\hline
-\rowcolor{white!70!black!60}
-\textcolor{black}{\large{\textbf{Ændret af}}}&
-\textcolor{black}{\large{\textbf{Version}}}&	
-\textcolor{black}{\large{\textbf{Dato}}}\\
-\hline
+\RevisionsTabel{System Arkitektur}{
 Alle	& 0.1	 	& 17-03-2015  \\
 		& 		&   \\
 		& 		&   \\
 		& 	 	&   \\
-\hline
-\end{tabular}
 }
-\caption{Revision for Systemarkitektur}
-\label{table:RevSys}
-\end{table}
 
 \section{System diagrammer}
-
 \input{Systemarkitektur/System/System}
 
 \newpage
-
 \section{CentralControl diagrammer}
-
 \input{Systemarkitektur/CentralControl/CentralControl}
 
 \newpage
-
 \section{KarControl diagrammer}
-
 \input{Systemarkitektur/KarControl/KarControl}
 
 \newpage
-
 \section{Sensor Ø diagrammer}
-
 \input{Systemarkitektur/Sensor_oe/Sensor_oe}
 
 \newpage
-
-\section{pH-sensor diagrammer}
-
-\input{Systemarkitektur/Sensor_pH/Sensor_pH}
+\section{Fieldsensor diagrammer}
+\input{Systemarkitektur/Fieldsensor/Fieldsensor}
 
 \newpage
-
 \section{Jordfugt sensor diagrammer}
-
 \input{Systemarkitektur/Sensor_Jordfugt/Sensor_Jordfugt}
 
 \newpage
+\section{pH-sensor diagrammer}
+\input{Systemarkitektur/Sensor_pH/Sensor_pH}
 
+\newpage
 \section{Ventilstyring diagrammer}
-
 \input{Systemarkitektur/Ventilstyring/Ventilstyring}
 
 \newpage
-
 \section{Vandpumpestyring diagrammer}
-
 \input{Systemarkitektur/Vandpumpestyring/Vandpumpestyring}
 
-\newpage
+%\newpage
 %\section{RS485 Converter diagrammer}
 
-\newpage
-
-\section{Teknologi undersøgelser}
-
+%\newpage
+%\section{Teknologi undersøgelser}
 %\input{Systemarkitektur/Teknologiundersoegelser/Teknologiundersoegelser}

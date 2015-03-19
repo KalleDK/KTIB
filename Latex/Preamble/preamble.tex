@@ -144,6 +144,9 @@
 \usepackage[footnote,draft,danish,silent,nomargin]{fixme}	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% If then
+\usepackage{ifthen}
+
 % ¤¤ Litteraturlisten ¤¤ %
 \usepackage[danish]{varioref}				% Muliggoer bl.a. krydshenvisninger med sidetal (\vref)
 \usepackage{natbib}							% Udvidelse med naturvidenskabelige citationsmodeller
@@ -156,3 +159,145 @@
 \usepackage[nonumberlist,toc]{glossaries}
 \makeglossaries
 \input{../Latex/Glossary/glossary}
+
+
+
+\newcommand{\systemBDD}[3][FLAF]{
+\ifthenelse{ \equal{#1}{FLAF} }{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#2\textwidth]{Systemarkitektur/#3/#3_BDD.png}
+	\label{fig:#3_BDD}
+	\caption{Block Definition Diagram af #3}
+\end{figure}
+}{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#2\textwidth]{Systemarkitektur/#1/#1_BDD.png}
+	\label{fig:#1_BDD}
+	\caption{Block Definition Diagram af #3}
+\end{figure}
+}
+
+}
+
+\newcommand{\systemIBD}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_IBD.png}
+	\label{fig:#2_IBD}
+	\caption{Internal Block Diagram af #3}
+\end{figure}
+}
+
+\newcommand{\systemDomainModel}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_Domain_Model.png}
+	\label{fig:#2_Domain_Model}
+	\caption{Domænemodel af #3}
+\end{figure}
+}
+
+\newcommand{\systemAllokeringsDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{Systemarkitektur/#2/#2_AllokeringsDiagram.png}
+	\label{fig:#2_Allokeringsdiagram}
+	\caption{Allokeringsdiagram af #3}
+\end{figure}
+}
+
+\newcommand{\RevisionsTabel}[2]
+{
+\begin{table}[H]
+\centering
+{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
+\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
+\setlength{\tabcolsep}{10pt}						 %indryk i celle 
+\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
+\center
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}		 %længden på alle rum
+\hline
+
+\multicolumn{3}{|>{\columncolor{white!20!black!90}}m{13.44cm}|}{\textcolor{white}{\large{\textbf{Revision}}}} \\\hline
+\rowcolor{white!70!black!60}
+\textcolor{black}{\large{\textbf{Ændret af}}}&
+\textcolor{black}{\large{\textbf{Version}}}&	
+\textcolor{black}{\large{\textbf{Dato}}}\\
+\hline
+#2
+\hline
+\end{tabular}
+}
+\caption{Revision for #1}
+\label{table:#1_Revision}
+\end{table}
+}
+
+\newcommand{\systemSignaler}[3][FLAF]{
+\begin{table}[H]
+\centering
+{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
+\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
+\setlength{\tabcolsep}{10pt}						 %indryk i celle 
+\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
+\center
+\begin{tabular}{|p{20mm}|p{40mm}|p{30mm}|p{30mm}|}		 %længden på alle rum
+\hline
+
+\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{14.20cm}|}{\textcolor{white}{\large{\textbf{Signal beskrivelser}}}} \\\hline
+\rowcolor{white!70!black!60}
+\textcolor{black}{\large{\textbf{Navn}}}&
+\textcolor{black}{\large{\textbf{Definition}}}&	
+\textcolor{black}{\large{\textbf{Område}}}&
+\textcolor{black}{\large{\textbf{Kommentar}}}\\
+\hline
+#3
+\hline
+\end{tabular}
+}
+\ifthenelse{ \equal{#1}{FLAF} }{
+\caption{Signal beskrivelser for #2}
+\label{sig:#2_Signal}
+}{
+\caption{Signal beskrivelser for #2}
+\label{sig:#1_Signal}
+}
+
+\end{table}
+}
+
+\newcommand{\accepttest}[3][FLAF]
+{
+\begin{table}[H]
+\centering
+{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
+\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
+\setlength{\tabcolsep}{10pt}						 %indryk i celle 
+\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
+\center
+\small
+\begin{tabular}{|p{4cm}|p{4cm}|p{3cm}|p{2.5cm}|}		 %længden på alle rum
+\hline
+
+\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{15.67cm}|}{\textcolor{white}{\large{\textbf{Accepttest #2}}}} \\\hline
+\rowcolor{white!70!black!60}
+\textcolor{black}{\large{\textbf{Test}}}&
+\textcolor{black}{\large{\textbf{Forventet resultat}}}&	
+\textcolor{black}{\large{\textbf{Resultat}}}&
+\textcolor{black}{\large{\textbf{Godkendt Kommentar}}}\\
+\hline
+#3
+\hline
+\end{tabular}
+}
+\ifthenelse{ \equal{#1}{FLAF} }{
+\caption{Acceptest for #2}
+\label{table:#2_AcceptTest}
+}{
+\caption{Acceptest for #2}
+\label{table:#1_AcceptTest}
+}
+\end{table}
+}

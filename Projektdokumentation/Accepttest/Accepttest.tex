@@ -2,34 +2,16 @@
 
 \chapter{Accepttest}
 
-\begin{table}[H]
-\centering
-{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
-\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
-\setlength{\tabcolsep}{10pt}						 %indryk i celle 
-\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
-\center
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}		 %længden på alle rum
-\hline
-\multicolumn{3}{|>{\columncolor{white!20!black!90}}m{13.44cm}|}{\textcolor{white}{\large{\textbf{Revision}}}} \\\hline
-\rowcolor{white!70!black!60}
-\textcolor{black}{\large{\textbf{Ændret af}}}&
-\textcolor{black}{\large{\textbf{Version}}}&	
-\textcolor{black}{\large{\textbf{Dato}}}\\
-\hline
+
+\RevisionsTabel{Accepttest}{
 Alle	& 1	 	& 23-02-2015  \\
 		& 		&   \\
 		& 		&   \\
 		& 	 	&   \\
-\hline
-\end{tabular}
 }
-\caption{Revision for accepttest}
-\label{table:RevAccept}
-\end{table}
 
 \section{Test setup}
-Til at teste følgende skal der bruges et setup med en \gls{pc} der er i stand til at forbinde til den indlejrede Linux platform. \glslink{I2CSensor}{I2CSensorer} tilsluttes til den indlejrede Linux platform via de PSoC moduler der styre dem. Aktuatorerne skal ligeledes tilsluttes gennem deres respektive moduler.
+Til at teste følgende skal der bruges et setup med en \gls{pc} der er i stand til at forbinde til den indlejrede Linux platform. \glslink{fieldsensor}{Fieldsensorer} tilsluttes til den indlejrede Linux platform via de PSoC moduler der styre dem. Aktuatorerne skal ligeledes tilsluttes gennem deres respektive moduler.
   
 \section{Accepttests}
 %Accepttest til Usecase1

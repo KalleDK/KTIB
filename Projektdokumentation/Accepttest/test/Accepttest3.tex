@@ -1,30 +1,8 @@
 %!TEX root = ../main.tex
 
-\begin{table}[H]
-\centering
-{\rowcolors{2}{white!80!black!30}{white!70!black!60} %farver på hver anden række -starter på 3
-\setlength{\arrayrulewidth}{0.2mm}					 %tykkelse på linier 
-\setlength{\tabcolsep}{10pt}						 %indryk i celle 
-\renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
-\center
-\small
-\begin{tabular}{|p{4cm}|p{4cm}|p{3cm}|p{2.5cm}|}		 %længden på alle rum
-\hline
-
-\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{15.67cm}|}{\textcolor{white}{\large{\textbf{Accepttest Use Case 3 Manuel vanding}}}} \\\hline
-\rowcolor{white!70!black!60}
-\textcolor{black}{\large{\textbf{Test}}}&
-\textcolor{black}{\large{\textbf{Forventet resultat}}}&	
-\textcolor{black}{\large{\textbf{Resultat}}}&
-\textcolor{black}{\large{\textbf{Godkendt Kommentar}}}\\
-\hline
+\accepttest[UC3]{Use Case 3 Manuel vanding}{
 Bruger tilgår webinterface ved at indtaste \gls{mgmturl} i sin browser	& Browser accepterer URL-adresse	 		& 	& \\
 Systemmet viser forside  	 						& Visuel test: forsiden fremkommer	&  	& \\
 Bruger aktiverer manuel vanding i interfacet 	 			& Systemet begynder at tilføre vand til \glslink{plante}{planternes} \gls{gromedie} 		& 	& \\
 Systemet når set-punkt for jordfugtighed   					& Systemet stopper med at tilføre vand 	&  	& \\
-\hline
-\end{tabular}
 }
-\caption{Accepttest 3}
-\label{table:Atest3}
-\end{table}

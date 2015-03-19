@@ -3,14 +3,23 @@
 Til pH måling har vi bygget vores egen sensor ved hjælp af en pH-probe.
 
 \subsection{pH-sensor BDD}
-
 I forhold til signaler er proben ret nem at have med at gøre da den selv producere en spænding i forhold til den væske der måles på pH værdi.
 
-\systemBDD{0.7}{Sensor_pH}{pH-sensor}
+\systemBDD[Sensor_pH]{0.7}{pH-sensor}
 
 \subsection{pH-sensor IBD}
-
 Igen ses simpliciteten da pH proben bare interagere med kemikalium og herefter producere en spænding.
 
 \systemIBD{0.7}{Sensor_pH}{pH-sensor}
 
+\subsection{Signal beskrivelser}
+\systemSignaler{pH-sensor}{
+pHvalue				&  			&	 	&   \\
+pH					&  			&	 	&   \\
+}
+
+\newcommand{\kalle}[3][A]{
+#1 og #2 og #3
+}
+
+\kalle{r}{t}
