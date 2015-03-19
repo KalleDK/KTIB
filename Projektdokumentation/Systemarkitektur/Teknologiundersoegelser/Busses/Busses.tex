@@ -1,4 +1,15 @@
 %!TEX root = ../../../main.tex
+\subsection{RS485}
+Kommunikationen som foregår i systemet imellem brugerinterfacet (Devkit 8000), KarControl (PSoC 4) og de enkelte forgreninger (PSoC 4) skal kunne kommunikere over længere afstande. De allerede kendte busser, SPI og I2C, har begge en maksimal rækkevidde på 1,5m. Vi har derfor været nødsaget til at finde et bedre alternativ. Problemet over længere afstande kan være:
 
+\begin{itemize}
+\item Kapacitet i ledningerne
+\item Støj fra omkringliggende elektronik
+\end{itemize}
 
-Det der RS485 er bare lovely
+For at løse disse problemer, har vi undersøgt RS485-kommunikation. RS485 er en standard som definerer de elektriske karakteristika af sendere og modtagere på en differentiel bus. Ved 2 ledninger kan man opnå half-duplex, og ved 4 ledninger kan man opnå full duplex. Ledningerne i bussen skal være parsnoede. Ved afstande helt op til 1200m, er det muligt at køre med hastigheder på op til 100kbit/s. RS485 er en udbygning af RS422, hvor man har muligheden for at vælge hvorvidt det er input- eller output-driverne som er aktive. Den fysiske konfiguration af bussen skal forbindes som én linje.
+Dvs. at man kan f.eks. ikke parallel-forbinde 5 enheder direkte til en master, de skal derimod serieforbindes. Bussen termineres i begge ender, med en modstand som svarer til kablernes egen modstand, normalt 120ohm for parsnoede kabler, imellem de 2 bus-forbindelser.
+\\\\
+Man vil gerne opnå at masteren er centreret i bussen, og at termineringsmodstandene derved er på 2 slaver. Ved at gøre dette, vil afstanden fra masteren til slaverne være så lille som mulig, og derved vil signal-styrken være bedst.
+\\\\
+RS485 er KUN en elektrisk definition af bussen, og ikke en kommunikationsprotokol. Dette giver mulighed for at skrive sin egen protokol. Standarden anbefaler dog, at man bruger kommunikationsprotokollen TSB-89.
