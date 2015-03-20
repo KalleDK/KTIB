@@ -18,11 +18,14 @@ Fieldsensor er en generalisering af alle slags sensorer, som kan tilsluttes Sens
 %\subsection{Sensor Ø Allokeringsdiagram}
 %\systemAllokeringsDiagram{0.82}{Sensor_oe}{Sensor Ø}
 
-\subsection{Signal beskrivelser}
+\subsection{Signalbeskrivelser Sensor Ø}
 \systemSignaler[SensorOe]{Sensor Ø}{
-oeData				& Buskommunikation efter konvertering fra 485 &	 	& UART kommunikation fra 485 bussen  \\
-oeBus				& RS485 bus til kommunikation mellem enheder  &	 	& Differentielt bussystem  \\
-sensorData			& Signal på I2C bus							  &	 	& Kan være flere forskellige signaler alt efter sensor type   \\
-ventilCtrl			& Signal til styring af doserings ventil	  &	0-5V& Bruges til at styre mængden af vand til planterne \\
-vand				& Dette er flow'et af vand 					  &		& \\
+oeData				& Buskommunikation efter konvertering fra 485 & Intern:SW-signal 		 	& Konverteret signal fra RSconverter til Sensor Ø 																									Controller  \\
+oeBus				& RS485 bus til kommunikation mellem enheder  &	Binary 1 (OFF)
+																   (Voa-Vob<-200 mV)
+																   Binary 0 (ON)
+																  (Voa-Vob>+200 mV) 			& Differentielt bussystem  \\
+sensorData			& I2C bussignal 							  &	Logisk: 0-5V				& Kommunikation fra sensorer til Sensor Ø \\
+ventilCtrl			& Signal til styring af doserings ventil	  &	Logisk: 0-5V				& Signal til styring af Doseringsventil \\
+vand				& Vandflow fra Karret 					 	  &	Vandflow					& Vandtilførsel til doseringsventil \\
 }
