@@ -1,6 +1,6 @@
 %!TEX root = ../../main.tex
 
-Jordfugt sensoren måler en strøm igennem jorden. Denne strøm vil variere med hensyn til fugtigheden som derfor vil resultere i en spændingsændring på indgangen af analog til digital converteren. Denne spænding bruges til at udregne fugtigheden i procent
+Jordfugt sensoren måler en strøm igennem jorden. Denne strøm vil variere med hensyn til fugtigheden som derfor vil resultere i en spændingsændring på indgangen af analog til digital konverteren. Denne spænding bruges til at udregne fugtigheden i procent
 
 \subsection{Jordfugt sensor BDD}
 \systemBDD[Sensor_Jordfugt]{0.83}{Jordfugt sensor}
@@ -8,8 +8,9 @@ Jordfugt sensoren måler en strøm igennem jorden. Denne strøm vil variere med 
 \subsection{Jordfugt sensor IBD}
 \systemIBD{0.83}{Sensor_Jordfugt}{Jordfugt sensor}
 
-\subsection{Signal beskrivelser}
+\subsection{Signalbeskrivelser Jordfugtighedssensor}
 \systemSignaler{Jordfugt sensor}{
-				&  			&	 	&   \\
-				&  			&	 	&   \\
+Målespænding		& Spændingsforskel 				& 	 				& Differential spænding skab af fugtighed i jorden  	 \\
+DataADC				& ADC-konverteret målespænding 	& Logisk: 0-5V	 	& Digitalt konverteret målesignal   					 \\
+DataI2C				& I2C kommunikation 			& Logisk: 0-5V	 	& Kommunikation fra Jordfugtighedsmåler til Fieldsensor  \\
 }

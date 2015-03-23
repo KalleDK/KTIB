@@ -1,13 +1,13 @@
 \subsection{CentralControl IBD}
 \systemIBD{0.82}{CentralControl}{CentralControl}
 
-\subsection{Signal beskrivelser}
+\subsection{Signalbeskrivelser CentralControl}
 \systemSignaler{CentralControl} {
-KarBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
-Data485				& RS485 bus til kommunikation mellem enheder &	 	& internt signal   \\
-Data232				& RS485 konverteret til UART 232			 &	 	& Signal efter konvertering  \\
-PMSConn				& Database forbindelse						 &		& Til at skrive log \\
-GUIConn				& Database forbindelse						 &		& Til at hente og skrive indstillinger samt log \\
-ControlConn			& Socket forbindelse fra GUI til FlexPMS	 &		& Til at sende kommandoer fra GUI til FlexPMS \\
-html				& Http protokol								 &		& Fobindelse til brugerens browser \\
-}
+KarBus				& RS485 bus til kommunikation mellem enheder & logisk 0-5V				& Differentielt bussystem, følger CMOS-standard  \\
+Data485				& RS485 bus til kommunikation mellem enheder & logisk 0-5V				& Internt signal, følger CMOS-standard   \\
+Data232				& RS485 konverteret til UART 232			 & logisk 0-5V				& Signal efter konvertering, følger CMOS-standard  \\
+PMSConn				& Database forbindelse						 & intern SW forbindelse	& Til at skrive log \\
+GUIConn				& Database forbindelse						 & intern SW forbindelse	& Til at hente og skrive indstillinger samt log \\
+ControlConn			& Socket forbindelse fra GUI til FlexPMS	 & intern SW forbindelse	& Til at sende kommandoer fra GUI til FlexPMS \\
+html				& Http protokol								 & intern SW forbindelse	& Forbindelse til brugerens browser \\
+}	
