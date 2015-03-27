@@ -21,6 +21,9 @@ Vandpumpen pumper vand fra karret ud til Sensor Ø’erne.
 \subsubsection{Flowmåler}
 Flowmåleren måler mængden af vand, som tilføres karret gennem Indløbsventilen.
 
+\subsubsection{PSU}
+PSU (Power Supply Unit) forsyner de andre blokke med 12V og 5V.
+
 \subsection{KarControl IBD}
 \systemIBD{0.82}{KarControl}{KarControl}
 
@@ -30,27 +33,34 @@ RSConverter konverterer mellem RS485 og UART 232 når der skal kommunikeres med 
 \subsubsection{RSOut}
 RSConverter konverterer mellem RS485 og UART 232 når der skal kommunikeres med Sensor Ø'er.
 
+\subsection{KarControlForsyning IBD}
+Der er lavet et separat forsynings IBD som viser forbindelserne fra blokken PSU til resten af blokkene og omverdenen.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{Systemarkitektur/KarControl/KarControlForsyning_IBD.png}
+	\label{fig:KarControlForsyning}
+	\caption{IBD over forsyningsforbindelser til KarControl}
+\end{figure}
+
 %\subsection{KarControl Allokeringsdiagram}
 %\systemAllokeringsDiagram{0.82}{KarControl}{KarControl}
 
+\fxnote{Forsyningsspændinger skal have tolerancer}
 \subsection{Signalbeskrivelser KarControl}
 \systemSignaler{KarControl} {
-KarBus				& RS485 bus til kommunikation mellem enheder & Binary 1 (OFF)
-																   (Voa-Vob<-200 mV)
-																   Binary 0 (ON)
-																  (Voa-Vob>+200 mV)	 	& Differentielt bussystem \\
-OeBus				& RS485 bus til kommunikation mellem enheder & Binary 1 (OFF)
-																   (Voa-Vob<-200 mV)
-																   Binary 0 (ON)
-																  (Voa-Vob>+200 mV)	 	& Differentielt bussystem \\
-Data485				& RS485 bus til kommunikation mellem enheder & Intern:SW-signal		& Internt signal fra RSconverter til KarGruppe \\
-Data232				& RS485 konverteret til logisk niveau		 & Intern:SW-signal 	& Konverteret signal fra RSconverter til Controller  \\
-EnableIndløb		& Signal til at lukke vand ind i kar		 & Logisk:0-5V			& Signal til styring af Indløbsventil   \\
-EnableAfløb			& Signal til at lukke vand ud af kar		 & Logisk:0-5V			& Signal til styring af Afløbsventil   \\
-EnableVandpumpe		& Signal til styring Vandpumpe		   	     & Logisk:PWM 0-5V 		& Signal til PWM-styring af Vandpumpe	\\
-Puls				& Takttæller af flow				   	 	 & Logisk:0-5V 			& Retursignal fra flowtæller \\
-pH					& Analog signal fra pH måler			 	 & Analog:-420mV-420mV  & Analogt sensorsignal \\
-Indløb				& vandstyring i kar							 & Vandflow   			& Vandtilførsel til karret \\
-Afløb				& vandstyring i kar	 						 & Vandflow  			& Vandtilafledning fra karret \\
-Dossering			& vandstyring til planter					 & Vandflow    			& Vandtilførsel til dosering \\
+KarBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
+OeBus				& RS485 bus til kommunikation mellem enheder &	 	& Differentielt bussystem  \\
+Data485				& RS485 bus til kommunikation mellem enheder &	 	& internt signal   \\
+Data232				& RS485 konverteret til logisk niveau		 &	 	& Signal efter konvertering  \\
+EnableIndløb		& Signal til at lukke vand ind i kar		 & 0-5V	& Signal til at styre magnetventil   \\
+EnableAfløb			& Signal til at lukke vand ud af kar		 & 0-5V	& Signal til at styre magnetventil	\\
+EnableVandpumpe		& Signal til styring af vandpumpe			   	     & 0-5V & PWM styret signal	\\
+Puls				& Takttæller af flow				   	 	 & 0-5V & 	\\
+pH					& Analog signal fra pH måler			 	 & fra -420 til 420 mV  & Analogt signal	\\
+Indløb				& vandstyring i kar							 &    	& Til at lukke vand ind i kar	\\
+Afløb				& vandstyring i kar	 						 &   	& Til at lukke vand ud af kar	\\
+Dossering			& vandstyring til planter					 &      & Til at dosere vand til planterne	\\
+230V				& El-nettet som forsyner PSU				 & 230V	& \\
+12V					& Forsyning til pumper og ventiler			 & 12V	& \\
+5V					& Forsyning til systemets logiske kredsløb	 & 5V	& \\
 }
