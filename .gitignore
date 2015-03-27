@@ -1,6 +1,9 @@
 /Projektrapporten/Main.pdf
 /Projektdokumentation/Main.pdf
 
+# Misc.
+Thumbs.db
+
 # Compiled Object files
 *.slo
 *.lo
