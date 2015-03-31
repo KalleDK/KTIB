@@ -1,0 +1,123 @@
+%!TEX root = ../../main.tex
+\section{Ventilstyring}
+Til styring af indløb til / afløb fra vandkaret anvendes 2 Hydraelectric Magnetventiler med tilhørende MOSFET-styringskredse. En magnetventil virker ved at det interne relæ bliver aktiveret når der påtrykkes en DC-spænding, evt. i form af et PWM-signal, hvor ved gennemstrømningen kan reguleres, når dette sker åbnes der for gennemgang i ventilen. I det interne relæ sidder en spole, og spolens viklinger medfører en ohmsk modstand. Når der påtrykkes en spænding skabes et magnetfelt omkring spolen, dette felt holder ventilen åben. Når ventilen ønskes lukket, afbrydes spændingen. Dette skaber en problematik hvor strømmen igennem spolen ikke kan ændre sig på samme hurtige måde aom spændingen. Da den fysiske forbindelse til spolen er afbrudt vil spolen selv inducere en modsatrettet spænding for at komme af med strømmen. Dette er et problem da så høje spændinger potentielt er skadeligt for tilkoblede komponenter, men som løsning implementeres en ”flyback diode” parallelt med spolen i reverse bias-konfiguration, derved har strømmen en løbebane, og spolen forhindres i at inducere den høje spænding. Den implementerede kontrolkreds ses på figur \ref{screenshot:ventilStyringskreds} på side \pageref{screenshot:ventilStyringskreds}.
+I databladet er oplyst at ventilen benytter 12V, afgiver 6W, dette giver et beregnet strømforbrug på 500mA, se beregning herunder:
+
+\begin{figure}[!h]
+		\begin{align*}
+			P &= 6 VA \\ 
+			V &= 12 V \\
+			I &= \frac{P}{V} \eqref{1}\\ 
+			&= 500mA
+		\end{align*}
+\label{eq:ventilA}
+\caption{Beregning af strømforbrug i magnetventil}
+\end{figure}
+
+Strømforbruget er realiseret i laboratoriet til: XXXX mA hvilket fint stemmer overens med den beregnede værdi. Derudover er den interne modstand beregnet til: 
+
+\begin{figure}[!h]
+	\begin{align*}
+		V &= 12 V \\ 
+		I &= 500 mA \\
+		R &= \frac{V}{I} \\ 
+		&= 24 \Omega
+	\end{align*}
+\caption{Beregning af indre modstand}
+\label{eq:ventilOhm}
+\end{figure}
+
+Modstanden er ligeledes målt i laboratoriet til XXX $\Omega$, hvilket der stemmer fint overens med den beregnede værdi.
+Styringskredsen skal på baggrund af dette designes til at håndtere en strøm på 500mA, og en spænding på 12V. 
+
+
+\newpage
+\subsection{MOSFET-styringskreds}
+Til styringslkredsen er valgt at benytte en N-channel IRLZ44Z-MOSFET transistor i common-source-konfiguration. Denne type transistor er logic-level kompatibel, og har spænding/strøm-grænseværdier der opfylder ovenstående krav.  
+Logic-level kompatible betyder at $ V_{GS(th)} < 5V $ og derved kan MOSFET`en, alene drives fra en MCU, her en PSoC.
+$ V_{GS(th)} $ er den threshold-spænding hvor transistoren går ”on”.
+
+
+Det ses af grafen på figur \ref{screenshot:GateToSourceVoltage}, at MOSFET`en ved en $ V_{GS} = 5V $, (ved $T_J = 25)$ tillader en strøm på 100A, dette er mere end rigeligt til opgaven.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.3]{../Hardware/Ventilstyring/Screenshots/DatasheetGateSourceVoltage}
+	\caption{Datablad: Gate to Source voltage, fra databladets (Fig. 3, s.3)}
+	\label{screenshot:GateToSourceVoltage}
+\end{figure}
+
+Ydermere kan det være interessant at se på hvor varm transistoren bliver under operation. Herved kan det udledes om der behøves ekstern køling eks. i form af en heat-sink.
+Følgende værdier hentet fra databladet: 
+
+\begin{figure}[!h]
+	\begin{center}
+		\begin{tabular}{ l l }
+ 			Drain to Source modstand:          & $R_{DS}=11 m\omega$ \\ 
+ 			Strøm der trækkes af af relæet:    & $I = 500 mA$ \\  
+ 			Junction-to-Ambient modstand:      & $R_{\theta JA}=62 C/W$ \\   
+ 			Max junction temp:                 & $Temp_{jun}=175 C$ \\
+ 			Ambient temp:                      & $Temp_{amb}=25 C$ \\
+		\end{tabular}
+	\end{center}
+\caption{Værdier hentet fra datablad}
+\end{figure}
+
+Til beregningen benyttes formlen for afsat effekt: 
+
+\begin{figure}[!h]
+		\begin{align*}
+		P_{afsat} &= R_{DS}*I^2 \\ 
+		&= 2.75 mW
+		\end{align*}
+\caption{Afsat effekt i MOSFET}
+\label{eq:afsatEffektMOSFET}
+\end{figure}
+
+Her ses det at under operation af ventilen afgiver transistoren 2,75 mW i varme. Ydermere noteres det, at den maksimale effekt der kan afsættes uden at der behøves heat-sink er beregnet til 447.561mW. 
+
+\begin{figure}[!h]
+	\begin{align*}
+		Temp_{max} &= \frac{(Temp_{jun}-Temp_{amb})}{R_{\theta JA}} \\ 
+		&= 447.561 mW
+	\end{align*}
+\caption{Max Temperatur uden heat-sink}
+\label{eq:maxMOSFETeffekt}
+\end{figure}
+
+Da der kun afsættes 2,75mW ved operation, er der ingen grund til at implementerer en heat-sink.
+
+
+\subsubsection{Design af styringskredsløb}
+På figur \ref{screenshot:ventilStyringskreds}, ses MOSFET-styringskredsløb, PSoC`ens ”0” og ”1” er her simuleret ved en frekvensgenerator med tilpas lav frekvens.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[height=5cm]{../Hardware/Ventilstyring/Screenshots/VentilStyringskreds}
+	\caption{Styringskredsløb til magnetventil}
+	\label{screenshot:ventilStyringskreds}
+\end{figure}
+
+\paragraph{MOSFET-transistoren} \hspace{0pt} \\
+Transistoren implementeres i common-source-konfiguration, for at et positivt signal på GATE ”åbner” transistoren, og da den er en logic level
+model, stammer signalet direkte fra PSoCen. 
+
+\paragraph{Ground-modstanden} \hspace{0pt} \\
+Der implementeres en modstand $R_1$ fra Gate til GND for at transistoren forbliver lukket (Gate trækkes til GND) hvis indgangssignalet til Gate afbrydes, dermed undgås det at GATE-signalet ”flyver” og transistoren potentielt kan stå og switche on/off hvis GATE afbrydes. $R_1$ implementeres med en $10k\Omega$s modstand, og virker som en standard ”pull down” resistor.
+
+\paragraph{Flyback-diode} \hspace{0pt} \\
+Derudover implementere der, som førnævnt en ”flyback” diode, for at give strømmen en løbebane når relæet afbrydes. På denne måde indgås den høje $V_{peak}$ som spolen eller ville inducere, når der lukkes af for strømmen ændres monumentalt. Typen af diode, vælges ud fra følgende parametre:
+
+
+\begin{description}
+ \item[•] Hvilken strøm vil løbe i dioden
+ \item[•] Hvilken Peak-spænding vil være over dioden
+\end{description}
+
+\subparagraph{Diode-strøm} \hspace{0pt} \\
+Strømmen der vil løbe i dioden er givet fra databladet til  3A, derved skal den valgte diode kunne klare at lede max 3A, dette sker i forhold til spolens tidskonstant, $\tau$, hvor efter strømmen vil falde i løbet af $ 5 \tau$.
+
+\subparagraph{Peak-spænding} \hspace{0pt} \\
+Peak-spændingen fra spolen beregnes på følgende måde: MANGLER !!!!!
+
+På baggrund af disse 2 værdier, vælges 1N4007, denne diode er, ifølge databladet i stand til at klare 1kVp, og 30A. Dette er tilstrækkeligt i denne situation.
