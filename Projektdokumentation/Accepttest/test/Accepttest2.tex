@@ -1,15 +1,9 @@
 %!TEX root = ../main.tex
 
-\accepttest[UC2]{Use Case 2 Indlæs Data}{
-Bruger tilgår webinterfacet ved at indtaste url i en browser 	& Bruger indtaster \gls{mgmturl}	 	&  	& \\
-Systemmet viser interface forside	 			& Visuel test forsiden fremkommer 	& 	&  \\
-Bruger indtaster ønskede data i interfacet	 	& Fugtighed sætter til 34&  	& \\
-Bruger indtaster ønskede data i interfacet	 	& pH-værdi sættes til 6,5&  	& \\
-Bruger indtaster ønskede data i interfacet	 	& Gødning\#1 sættes til 90&  	& \\
-Bruger indtaster ønskede data i interfacet	 	& Gødning\#2 sættes til 100&  	& \\
-Bruger indtaster ønskede data i interfacet	 	& Gødning\#3 sættes til 110&  	& \\
-Bruger gemmer data i systemmet  				& Bruger trykker på 'Gem værdier'	& 	& \\
-Bruger lukker og åbner browser 					& Bruger lukker browseren og bruger åbner browseren igen & & \\
-Bruger tilgår webinterfacet ved at indtaste url i en browser 	& Bruger indtaster \gls{mgmturl}	 	&  	& \\
-Bruger aflæser værdierne 						& Brugeren sammenligner værdierne med de forige indtastede, disse skal være ens & & \\
+\accepttest[UC2]{Use Case 2 Manuel vanding}{
+Bruger tilgår \gls{gui} ved at indtaste \gls{mgmturl} i sin webbrowser 	& Systemet viser \gls{gui}	 								&  	& \\
+Bruger trykker på et oprettet kar i \gls{gui}en	 						& Systemet viser et skærmbillede med oversigt over karet hvor man kan tilgå manuel vanding 	&  	& \\
+Bruger trykker på manuel vanding			 	& Systemet begynder at vande 	&  	& \\
+
+Bruger trykker på stop manuel vanding		 	& Systemet stopper med at vande  &  	& \\
 }

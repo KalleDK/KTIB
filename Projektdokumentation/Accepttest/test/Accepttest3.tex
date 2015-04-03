@@ -1,8 +1,7 @@
 %!TEX root = ../main.tex
 
-\accepttest[UC3]{Use Case 3 Manuel vanding}{
-Bruger tilgår webinterface ved at indtaste \gls{mgmturl} i sin browser	& Browser accepterer URL-adresse	 		& 	& \\
-Systemmet viser forside  	 						& Visuel test: forsiden fremkommer	&  	& \\
-Bruger aktiverer manuel vanding i interfacet 	 			& Systemet begynder at tilføre vand til \glslink{plante}{planternes} \gls{gromedie} 		& 	& \\
-Systemet når set-punkt for jordfugtighed   					& Systemet stopper med at tilføre vand 	&  	& \\
+\accepttest[UC3]{Use Case 3 Indtast pH-værdi}{
+Bruger tilgår \gls{gui} ved at indtaste \gls{mgmturl} i sin webbrowser	 		& Systemet viser \gls{gui} 	&  	& \\
+Bruger trykker på et oprettet kar i \gls{gui}en	 							& Systemet viser et skærmbillede med oversigt over karet hvor man kan tilgå indtastning af pH-værdien 	& & \\
+Bruger trykker på feltet uden for "pH-Værdi", retter værdien til en pH-værdi på 7.5 og trykke "Gem data"	& Systemet opdaterer pH-værdien til  7.5		& 	& \\
 }
