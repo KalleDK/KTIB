@@ -1,6 +1,7 @@
 ﻿//Fieldsensor types
 enum
 {
+	unknown = 0,
 	jordsensor = 1,
 	tempsensor = 2,
 };

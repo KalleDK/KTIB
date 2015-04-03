@@ -10,12 +10,14 @@
  * ========================================
 */
 #include <project.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "../../command_list.h"
+#define FS_STRINGS
+#include "../../AVS_Header.h"
 
-CY_ISR_PROTO(UART_SLAVE_RX);
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 
 enum {
     RX_IDLE = 0,
@@ -42,9 +44,34 @@ typedef struct
 
 volatile Fieldsensor* fieldsensors[10];
 
+//Debug UART
+#ifdef DEBUG
+void debugUart() {
+    char ch;
+    char debug_msg[50];
+    ch = UART_PC_GetChar();
+    switch(ch)
+    {
+        case '?':
+            UART_PC_PutString("Commands\r\n\r\n");
+            UART_PC_PutString("1 Change state to returnValues\r\n");
+            UART_PC_PutString("2 Change state to returnTypes\r\n");
+            UART_PC_PutString("s Show State\r\n");
+            UART_PC_PutString("v Show Values\r\n");
+            UART_PC_PutString("t Show Type\r\n");
+            UART_PC_PutString("l Load dummy values\r\n");
+            UART_PC_PutString("c Clear values\r\n");
+            UART_PC_PutString("\r\n");
+            break;
+        default:
+            break;
+    }
+}
+#endif
+
 void addFieldsensor(uint8 id) {
     uint8 i = 0;
-    while(fieldsensors[i] != 0) {}
+    while(fieldsensors[i] != 0) {++i;}
     fieldsensors[i] = malloc(sizeof(Fieldsensor));
     fieldsensors[i]->id = id;
 }
@@ -93,17 +120,22 @@ int main()
 {
     uint8 polling_nr = 0;
     
+    #ifdef DEBUG
+    Clock_Start();
+    UART_PC_Start();
+    UART_PC_PutString("Initializing: Done\r\n");
+    #endif
+    
     addFieldsensor(0x08);
     
-    Clock_Start();
     OEBUS_Master_Start();
-    UART_PC_Start();
-  
+    
     CyGlobalIntEnable;
     
-    UART_PC_PutString("Initializing: Done\r\n");
+    
     for(;;)
     {
+        debugUart();
         //Could be empty
         if (fieldsensors[polling_nr] != 0)
             pollFieldsensor(fieldsensors[polling_nr]);
