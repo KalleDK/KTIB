@@ -11,7 +11,7 @@
 */
 #include <project.h>
 #define FS_STRINGS
-#include "../../command_list.h"
+#include "../../AVS_Header.h"
 
 //Til sprintf, som ikke burde skulle benyttes i release
 #ifdef DEBUG
