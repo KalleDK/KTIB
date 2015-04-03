@@ -44,6 +44,8 @@ typedef struct
 
 volatile Fieldsensor* fieldsensors[10];
 
+CY_ISR_PROTO(RX485);
+
 //Debug UART
 #ifdef DEBUG
 void debugUart() {
@@ -116,40 +118,46 @@ void pollFieldsensor(volatile Fieldsensor* fs) {
     uint32 status;
     uint8 cmd;
     
-    status = OEBUS_Master_I2CMasterSendStart(fs->id, OEBUS_Master_I2C_READ_XFER_MODE);
-    if(status == OEBUS_Master_I2C_MSTR_NO_ERROR) {
-        fs->value_high = OEBUS_Master_I2CMasterReadByte(OEBUS_Master_I2C_ACK_DATA);
-        fs->value_low = OEBUS_Master_I2CMasterReadByte(OEBUS_Master_I2C_NAK_DATA);
+    status = SENSORBUS_Master_I2CMasterSendStart(fs->id, SENSORBUS_Master_I2C_READ_XFER_MODE);
+    if(status == SENSORBUS_Master_I2C_MSTR_NO_ERROR) {
+        fs->value_high = SENSORBUS_Master_I2CMasterReadByte(SENSORBUS_Master_I2C_ACK_DATA);
+        fs->value_low = SENSORBUS_Master_I2CMasterReadByte(SENSORBUS_Master_I2C_NAK_DATA);
     }
-    OEBUS_Master_I2CMasterSendStop();
+    SENSORBUS_Master_I2CMasterSendStop();
     
-    if(status == OEBUS_Master_I2C_MSTR_NO_ERROR)
+    if(status == SENSORBUS_Master_I2C_MSTR_NO_ERROR)
     {
         if (fs->type == unknown || fs->status == I2C_OFFLINE) {
             
             //Change slave to send type
             cmd = returnTypes;
-            OEBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, OEBUS_Master_I2C_MODE_COMPLETE_XFER);
-            while (!(OEBUS_Master_I2CMasterStatus() & OEBUS_Master_I2C_MSTAT_WR_CMPLT));
+            SENSORBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_WR_CMPLT));
             
             //Dummy read - Timing issue?
-            OEBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, OEBUS_Master_I2C_MODE_COMPLETE_XFER);
-            while (!(OEBUS_Master_I2CMasterStatus() & OEBUS_Master_I2C_MSTAT_RD_CMPLT));
+            SENSORBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_RD_CMPLT));
             
             //Correct read
-            OEBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, OEBUS_Master_I2C_MODE_COMPLETE_XFER);
-            while (!(OEBUS_Master_I2CMasterStatus() & OEBUS_Master_I2C_MSTAT_RD_CMPLT));
+            SENSORBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_RD_CMPLT));
             fs->type = cmd;
             
             //Change slave back to sending values
             cmd = returnValues;
-            OEBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, OEBUS_Master_I2C_MODE_COMPLETE_XFER);
-            while (!(OEBUS_Master_I2CMasterStatus() & OEBUS_Master_I2C_MSTAT_WR_CMPLT));
+            SENSORBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_WR_CMPLT));
         }
         fs->status = I2C_ONLINE;
     } else {
         fs->status = I2C_OFFLINE;
     }
+}
+
+CY_ISR(RX485)
+{
+    UART_PC_PutChar(OEBUS_Slave_UartGetChar());
+    OEBUS_Slave_ClearRxInterruptSource(OEBUS_Slave_INTR_RX_NOT_EMPTY);
 }
 
 int main()
@@ -164,7 +172,9 @@ int main()
     
     addFieldsensor(0x08);
     
-    OEBUS_Master_Start();
+    SENSORBUS_Master_Start();
+    
+    isr_RS485_StartEx(RX485);
     
     CyGlobalIntEnable;
     
@@ -174,10 +184,11 @@ int main()
         debugUart();
         #endif
 
+        
+        //We poll a single sensor, before we loop around, to be sure we don't spend to much time polling
         //Could be empty array if no sensors are added
         if (fieldsensors[polling_nr] != 0)
             pollFieldsensor(fieldsensors[polling_nr]);
-    
         if ( fieldsensors[++polling_nr] == 0 )
             polling_nr = 0;
         
