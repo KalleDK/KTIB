@@ -50,22 +50,58 @@ void debugUart() {
     char ch;
     char debug_msg[50];
     ch = UART_PC_GetChar();
+    volatile Fieldsensor* fs = 0;
     switch(ch)
     {
         case '?':
             UART_PC_PutString("Commands\r\n\r\n");
-            UART_PC_PutString("1 Change state to returnValues\r\n");
-            UART_PC_PutString("2 Change state to returnTypes\r\n");
-            UART_PC_PutString("s Show State\r\n");
-            UART_PC_PutString("v Show Values\r\n");
-            UART_PC_PutString("t Show Type\r\n");
-            UART_PC_PutString("l Load dummy values\r\n");
-            UART_PC_PutString("c Clear values\r\n");
+            UART_PC_PutString("0-9\tShow Fieldsensor 0-9\r\n");
             UART_PC_PutString("\r\n");
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+            fs = fieldsensors[ch - '0'];
+            if (fs != 0) {
+                UART_PC_PutString("Sensor\t\t0\r\n");
+                  
+                sprintf(debug_msg, "ID\t\t0x%02x\r\n", fs->id);
+                UART_PC_PutString(debug_msg);
+                     
+                sprintf(debug_msg, "Status:\t\t0x%02x (", fs->status);
+                UART_PC_PutString(debug_msg);
+                switch(fs->status)
+                {
+                    case I2C_OFFLINE:
+                        UART_PC_PutString("OFFLINE");
+                        break;
+                    case I2C_ONLINE:
+                        UART_PC_PutString("ONLINE");
+                        break;
+                    default:
+                        UART_PC_PutString("UNKNOWN");
+                        break;
+                }
+                UART_PC_PutString(")\r\n");
+                              
+                sprintf(debug_msg, "Type:\t\t0x%02x (", fs->type);
+                UART_PC_PutString(debug_msg);
+                UART_PC_PutString(fs_types_str(fs->type));
+                UART_PC_PutString(")\r\n");
+                       
+                sprintf(debug_msg, "Value High:\t%d\r\nValue Low:\t%d\r\nValue Total:\t%d,%d\r\n\r\n", fs->value_high, fs->value_low, fs->value_high, (fs->value_low>>7)*5);
+                UART_PC_PutString(debug_msg);
+            } else {
+                UART_PC_PutString("Sensor does not exists\r\n\r\n");
+            }
             break;
         default:
             break;
     }
+    
 }
 #endif
 
@@ -132,19 +168,20 @@ int main()
     
     CyGlobalIntEnable;
     
-    
     for(;;)
     {
+        #ifdef DEBUG
         debugUart();
-        //Could be empty
+        #endif
+
+        //Could be empty array if no sensors are added
         if (fieldsensors[polling_nr] != 0)
             pollFieldsensor(fieldsensors[polling_nr]);
     
-        CyDelay(50);
-        
-    
         if ( fieldsensors[++polling_nr] == 0 )
             polling_nr = 0;
+        
+        CyDelay(50);
     }
 }
 
