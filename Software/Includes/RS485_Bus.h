@@ -143,7 +143,7 @@ void verifyRS485Bus(volatile RS485Bus* bus) {
 			bus->status = RS_MSG_READY;
 		}
 			
-		 moveRS485BusPointer(bus, &bus->back);
+		moveRS485BusPointer(bus, &bus->back);
 	}
 }
 

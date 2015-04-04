@@ -212,27 +212,28 @@ void pollFieldsensor(volatile Fieldsensor* fs) {
     }
     SENSORBUS_Master_I2CMasterSendStop();
     
+	 
     if(status == SENSORBUS_Master_I2C_MSTR_NO_ERROR)
     {
         if (fs->type == unknown || fs->status == I2C_OFFLINE) {
             
             //Change slave to send type
             cmd = returnTypes;
-            SENSORBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            SENSORBUS_Master_I2CMasterWriteBuf(fs->id, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
             while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_WR_CMPLT));
             
             //Dummy read - Timing issue?
-            SENSORBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            SENSORBUS_Master_I2CMasterReadBuf(fs->id, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
             while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_RD_CMPLT));
             
             //Correct read
-            SENSORBUS_Master_I2CMasterReadBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            SENSORBUS_Master_I2CMasterReadBuf(fs->id, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
             while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_RD_CMPLT));
             fs->type = cmd;
             
             //Change slave back to sending values
             cmd = returnValues;
-            SENSORBUS_Master_I2CMasterWriteBuf(0x08, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
+            SENSORBUS_Master_I2CMasterWriteBuf(fs->id, &cmd, 1, SENSORBUS_Master_I2C_MODE_COMPLETE_XFER);
             while (!(SENSORBUS_Master_I2CMasterStatus() & SENSORBUS_Master_I2C_MSTAT_WR_CMPLT));
         }
         fs->status = I2C_ONLINE;
