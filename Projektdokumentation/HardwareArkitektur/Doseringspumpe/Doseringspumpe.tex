@@ -4,23 +4,31 @@
 Til styring af dosering fra karret, anvendes en 12V inline pumpe  med tilhørende MOSFET-styringskreds. 
 Doseringspumpen virker ved at der påtrykkes en DC-middelspænding i form af et PWM-signal, herved kan styrken reguleres ved at justere dutycycle på PWM-signalet.
 Den implementerede styringskreds ses på figur \ref{screenshot:Styringskreds} på side \pageref{screenshot:Styringskreds}, her forklares kredsløbet yderligere.
-I databladet er opgivet at pumpen benytter 12V, og trækker 3A, dette giver en beregnet afsat effekt på 36W, ses figur \ref{screenshot:pumpeEffekt} herunder:
+I databladet er opgivet at pumpen benytter 12V, og trækker 3A, dette giver en beregnet afsat effekt på 36W, se beregning herunder:
 
 \begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.4]{../Hardware/Doseringspumpe/Screenshots/UdregningAfAfsatEffektIdoseringspumpe}
-	\caption{Prime 3.0 beregning af afsat effekt i doseringspumpe}
-	\label{screenshot:pumpeEffekt}
+    \begin{align*}
+        I &= 3 A \\ 
+        V &= 12 V \\
+        P &= I*V \\ 
+        &= 36W
+    \end{align*}
+\label{eq:PumpeA}
+\caption{Beregning af effekt i doseringspumpen}
 \end{figure}
 
 Den reelle afsatte effekt er realiseret i laboratoriet til: XXXX W, hvilket fint stemmer overens med den beregnede værdi. 
 Derudover er den interne modstand beregnet til:
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.4]{../Hardware/Doseringspumpe/Screenshots/BeregningInternModstandDoseringspumpe}
-	\caption{Prime 3.0 Beregning af indre modstand}
-	\label{screenshot:pumpeModstand}
+\begin{figure}[!h]
+	\begin{align*}
+   		V &= 12 V \\ 
+        I &= 3 A \\
+        R &= \frac{V}{I} \\ 
+        &= 4 \Omega
+  	\end{align*}
+\label{eq:pumpeOhm}
+\caption{Beregning af indre modstand}
 \end{figure}
 
 Modstanden er ligeledes målt i laboratoriet til XXX $\Omega$, hvilket der stemmer fint overens med den beregnede værdi.
@@ -47,23 +55,41 @@ Ydermere kan det være interessant at se på hvor varm transistoren bliver under
 Følgende værdier hentet fra databladet: 
 
 \begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.5]{../Hardware/Doseringspumpe/Screenshots/DatabladTilUdregningMOSFET}
-	\caption{Værdier hentet fra datablad}
-	\label{screenshot:Values}
+	\begin{center}
+		\begin{tabular}{ l l }
+			 Drain to Source modstand:          & $R_{DS}=11 m\omega$ \\ 
+			 Strøm der trækkes af af relæet:    & $I = 3 A$ \\  
+			 Junction-to-Ambient modstand:      & $R_{\theta JA}=62 C/W$ \\   
+			 Max junction temp:                 & $Temp_{jun}=175 C$ \\
+			 Ambient temp:                      & $Temp_{amb}=25 C$ \\
+		\end{tabular}
+	\end{center}
+\caption{Værdier hentet fra datablad}
 \end{figure}
 
-\newpage
 Til beregningen benyttes formlen for afsat effekt: 
 
 \begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.5]{../Hardware/Doseringspumpe/Screenshots/UdregningAfsatEffektMOSFETkreds}
-	\caption{Beregning af afsat effekt i MOSFET}
-	\label{screenshot:afsatEffektMOSFET}
+	\begin{align*}
+		P_{afsat} &= R_{DS}*I^2 \\ 
+		&= 99 mW
+	\end{align*}
+\caption{Afsat effekt i MOSFET}
+\label{eq:afsatEffektMOSFET}
 \end{figure}
 
-Her ses det at under operation af pumpen afgiver transistoren 99 mW i varme. Ydermere noteres det, at den maksimale effekt der kan afsættes uden at der behøves heat-sink er 447.561mW, og da der kun afsættes 99mW ved operation, er der ingen grund til at implementerer en heat-sink.
+Her ses det at under operation af pumpen afgiver transistoren 99 mW i varme. Ydermere noteres det, at den maksimale effekt der kan afsættes uden at der behøves heat-sink er 447.561mW. 
+
+\begin{figure}[!h]
+		\begin{align*}
+			Temp_{max} &= \frac{(Temp_{jun}-Temp_{amb})}{R_{\theta JA}} \\ 
+			&= 447.561 mW
+		\end{align*}
+\label{eq:maxMOSFETeffekt}
+\caption{Max Temperatur uden heat-sink}
+\end{figure}
+
+Da der kun afsættes 99mW ved operation, er der ingen grund til at implementerer en heat-sink.
 
 \subsubsection{Design af styringskredsløb}
 På figur \ref{screenshot:Styringskreds}, ses MOSFET-styringskredsløb, PSoC`ens ”0” og ”1” er her simuleret ved en frekvensgenerator med tilpas lav frekvens.
