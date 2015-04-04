@@ -10,8 +10,8 @@
  * ========================================
 */
 #include <project.h>
-#define FS_STRINGS
-#include "../../AVS_Header.h"
+#include "../../Includes/Fieldsensor.h"
+#include "../../Includes/Sensor_Bus.h"
 
 //Til sprintf, som ikke burde skulle benyttes i release
 #ifdef DEBUG
