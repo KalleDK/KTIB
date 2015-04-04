@@ -1,4 +1,7 @@
-﻿//Fieldsensor types
+#ifndef FIELDSENSOR_H_
+#define FIELDSENSOR_H_
+
+//Fieldsensor types
 enum
 {
 	unknown = 0,
@@ -7,11 +10,12 @@ enum
 };
 
 #ifdef DEBUG
-#ifdef FS_STRINGS
 const char* fs_types_str(uint8 id)
 {
 		switch(id)
 		{
+			case unknown:
+				return "Unknown";
 			case jordsensor:
 				return "Jordsensor";
 			case tempsensor:
@@ -21,11 +25,5 @@ const char* fs_types_str(uint8 id)
 		}
 }
 #endif
-#endif
 
-//SensorØ <-> Fieldsensor
-enum
-{
-    returnValues  = 1,
-    returnTypes = 2,
-};
+#endif
