@@ -106,10 +106,9 @@ uint8 `$INSTANCE_NAME`_Write(uint8 addr, uint8 * str, uint8 len, uint8 blocking_
     } else {
         status = `$INSTANCE_NAME`_I2C_I2CMasterSendStart(addr, `$INSTANCE_NAME`_I2C_I2C_WRITE_XFER_MODE);
         if(status == `$INSTANCE_NAME`_I2C_I2C_MSTR_NO_ERROR) {
-            for(i = 0; i < len - 1; ++i) {
-                str[i] = `$INSTANCE_NAME`_I2C_I2CMasterWriteByte(`$INSTANCE_NAME`_I2C_I2C_ACK_DATA);
+            for(i = 0; i < len; ++i) {
+                `$INSTANCE_NAME`_I2C_I2CMasterWriteByte(str[i]);
             }
-            str[i] = `$INSTANCE_NAME`_I2C_I2CMasterWriteByte(`$INSTANCE_NAME`_I2C_I2C_NAK_DATA);
         }
         `$INSTANCE_NAME`_I2C_I2CMasterSendStop();
         `$INSTANCE_NAME`_I2C_EnableInt();
@@ -233,16 +232,20 @@ void `$INSTANCE_NAME`_RefreshData()
             break;
             
     }
+    /*
     #if `$INSTANCE_NAME`_DEBUG_UART
     `$INSTANCE_NAME`_DEBUG("Buffer reloaded\t[ 0x%02X ] [ 0x%02X ]\r\n", `$INSTANCE_NAME`_rdBuffer[0], `$INSTANCE_NAME`_rdBuffer[1]);
     #endif
+    */
 }
 
 void `$INSTANCE_NAME`_LoadValue(uint8 high, uint8 low)
 {
+    /*
     #if `$INSTANCE_NAME`_DEBUG_UART
     `$INSTANCE_NAME`_DEBUG("Values loaded\t[ 0x%02X ] [ 0x%02X ]\r\n", high, low);
     #endif
+    */
     `$INSTANCE_NAME`_value_high = high;
     `$INSTANCE_NAME`_value_low = low;
     `$INSTANCE_NAME`_RefreshData();
@@ -274,7 +277,7 @@ uint8 `$INSTANCE_NAME`_GetLow(uint8 buffer)
 void  `$INSTANCE_NAME`_SensorChangeMode(uint8 addr, uint8 mode)
 {
     `$INSTANCE_NAME`_ParseWrite();
-    `$INSTANCE_NAME`_Write(addr, &mode, 1, 1);
+    `$INSTANCE_NAME`_Write(addr, &mode, 1, 0);
     while (!`$INSTANCE_NAME`_ParseWrite());
 }
     
@@ -283,7 +286,7 @@ uint8  `$INSTANCE_NAME`_SensorPoll(uint8 addr, uint8 *values, uint8 *type)
     if(`$INSTANCE_NAME`_Read(addr, values, 2, 0)) {
         if (*type == `$INSTANCE_NAME`__UNKNOWN) {
             `$INSTANCE_NAME`_SensorChangeMode(addr, `$INSTANCE_NAME`_REQ_TYPE);
-            `$INSTANCE_NAME`_Read(addr, type, 1, 1);
+            `$INSTANCE_NAME`_Read(addr, type, 1, 0);
             `$INSTANCE_NAME`_SensorChangeMode(addr, `$INSTANCE_NAME`_REQ_VALUE);
         }
         return 1;
