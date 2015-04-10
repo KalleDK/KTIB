@@ -1,0 +1,56 @@
+Flow Sensor Noter: 
+
+This sensor sits in line with your water line and contains a pinwheel 
+sensor to measure how much liquid has moved through it. 
+There's an integrated magnetic hall effect sensor that outputs an 
+electrical pulse with every revolution. The hall effect sensor is 
+sealed from the water pipe and allows the sensor to stay safe and dry.
+The sensor comes with three wires: red (5-24VDC power), black (ground) 
+and yellow (Hall effect pulse output). By counting the pulses from the 
+output of the sensor, you can easily calculate water flow. 
+Each pulse is approximately 2.25 milliliters. Note this isn't a 
+precision sensor, and the pulse rate does vary a bit depending on the 
+flow rate, fluid pressure and sensor orientation. It will need careful 
+calibration if better than 10% precision is required. 
+However, its great for basic measurement tasks!
+
+
+The pulse signal is a simple square wave so its quite easy to log and 
+convert into liters per minute using the following formula.
+Pulse frequency (Hz) / 7.5 = flow rate in L/min.
+
+Model: 						YF-S201
+Sensor Type: 				Hall effect
+Working Voltage: 			5 to 18V DC (min tested working voltage 4.5V)
+Max current draw: 			15mA @ 5V
+Output Type: 				5V TTL
+Working Flow Rate: 			1 to 30 Liters/Minute
+Working Temperature range: 	-25 to +80℃
+Working Humidity Range: 	35%-80% RH
+Accuracy: 					±10%
+Maximum water pressure: 	2.0 MPa
+Output duty cycle: 			50% +-10%
+Output rise time: 			0.04us
+Output fall time: 			0.18us
+Flow rate pulse characteristics: Frequency (Hz) = 7.5 * Flow rate (L/min)
+Pulses per Liter: 			450
+Durability: 				minimum 300,000 cycles
+Cable length:				15cm
+1/2" nominal pipe connections, 0.78" outer diameter, 1/2" of thread
+Size: 						2.5" x 1.4" x 1.4"
+Connection details:
+
+Red wire: 		+5V
+Black wire: 	GND
+Yellow wire: 	PWM output.
+	
+Water flow sensor consists of a plastic valve body, 
+a water rotor, and a hall-effect sensor. 
+When water flows through the rotor, rotor rolls. 
+Its speed changes with different rate of flow. 
+The hall-effect sensor outputs the corresponding pulse signal. 
+
+
+
+Links: 
+http://www.hobbytronics.co.uk/yf-s201-water-flow-meter
