@@ -1,15 +1,13 @@
 #pragma once
-#include "Thread.h"
+#include "MessageThread.h"
 
 
 class Message;
 
 
-class KarBus : public Thread {
+class KarBus : public MessageThread {
 public:
-    void run();
+    KarBus::KarBus();
 private:
-    void dispatch(long event_id, Message* msg);
-    void parse(std::string line);
+    void dispatch(unsigned long event_id, Message* msg);
 };
-
