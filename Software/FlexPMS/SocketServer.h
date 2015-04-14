@@ -29,7 +29,6 @@ private:
     MessageThread* bridge_;
     std::map<int, SocketClient*> clients_;
     int sock_fd_;
-    socklen_t client_len_;
     
     void init();
     void handle_connection();
