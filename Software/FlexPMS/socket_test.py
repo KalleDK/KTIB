@@ -19,8 +19,8 @@ def send(st):
 send('MWSTATUS')
 
 while 1:
-    
     r = s.recv(1024)
     if r:
         print 'Recieving: %s' % r
+    send('')
         

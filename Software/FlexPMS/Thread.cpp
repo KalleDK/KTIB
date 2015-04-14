@@ -1,9 +1,8 @@
 #include <unistd.h>
 #include "Thread.h"
-#include "Message.h"
 
 
-Thread::Thread() {
+void Thread::start() {
     pthread_create(&thread_, NULL, Thread::run_thread, (void *) this);
 }
 
@@ -14,18 +13,17 @@ void* Thread::run_thread(void* arg) {
 }
 
 
+void Thread::stop() {
+    pthread_cancel(thread_);
+}
+
+
 void Thread::join() {
-    void *res_dummy;
+    void* res_dummy;
     pthread_join(thread_, &res_dummy);
 }
 
 
-void Thread::wait(unsigned int ms) {
+void Thread::sleep(unsigned int ms) {
     usleep(ms * 1000);
 }
-
-
-void Thread::send(unsigned long id, Message* msg) {
-    queue_.send(id, msg);
-}
-

@@ -10,21 +10,24 @@
 #include <netinet/in.h>
 
 #include "Thread.h"
-#include "SocketClient.h"
-#include "Message.h"
+#include "MessageThread.h"
 
 
 #define SOCK_HOST localhost
 #define SOCK_PORT 5555
 
 
+class SocketClient;
+
+
 class SocketServer : public Thread {
 public:
-    SocketServer(Thread* b) : bridge_(b) {};
+    SocketServer(MessageThread* b) : bridge_(b) {};
     void run();
+    void remove_client(int client_sock_fd);
 private:
-    Thread* bridge_;
-    std::map<unsigned int, Thread*> clients_;
+    MessageThread* bridge_;
+    std::map<int, SocketClient*> clients_;
     int sock_fd_;
     socklen_t client_len_;
     

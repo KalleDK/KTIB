@@ -26,5 +26,9 @@ enum {
     E_SET_VOLUMEN_LEVEL_REQ,
     E_SET_SOIL_HUMIDITY_LEVEL_REQ,
     E_GET_KAR_SENSOR_DATA_REQ,
+    
+    E_RECV_DATA,
+    E_SEND_DATA,
+    E_KILL,
 };
 

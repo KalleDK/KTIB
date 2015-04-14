@@ -7,73 +7,51 @@
 using namespace std;
 
 
-void SocketClient::run() {
-    running_ = true;
-    
-    // FIXME What if client closes connection unexpectedly?
-    
-    while(running_) {
-        // Handle data incoming from client
-        handle_incoming();
-        
-        // Handle sending data to client
-        handle_outgoing();
-        
-        wait(1);
+void SocketClient::dispatch(unsigned long event_id, Message* msg) {
+    switch(event_id) {
+        case E_KILL:
+            cout << "SocketClient recieved: E_KILL" << endl;
+            handle_kill();
+            break;
+        case E_SEND_DATA:
+            cout << "SocketClient recieved: E_SEND_DATA" << endl;
+            handle_send_data(msg);
+            break;
+        case E_RECV_DATA:
+            cout << "SocketClient recieved: E_RECV_DATA" << endl;
+            handle_recieve_data(msg);
+            break;
     }
-    cout << "KILLING CLIENT" << endl;
-    close(sock_fd_);
 }
 
 
-void SocketClient::handle_outgoing() {
-    int n;
-    long event_id;
-    string data;
-    
-    Message* msg = queue_.recieve_nowait(event_id);
-    
-    if (event_id != -1) {
-        data = msg->getData() + "\r\n";
-        n = write(sock_fd_, data.c_str(), data.length());
-        
-        if (n < 0) {
-            cout << "ERROR writing to socket" << endl;
-            running_ = false;
-        }
-    }
-    
-    if(msg != NULL)
-        delete msg;
+/* ------------------------------------------------------------------------- */
+/* -- EVENT HANDLERS ------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+
+void SocketClient::handle_kill() {
+    // FIXME How to implement?
 }
 
 
-void SocketClient::handle_incoming() {
-    string data;
-    char* buf = new char[SOCK_BUFFER_SIZE];
-    int n;
+void SocketClient::handle_send_data(Message* msg) {
+    string data = msg->getData() + "\r\n";
+    int n = write(sock_fd_, data.c_str(), data.length());
     
-    n = read(sock_fd_, buf, SOCK_BUFFER_SIZE-1);
-    
-    if (n > 0) {
-        data = string(buf, n);
-        parse_incoming_data(&data);
-    }
-    /*
-    else if(n < 0) {
-        cout << "ERROR reading from socket" << endl;
+    if(n < 0) {
+        // FIXME handle errors better
+        cout << "ERROR writing to socket" << endl;
         running_ = false;
     }
-    */
-    delete buf;
 }
 
 
-void SocketClient::parse_incoming_data(string* data) {
+void SocketClient::handle_recieve_data(Message* msg) {
     string line;
     size_t end_pos;
     
-    buffer_.append(*data);
+    buffer_.append(msg->getData());
     
     // FIXME What if the client never sends \r\n ?!?!?!
     
@@ -84,6 +62,11 @@ void SocketClient::parse_incoming_data(string* data) {
             parse_incoming_line(&line);
     }
 }
+
+
+/* ------------------------------------------------------------------------- */
+/* -- PARSE INCOMING DATA -------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 
 
 void SocketClient::parse_incoming_line(string* line) {
@@ -102,7 +85,7 @@ void SocketClient::parse_incoming_line(string* line) {
 }
 
 
-void SocketClient::handle_incoming_command(std::string cmd, std::string args) {
+void SocketClient::handle_incoming_command(string cmd, string args) {
     GuiMessage* msg = new GuiMessage(this, 5);
     
     if(cmd == "MWSTART") {
@@ -113,5 +96,33 @@ void SocketClient::handle_incoming_command(std::string cmd, std::string args) {
         bridge_->send(E_WATERING_STATUS, msg);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
+    }
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* -- SOCKET READER -------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+
+void SocketClient::SocketReader::run() {
+    int sock_fd = client_->getSockFD();
+    Message* msg;
+    string data;
+    char buf[SOCK_BUFFER_SIZE];
+    int n;
+    
+    while(1) {
+        n = read(sock_fd, buf, SOCK_BUFFER_SIZE-1);
+        
+        if (n > 0) {
+            msg = new Message();
+            msg->setData(string(buf, n));
+            client_->send(E_RECV_DATA, msg);
+        } else {
+            cout << "ERROR reading from socket" << endl;
+            client_->send(E_KILL);
+            break;
+        }
     }
 }

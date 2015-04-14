@@ -1,10 +1,10 @@
-#include <iostream>
 #include "KarBus.h"
 
 
-void KarBus::run() {
-    while(1) {
-        wait(1);
-    }
+KarBus::KarBus() {
+    
 }
 
+
+void KarBus::dispatch(unsigned long event_id, Message* msg) {
+}

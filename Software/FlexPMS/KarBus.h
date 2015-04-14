@@ -7,7 +7,7 @@ class Message;
 
 class KarBus : public MessageThread {
 public:
-    KarBus::KarBus();
+    KarBus();
 private:
     void dispatch(unsigned long event_id, Message* msg);
 };

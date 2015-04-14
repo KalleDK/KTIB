@@ -1,5 +1,6 @@
 #include <fcntl.h>
 #include "SocketServer.h"
+#include "SocketClient.h"
 
 
 using namespace std;
@@ -49,12 +50,12 @@ void SocketServer::handle_connection() {
         return;
     }
     
-    // Set socket non-blocking (read operations)
-    fcntl(client_sock_fd, F_SETFL, O_NONBLOCK);
-    
     // Spawn client thread
     client = new SocketClient(bridge_, client_sock_fd);
+    client->start();
     
-    // FIXME Client disappears from here on
+    // Add client to list of active (connected) clients
+    clients_[client_sock_fd] = client;
+    
+    // FIXME When does clients get removed?!
 }
-

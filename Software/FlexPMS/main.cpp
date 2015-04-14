@@ -24,24 +24,28 @@ sql::Connection* mysql_connect() {
     
     cout << "Connecting to database server" << endl;
     db_driver = get_driver_instance();
-    db_conn = db_driver->connect("tcp://localhost", "laerke", "stud");
+    db_conn = db_driver->connect("tcp://localhost", "jakob", "stud");
     
     cout << "Selecting database" << endl;
-    db_conn->setSchema("testdb");
+    db_conn->setSchema("flexpms");
     
     return db_conn;
 }
 
 
 void run(sql::Connection *db_conn) {
+    // Create threads
     cout << "Creating KarBus thread" << endl;
     KarBus kar_bus;
+    kar_bus.start();
     
-    cout << "Running main thread" << endl;
+    cout << "Running Bridge thread" << endl;
     Bridge bridge(db_conn, &kar_bus);
+    bridge.start();
     
     cout << "Creating SocketServer thread" << endl;
     SocketServer server(&bridge);
+    server.start();
     
     // Join threads
     kar_bus.join();
@@ -50,7 +54,7 @@ void run(sql::Connection *db_conn) {
 }
 
 
-int main() {
+int main(int argc, char** argv) {
     sql::Connection *db_conn = mysql_connect();
     run(db_conn);
 }

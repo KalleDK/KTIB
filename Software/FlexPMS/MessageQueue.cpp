@@ -25,29 +25,7 @@ void MessageQueue::send(unsigned long id, Message* msg) {
 }
 
 
-Message* MessageQueue::recieve_nowait(long& id) {
-    Message* msg = NULL;
-    pthread_mutex_lock(&mtx_);
-    
-    if (q_.size() > 0) {
-        Item* item = q_.front();
-        q_.pop();
-        
-        pthread_mutex_unlock(&mtx_);
-        
-        id = item->id;
-        msg = item->msg;
-        delete item;
-    } else {
-        pthread_mutex_unlock(&mtx_);
-        id = -1;
-    }
-    
-    return msg;
-}
-
-
-Message* MessageQueue::recieve(long& id) {
+Message* MessageQueue::recieve(unsigned long& id) {
     pthread_mutex_lock(&mtx_);
     
     while (q_.size() < 1)
@@ -64,4 +42,3 @@ Message* MessageQueue::recieve(long& id) {
     
     return msg;
 }
-

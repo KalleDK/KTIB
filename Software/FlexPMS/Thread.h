@@ -1,21 +1,16 @@
 #pragma once
 #include <pthread.h>
-#include "MessageQueue.h"
-
-
-class Message;
 
 
 class Thread {
 public:
-    Thread();
-    static void* run_thread(void* arg);
+    void start();
+    void stop();
     void join();
-    void wait(unsigned int ms);
     virtual void run() = 0;
-    void send(unsigned long id, Message* msg = NULL);
+private:
+    static void* run_thread(void* arg);
 protected:
+    void sleep(unsigned int ms);
     pthread_t thread_;
-    MessageQueue queue_;
 };
-
