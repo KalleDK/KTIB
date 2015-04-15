@@ -53,4 +53,12 @@ private:
     void handle_start_watering(std::string args);
     void handle_stop_watering(std::string args);
     void handle_get_watering_status(std::string args);
+    
+    void handle_ovalve_open(std::string args);
+    void handle_ovalve_close(std::string args);
+    void handle_ovalve_status(std::string args);
+    
+    void handle_ivalve_open(std::string args);
+    void handle_ivalve_close(std::string args);
+    void handle_ivalve_status(std::string args);
 };

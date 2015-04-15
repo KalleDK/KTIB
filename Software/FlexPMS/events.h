@@ -20,6 +20,14 @@ enum {
     E_IS_WATERING,
     E_IS_NOT_WATERING,
     
+    E_OVALVE_OPEN,
+    E_OVALVE_CLOSE,
+    E_OVALVE_STATUS,
+    
+    E_IVALVE_OPEN,
+    E_IVALVE_CLOSE,
+    E_IVALVE_STATUS,
+    
     E_PING_REQ,
     E_READY_REQ,
     E_SET_PH_LEVEL_REQ,

@@ -56,6 +56,32 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             handle_watering_status(msg);
             break;
         
+        case E_OVALVE_OPEN:
+            cout << "Bridge recieved: E_OVALVE_OPEN" << endl;
+            handle_ovalve_open(msg);
+            break;
+        case E_OVALVE_CLOSE:
+            cout << "Bridge recieved: E_OVALVE_CLOSE" << endl;
+            handle_ovalve_close(msg);
+            break;
+        case E_OVALVE_STATUS:
+            cout << "Bridge recieved: E_OVALVE_STATUS" << endl;
+            handle_ovalve_status(msg);
+            break;
+        
+        case E_IVALVE_OPEN:
+            cout << "Bridge recieved: E_IVALVE_OPEN" << endl;
+            handle_ivalve_open(msg);
+            break;
+        case E_IVALVE_CLOSE:
+            cout << "Bridge recieved: E_IVALVE_CLOSE" << endl;
+            handle_ivalve_close(msg);
+            break;
+        case E_IVALVE_STATUS:
+            cout << "Bridge recieved: E_IVALVE_STATUS" << endl;
+            handle_ivalve_status(msg);
+            break;
+        
         // -- OTHER EVENTS ----------------------------------------------- //
         
         case E_QUIT:
@@ -124,6 +150,9 @@ void Bridge::handle_get_kar_sensor_data_cnf(Message* msg) {
 }
 
 
+/* -- MANUAL WATERING ------------------------------------------------------ */
+
+
 void Bridge::handle_start_watering(Message* msg) {
     manual_watering_ = true;
 }
@@ -136,6 +165,50 @@ void Bridge::handle_stop_watering(Message* msg) {
 
 void Bridge::handle_watering_status(Message* msg) {
     string resp = (manual_watering_) ? "MWSTATUS 1" : "MWSTATUS 0";
+    
+    GuiMessage* response = new GuiMessage(this, 5);
+    response->setData(resp);
+    msg->sender->send(E_SEND_DATA, response);
+}
+
+
+/* -- OPEN VALVE ----------------------------------------------------------- */
+
+
+void Bridge::handle_ovalve_open(Message* msg) {
+    ovalve_open_ = true;
+}
+
+
+void Bridge::handle_ovalve_close(Message* msg) {
+    ovalve_open_ = false;
+}
+
+
+void Bridge::handle_ovalve_status(Message* msg) {
+    string resp = (ovalve_open_) ? "OVALVESTATUS 1" : "OVALVESTATUS 0";
+    
+    GuiMessage* response = new GuiMessage(this, 5);
+    response->setData(resp);
+    msg->sender->send(E_SEND_DATA, response);
+}
+
+
+/* -- CLOSE VALVE ---------------------------------------------------------- */
+
+
+void Bridge::handle_ivalve_open(Message* msg) {
+    ivalve_open_ = true;
+}
+
+
+void Bridge::handle_ivalve_close(Message* msg) {
+    ivalve_open_ = false;
+}
+
+
+void Bridge::handle_ivalve_status(Message* msg) {
+    string resp = (ivalve_open_) ? "IVALVESTATUS 1" : "IVALVESTATUS 0";
     
     GuiMessage* response = new GuiMessage(this, 5);
     response->setData(resp);

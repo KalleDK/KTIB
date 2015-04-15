@@ -105,10 +105,25 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
         handle_stop_watering(args);
     } else if(cmd == "MWSTATUS") {
         handle_get_watering_status(args);
+    } else if(cmd == "OVALVEOPEN") {
+        handle_ovalve_open(args);
+    } else if(cmd == "OVALVECLOSE") {
+        handle_ovalve_close(args);
+    } else if(cmd == "OVALVESTATUS") {
+        handle_ovalve_status(args);
+    } else if(cmd == "IVALVEOPEN") {
+        handle_ivalve_open(args);
+    } else if(cmd == "IVALVECLOSE") {
+        handle_ivalve_close(args);
+    } else if(cmd == "IVALVESTATUS") {
+        handle_ivalve_status(args);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }
 }
+
+
+/* -- MANUAL WATERING ------------------------------------------------------ */
 
 
 void SocketClient::handle_start_watering(string args) {
@@ -126,6 +141,48 @@ void SocketClient::handle_stop_watering(string args) {
 void SocketClient::handle_get_watering_status(string args) {
     GuiMessage* msg = new GuiMessage(this, 5);
     bridge_->send(E_WATERING_STATUS, msg);
+}
+
+
+/* -- OPEN VALVE ----------------------------------------------------------- */
+
+
+void SocketClient::handle_ovalve_open(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_OVALVE_OPEN, msg);
+}
+
+
+void SocketClient::handle_ovalve_close(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_OVALVE_CLOSE, msg);
+}
+
+
+void SocketClient::handle_ovalve_status(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_OVALVE_STATUS, msg);
+}
+
+
+/* -- CLOSE VALVE ---------------------------------------------------------- */
+
+
+void SocketClient::handle_ivalve_open(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_IVALVE_OPEN, msg);
+}
+
+
+void SocketClient::handle_ivalve_close(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_IVALVE_CLOSE, msg);
+}
+
+
+void SocketClient::handle_ivalve_status(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_IVALVE_STATUS, msg);
 }
 
 
