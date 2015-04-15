@@ -135,9 +135,9 @@ void Bridge::handle_stop_watering(Message* msg) {
 
 
 void Bridge::handle_watering_status(Message* msg) {
-    int resp = (manual_watering_) ? '1' : '0';
+    string resp = (manual_watering_) ? "MWSTATUS 1" : "MWSTATUS 0";
     
     GuiMessage* response = new GuiMessage(this, 5);
-    response->setData("MWSTATUS" + resp);
+    response->setData(resp);
     msg->sender->send(E_SEND_DATA, response);
 }
