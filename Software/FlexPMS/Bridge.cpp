@@ -125,21 +125,19 @@ void Bridge::handle_get_kar_sensor_data_cnf(Message* msg) {
 
 
 void Bridge::handle_start_watering(Message* msg) {
-    GuiMessage* response = new GuiMessage(this, 5);
-    response->setData("Vanding startet!");
-    msg->sender->send(E_SEND_DATA, response);
+    manual_watering_ = true;
 }
 
 
 void Bridge::handle_stop_watering(Message* msg) {
-    GuiMessage* response = new GuiMessage(this, 5);
-    response->setData("Vanding stoppet!");
-    msg->sender->send(E_SEND_DATA, response);
+    manual_watering_ = false;
 }
 
 
 void Bridge::handle_watering_status(Message* msg) {
+    int resp = (manual_watering_) ? '1' : '0';
+    
     GuiMessage* response = new GuiMessage(this, 5);
-    response->setData("Her er vanding status!");
+    response->setData("MWSTATUS" + resp);
     msg->sender->send(E_SEND_DATA, response);
 }

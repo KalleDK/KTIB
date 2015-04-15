@@ -16,11 +16,10 @@ s.connect(("localhost", port))
 def send(st):
     s.send('%s\r\n' % st)
 
-send('MWSTATUS')
 
 while 1:
+    send(raw_input('Tekst at sende: '))
     r = s.recv(1024)
     if r:
         print 'Recieving: %s' % r
-    send('')
         

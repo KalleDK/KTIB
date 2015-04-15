@@ -14,7 +14,7 @@
 
 
 #define SOCK_HOST localhost
-#define SOCK_PORT 5555
+#define SOCK_PORT 5556
 
 
 class SocketClient;

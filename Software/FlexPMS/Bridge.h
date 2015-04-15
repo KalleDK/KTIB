@@ -11,10 +11,13 @@ class Bridge : public MessageThread {
 public:
     Bridge(sql::Connection* db_conn, MessageThread* kar_bus) :
         kar_list_(db_conn),
-        kar_bus_(kar_bus) {};
+        kar_bus_(kar_bus),
+        manual_watering_(false) {};
 private:
     MessageThread* kar_bus_;
     KarContainer kar_list_;
+    
+    bool manual_watering_;
     
     void dispatch(unsigned long event_id, Message* msg);
     void ping_kars();

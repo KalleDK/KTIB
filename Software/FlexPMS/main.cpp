@@ -1,7 +1,5 @@
 #include <string>
 #include <iostream>
-#include <stdlib.h>
-#include <unistd.h>
 
 // MySQL++ connector library includes (mysqlcppconn)
 #include <cppconn/driver.h>
@@ -24,10 +22,10 @@ sql::Connection* mysql_connect() {
     
     cout << "Connecting to database server" << endl;
     db_driver = get_driver_instance();
-    db_conn = db_driver->connect("tcp://localhost", "jakob", "stud");
+    db_conn = db_driver->connect("tcp://localhost", "laerke", "stud");
     
     cout << "Selecting database" << endl;
-    db_conn->setSchema("flexpms");
+    db_conn->setSchema("testdb");
     
     return db_conn;
 }

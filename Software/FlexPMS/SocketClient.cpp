@@ -7,6 +7,15 @@
 using namespace std;
 
 
+void SocketClient::kill_client() {
+    running_ = false;
+    reader_.cancel();
+    close(sock_fd_);
+    cancel();
+    delete this;
+}
+
+
 void SocketClient::dispatch(unsigned long event_id, Message* msg) {
     switch(event_id) {
         case E_KILL:
@@ -31,7 +40,7 @@ void SocketClient::dispatch(unsigned long event_id, Message* msg) {
 
 
 void SocketClient::handle_kill() {
-    // FIXME How to implement?
+    kill_client();
 }
 
 
@@ -39,19 +48,25 @@ void SocketClient::handle_send_data(Message* msg) {
     string data = msg->getData() + "\r\n";
     int n = write(sock_fd_, data.c_str(), data.length());
     
-    if(n < 0) {
-        // FIXME handle errors better
-        cout << "ERROR writing to socket" << endl;
-        running_ = false;
-    }
+    if(n < 0)
+        kill_client();
 }
 
 
 void SocketClient::handle_recieve_data(Message* msg) {
+    buffer_.append(msg->getData());
+    parse_data_buffer();
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* -- PARSE INCOMING DATA -------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+
+void SocketClient::parse_data_buffer() {
     string line;
     size_t end_pos;
-    
-    buffer_.append(msg->getData());
     
     // FIXME What if the client never sends \r\n ?!?!?!
     
@@ -64,15 +79,13 @@ void SocketClient::handle_recieve_data(Message* msg) {
 }
 
 
-/* ------------------------------------------------------------------------- */
-/* -- PARSE INCOMING DATA -------------------------------------------------- */
-/* ------------------------------------------------------------------------- */
-
-
 void SocketClient::parse_incoming_line(string* line) {
     string cmd;
     string args;
     size_t pos = line->find(" ");
+    
+    // FIXME What if line starts with a space-character?
+    // Then cmd is empty and args are assigned the rest of the string.
     
     if(pos != string::npos) {
         cmd = line->substr(0, pos);
@@ -86,17 +99,33 @@ void SocketClient::parse_incoming_line(string* line) {
 
 
 void SocketClient::handle_incoming_command(string cmd, string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    
     if(cmd == "MWSTART") {
-        bridge_->send(E_START_WATERING, msg);
+        handle_start_watering(args);
     } else if(cmd == "MWSTOP") {
-        bridge_->send(E_STOP_WATERING, msg);
+        handle_stop_watering(args);
     } else if(cmd == "MWSTATUS") {
-        bridge_->send(E_WATERING_STATUS, msg);
+        handle_get_watering_status(args);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }
+}
+
+
+void SocketClient::handle_start_watering(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_START_WATERING, msg);
+}
+
+
+void SocketClient::handle_stop_watering(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_STOP_WATERING, msg);
+}
+
+
+void SocketClient::handle_get_watering_status(string args) {
+    GuiMessage* msg = new GuiMessage(this, 5);
+    bridge_->send(E_WATERING_STATUS, msg);
 }
 
 
