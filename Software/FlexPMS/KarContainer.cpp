@@ -56,7 +56,7 @@ void KarContainer::reload() {
     Kar* kar;
     
     while(res->next()) {
-        kar = new Kar;
+        kar = new Kar(db_conn_);
         kar->id = res->getInt("id");
         kar->name = res->getString("name");
         kar->address = res->getInt("address");
