@@ -2,24 +2,24 @@
 #include "Message.h"
 
 enum {
-	REQ_KAR_SENSOR_DATA
-	REQ_KAR_AKTUATOR_DATA
-	REQ_KAR_OE_SENSOR_DATA
-	REQ_KAR_OE_VENTIL
-	REQ_KAR_OE_SENSOR_TYPE
-	REQ_KAR_VENTIL
-	REQ_KAR_OE_LIST
-}
+	REQ_KAR_SENSOR_DATA,
+	REQ_KAR_AKTUATOR_DATA,
+	REQ_KAR_OE_SENSOR_DATA,
+	REQ_KAR_OE_VENTIL,
+	REQ_KAR_OE_SENSOR_TYPE,
+	REQ_KAR_VENTIL,
+	REQ_KAR_OE_LIST,
+};
 
 enum {
-	CNF_KAR_SENSOR_DATA
-	CNF_KAR_AKTUATOR_DATA
-	CNF_KAR_OE_SENSOR_DATA
-	CNF_KAR_OE_VENTIL
-	CNF_KAR_OE_SENSOR_TYPE
-	CNF_KAR_VENTIL
-	CNF_KAR_OE_LIST
-}
+	CNF_KAR_SENSOR_DATA,
+	CNF_KAR_AKTUATOR_DATA,
+	CNF_KAR_OE_SENSOR_DATA,
+	CNF_KAR_OE_VENTIL,
+	CNF_KAR_OE_SENSOR_TYPE,
+	CNF_KAR_VENTIL,
+	CNF_KAR_OE_LIST,
+};
 
 
 KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_("/dev/ttyO2",19200) {
@@ -28,15 +28,17 @@ KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_("/dev/tty
 
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
-	char address = msg->kar->address;
+	
+	KarBusMessage* kmsg = static_cast<KarBusMessage*>(msg);
+	char address = kmsg->kar->address;
 	unsigned int data_length;
 	char cmd;
 	unsigned long response_id;
-	char* message[BUFFER_SIZE];
+	const char* message;
 	
-	message = msg->getData(data_length);
+	message = kmsg->getData(data_length);
 	
-	switch event_id
+	switch(event_id)
 	{
 		case REQ_KAR_SENSOR_DATA:
 			cmd = 1;
@@ -69,19 +71,19 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 		default:
 			break;
 	}
-	constructMessage(message, cmd, address);
-	serialPort_.sendPacket(this->data_, len + 4);
+	constructMessage(message, cmd, address, data_length);
+	serialPort_.sendPacket(this->data_, data_length + 4);
 	
 	while(!serialPort_.getMessage(data_))
 		serialPort_.getPacket();
 	
-	KarMessage* response = new KarMessage(msg->kar);
+	KarBusMessage* response = new KarBusMessage(this, kmsg->kar);
 	response->setData((data_ + 4), data_[3]);
-	msg->sender->send(response_id, response);
+	kmsg->sender->send(response_id, response);
 }
 
 
-void KarBus::constructMessage(char* message, char cmd, char address, char len){
+void KarBus::constructMessage(const char* message, char cmd, char address, char len){
 	data_[0] = address;
 	data_[1] = masterAddr_;
 	data_[2] = len;
