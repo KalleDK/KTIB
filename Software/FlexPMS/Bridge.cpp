@@ -154,7 +154,13 @@ void Bridge::handle_get_kar_sensor_data_cnf(Message* msg) {
 
 
 void Bridge::handle_start_watering(Message* msg) {
+    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
+    kar_bus_->send(REQ_KAR_SENSOR_DATA, kmsg);
     manual_watering_ = true;
+    
+    GuiMessage* response = new GuiMessage(this, 5);
+    response->setData("Starter vanding");
+    msg->sender->send(E_SEND_DATA, response);
 }
 
 

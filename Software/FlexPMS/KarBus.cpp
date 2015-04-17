@@ -1,30 +1,11 @@
 #include "KarBus.h"
 #include "Message.h"
+#include "events.h"
 
 
 #define UART_FILE "/dev/ttyAMA0"
 #define UART_BAUD 19200
 
-
-enum {
-	REQ_KAR_SENSOR_DATA,
-	REQ_KAR_AKTUATOR_DATA,
-	REQ_KAR_OE_SENSOR_DATA,
-	REQ_KAR_OE_VENTIL,
-	REQ_KAR_OE_SENSOR_TYPE,
-	REQ_KAR_VENTIL,
-	REQ_KAR_OE_LIST,
-};
-
-enum {
-	CNF_KAR_SENSOR_DATA,
-	CNF_KAR_AKTUATOR_DATA,
-	CNF_KAR_OE_SENSOR_DATA,
-	CNF_KAR_OE_VENTIL,
-	CNF_KAR_OE_SENSOR_TYPE,
-	CNF_KAR_VENTIL,
-	CNF_KAR_OE_LIST,
-};
 
 
 KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_(UART_FILE, UART_BAUD) {
