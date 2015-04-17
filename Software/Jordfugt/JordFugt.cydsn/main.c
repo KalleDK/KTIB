@@ -15,7 +15,7 @@
 #define SIZE 2
 #define CHANNEL 0
 #define RESISTOR 10000
-#define VDD 5
+#define VDD 4.8
 
 int8 humidity[SIZE];
 
@@ -36,12 +36,12 @@ float32 getHumidity(){
     Rspd = -((Vout*RESISTOR)/(Vout-VDD));
     humidity = 113.47/pow(Rspd,0.26472);
   
-    if( (humidity >=0) && (humidity <=25)){
+    //if( (humidity >=0) && (humidity <=25)){
         return humidity;
-    }
-    else{
-        return 35.5;
-    }
+    //}
+    //else{
+      //  return 35.5;
+    //}
 }
 
 int main()
