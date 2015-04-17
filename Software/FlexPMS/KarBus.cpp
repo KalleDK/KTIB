@@ -11,12 +11,12 @@ using namespace std;
 
 
 KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_(UART_FILE, UART_BAUD) {
-	
+
 }
 
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
-	
+
 	KarBusMessage* kmsg = static_cast<KarBusMessage*>(msg);
 //	char address = kmsg->kar->address;
 	char address = 0x4;
@@ -24,9 +24,9 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	char cmd;
 	unsigned long response_id;
 	const char* message;
-	
+
 	message = kmsg->getData(data_length);
-	
+
 	switch(event_id)
 	{
 		case REQ_KAR_SENSOR_DATA:
@@ -61,12 +61,9 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 			break;
 	}
 	constructMessage(message, cmd, address, data_length);
-	data_[0] = 0x4;
-	data_[1] = 0x1;
-	data_[2] = 0;
-	data_[3] = 1;
+
 	serialPort_.sendPacket(this->data_, data_length + 4);
-	
+
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
 		cout << "getting packet " << i << endl;
 		serialPort_.getPacket();

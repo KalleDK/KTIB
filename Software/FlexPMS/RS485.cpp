@@ -91,7 +91,7 @@ int RS485::getChar(char &ch, bool &address)
 {
 	int readRetur;
 	bool parity = true;
-	address = false;
+	address = true;
 	readRetur = read(tty_fd_, &ch, 1);
 	if(ch == 0xFF){
 		readRetur = read(tty_fd_, &ch, 1);
@@ -104,7 +104,7 @@ int RS485::getChar(char &ch, bool &address)
 	#ifdef RS485DEBUG
 	cout << "Character: " << (unsigned int)ch << " " << "Bytes read: " << readRetur  << " \n";
 	#endif
-	return readRetur;	
+	return readRetur;
 }
 
 void RS485::getPacket()
@@ -176,17 +176,20 @@ void RS485::getPacket()
 }
 
 void RS485::sendPacket(char *packet, unsigned int len)
-{	
+{
+	#ifdef RS485DEBUG
+	cout << "Sending packet\n";
+	#endif
 	sendChar(packet[0], true);
 	for (int i=1; i<len; i++) {
 		sendChar(packet[i]);
 	}
 	tio_.c_cflag &= ~PARODD;
 	tcsetattr(tty_fd_, TCSADRAIN, &tio_);
-	if (tcflush(tty_fd_, TCIFLUSH) == 0)
-	{
-		cout << "I flushed the queue\n";
-	}
+//	if (tcflush(tty_fd_, TCIFLUSH) == 0)
+//	{
+//		cout << "I flushed the queue\n";
+//	}
 }
 
 bool RS485::getMessage(char* msg)
