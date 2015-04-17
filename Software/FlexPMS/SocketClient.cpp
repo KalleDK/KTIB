@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 #include "SocketClient.h"
 #include "events.h"
 
@@ -103,20 +104,14 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
         handle_start_watering(args);
     } else if(cmd == "MWSTOP") {
         handle_stop_watering(args);
-    } else if(cmd == "MWSTATUS") {
-        handle_get_watering_status(args);
     } else if(cmd == "OVALVEOPEN") {
         handle_ovalve_open(args);
     } else if(cmd == "OVALVECLOSE") {
         handle_ovalve_close(args);
-    } else if(cmd == "OVALVESTATUS") {
-        handle_ovalve_status(args);
     } else if(cmd == "IVALVEOPEN") {
         handle_ivalve_open(args);
     } else if(cmd == "IVALVECLOSE") {
         handle_ivalve_close(args);
-    } else if(cmd == "IVALVESTATUS") {
-        handle_ivalve_status(args);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }
@@ -127,62 +122,62 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
 
 
 void SocketClient::handle_start_watering(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_START_WATERING, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_START_WATERING, msg);
+    }
 }
 
 
 void SocketClient::handle_stop_watering(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_STOP_WATERING, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_STOP_WATERING, msg);
+    }
 }
 
 
-void SocketClient::handle_get_watering_status(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_WATERING_STATUS, msg);
-}
-
-
-/* -- OPEN VALVE ----------------------------------------------------------- */
+/* -- INTAKE VALVE --------------------------------------------------------- */
 
 
 void SocketClient::handle_ovalve_open(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_OVALVE_OPEN, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_OVALVE_OPEN, msg);
+    }
 }
 
 
 void SocketClient::handle_ovalve_close(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_OVALVE_CLOSE, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_OVALVE_CLOSE, msg);
+    }
 }
 
 
-void SocketClient::handle_ovalve_status(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_OVALVE_STATUS, msg);
-}
-
-
-/* -- CLOSE VALVE ---------------------------------------------------------- */
+/* -- OUTTAKE VALVE -------------------------------------------------------- */
 
 
 void SocketClient::handle_ivalve_open(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_IVALVE_OPEN, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_IVALVE_OPEN, msg);
+    }
 }
 
 
 void SocketClient::handle_ivalve_close(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_IVALVE_CLOSE, msg);
-}
-
-
-void SocketClient::handle_ivalve_status(string args) {
-    GuiMessage* msg = new GuiMessage(this, 5);
-    bridge_->send(E_IVALVE_STATUS, msg);
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_IVALVE_CLOSE, msg);
+    }
 }
 
 

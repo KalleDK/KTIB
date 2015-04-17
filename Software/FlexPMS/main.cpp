@@ -17,8 +17,8 @@ using namespace std;
 
 
 sql::Connection* mysql_connect() {
-    sql::Driver *db_driver;
-    sql::Connection *db_conn;
+    sql::Driver* db_driver;
+    sql::Connection* db_conn;
     
     cout << "Connecting to database server" << endl;
     db_driver = get_driver_instance();
