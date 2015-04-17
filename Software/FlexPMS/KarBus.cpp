@@ -1,7 +1,9 @@
+#include <iostream>
 #include "KarBus.h"
 #include "Message.h"
 #include "events.h"
 
+using namespace std;
 
 #define UART_FILE "/dev/ttyAMA0"
 #define UART_BAUD 19200
@@ -16,7 +18,8 @@ KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_(UART_FILE
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	
 	KarBusMessage* kmsg = static_cast<KarBusMessage*>(msg);
-	char address = kmsg->kar->address;
+//	char address = kmsg->kar->address;
+	char address = 0x4;
 	unsigned int data_length;
 	char cmd;
 	unsigned long response_id;
@@ -60,9 +63,13 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	constructMessage(message, cmd, address, data_length);
 	serialPort_.sendPacket(this->data_, data_length + 4);
 	
-	while(!serialPort_.getMessage(data_))
+	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
+		cout << "getting packet " << i << endl;
 		serialPort_.getPacket();
-	
+		sleep(1);
+	}
+	cout << "Msg done or timedout\n";
+
 	KarBusMessage* response = new KarBusMessage(this, kmsg->kar);
 	response->setData((data_ + 4), data_[3]);
 	kmsg->sender->send(response_id, response);
