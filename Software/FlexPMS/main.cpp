@@ -22,10 +22,10 @@ sql::Connection* mysql_connect() {
     
     cout << "Connecting to database server" << endl;
     db_driver = get_driver_instance();
-    db_conn = db_driver->connect("tcp://localhost", "laerke", "stud");
+    db_conn = db_driver->connect("tcp://localhost", "flexpms", "stud");
     
     cout << "Selecting database" << endl;
-    db_conn->setSchema("testdb");
+    db_conn->setSchema("flexpms");
     
     return db_conn;
 }

@@ -11,7 +11,8 @@
 #include <stdint.h>
 
 #define BUFFER_SIZE 50
-#define DEVKIT8000
+//#define DEVKIT8000
+
 
 enum {
 	MSG_POS_RX_ADDR = 0,

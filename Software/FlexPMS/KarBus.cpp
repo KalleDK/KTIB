@@ -1,6 +1,11 @@
 #include "KarBus.h"
 #include "Message.h"
 
+
+#define UART_FILE "/dev/ttyAMA0"
+#define UART_BAUD 19200
+
+
 enum {
 	REQ_KAR_SENSOR_DATA,
 	REQ_KAR_AKTUATOR_DATA,
@@ -22,7 +27,7 @@ enum {
 };
 
 
-KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_("/dev/ttyO2",19200) {
+KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_(UART_FILE, UART_BAUD) {
 	
 }
 
