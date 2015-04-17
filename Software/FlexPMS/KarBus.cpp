@@ -31,6 +31,7 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	char address = msg->kar->address;
 	unsigned int data_length;
 	char cmd;
+	unsigned long response_id;
 	char* message[BUFFER_SIZE];
 	
 	message = msg->getData(data_length);
@@ -39,24 +40,31 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	{
 		case REQ_KAR_SENSOR_DATA:
 			cmd = 1;
+			response_id = CNF_KAR_SENSOR_DATA;
 			break;
 		case REQ_KAR_AKTUATOR_DATA:
 			cmd = 3;
+			response_id = CNF_KAR_AKTUATOR_DATA;
 			break;
 		case REQ_KAR_OE_SENSOR_DATA:
 			cmd = 5;
+			response_id = CNF_KAR_OE_SENSOR_DATA;
 			break;
 		case REQ_KAR_OE_VENTIL:
 			cmd = 7;
+			response_id = CNF_KAR_OE_VENTIL;
 			break;
 		case REQ_KAR_OE_SENSOR_TYPE:
 			cmd = 9;
+			response_id = CNF_KAR_OE_SENSOR_TYPE;
 			break;
 		case REQ_KAR_VENTIL:
 			cmd = 11;
+			response_id = CNF_KAR_VENTIL;
 			break;
 		case REQ_KAR_OE_LIST:
 			cmd = 13;
+			response_id = CNF_KAR_OE_LIST;
 			break;
 		default:
 			break;
@@ -69,7 +77,7 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	
 	KarMessage* response = new KarMessage(msg->kar);
 	response->setData((data_ + 4), data_[3]);
-	msg->sender->send(response);
+	msg->sender->send(response_id, response);
 }
 
 
