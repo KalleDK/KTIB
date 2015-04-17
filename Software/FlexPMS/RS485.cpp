@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdint.h>
-#include "rs485.hpp"
+#include "RS485.h"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "MessageThread.h"
-#include "rs485.h"
+#include "RS485.h"
 
 #define BUFFER_SIZE 50
 
