@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdint.h>
 #include "RS485.h"
+#define RS485DEBUG
 
 using namespace std;
 
@@ -109,7 +110,7 @@ int RS485::getChar(char &ch, bool &address)
 void RS485::getPacket()
 {
 	char in = 0;
-	bool addr = false;
+	bool addr = true;
 
 	while(getChar(in, addr) > 0){
 		#ifdef RS485DEBUG

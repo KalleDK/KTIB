@@ -155,7 +155,7 @@ void Bridge::handle_get_kar_sensor_data_cnf(Message* msg) {
 
 void Bridge::handle_start_watering(Message* msg) {
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-    kmsg->setData("Hej lol");
+    kmsg->setData("");
     kar_bus_->send(REQ_KAR_SENSOR_DATA, kmsg);
     manual_watering_ = true;
     

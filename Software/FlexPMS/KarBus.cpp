@@ -61,6 +61,10 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 			break;
 	}
 	constructMessage(message, cmd, address, data_length);
+	data_[0] = 0x4;
+	data_[1] = 0x1;
+	data_[2] = 0;
+	data_[3] = 1;
 	serialPort_.sendPacket(this->data_, data_length + 4);
 	
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
@@ -72,7 +76,7 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 
 	KarBusMessage* response = new KarBusMessage(this, kmsg->kar);
 	response->setData((data_ + 4), data_[3]);
-	kmsg->sender->send(response_id, response);
+	kmsg->sender->send(1, response);
 }
 
 
