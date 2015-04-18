@@ -145,6 +145,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
     
     if(kar != NULL && !kar->get_mwstatus()) {
+	cout << "SENDER!" << endl;
         kar->set_mwstatus(true);
         
         KarBusMessage* kmsg = new KarBusMessage(this, NULL);

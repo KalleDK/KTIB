@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdint.h>
 #include "RS485.h"
-#define RS485DEBUG
+//#define RS485DEBUG
 
 using namespace std;
 

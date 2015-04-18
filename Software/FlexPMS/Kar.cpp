@@ -1,19 +1,22 @@
+#include <string>
 #include <sstream>
 #include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
 #include "Kar.h"
+
+using namespace std;
 
 
 void Kar::set_mwstatus(bool mwstatus) {
-    sql::Statement *stmt;
-    std::stringstream q;
-    int s;
-    
+    sql::PreparedStatement *pstmt;
+    std::string query;
+
     mwstatus_ = mwstatus;
-    s = (mwstatus) ? 1 : 0;
-    q << "UPDATE Kar SET mwstatus" << s << " WHERE id = " << id;
-    
-    stmt = db_conn_->createStatement();
-    stmt->executeQuery(q.str());
+    query = "UPDATE Kar SET mwstatus = ? WHERE id = ?";
+    pstmt = db_conn_->prepareStatement(query);
+    pstmt->setBoolean(1, mwstatus);
+    pstmt->setInt(2, id);
+    pstmt->executeUpdate();
 }
 
 
@@ -29,7 +32,7 @@ void Kar::set_ovalvestatus(bool ovalvestatus) {
     
     ovalvestatus_ = ovalvestatus;
     s = (ovalvestatus) ? 1 : 0;
-    q << "UPDATE Kar SET ovalvestatus" << s << " WHERE id = " << id;
+    q << "UPDATE Kar SET ovalvestatus = " << s << " WHERE id = " << id << ";";
     
     stmt = db_conn_->createStatement();
     stmt->executeQuery(q.str());
@@ -48,7 +51,7 @@ void Kar::set_ivalvestatus(bool ivalvestatus) {
     
     ivalvestatus_ = ivalvestatus;
     s = (ivalvestatus) ? 1 : 0;
-    q << "UPDATE Kar SET ivalvestatus" << s << " WHERE id = " << id;
+    q << "UPDATE Kar SET ivalvestatus = " << s << " WHERE id = " << id << ";";
     
     stmt = db_conn_->createStatement();
     stmt->executeQuery(q.str());
