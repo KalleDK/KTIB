@@ -16,6 +16,5 @@ protected:
     void disable_cancel();
     void ssleep(unsigned int sec);
     void msleep(unsigned int msec);
-    void usleep(unsigned int usec);
     pthread_t thread_;
 };

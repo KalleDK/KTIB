@@ -42,8 +42,3 @@ void Thread::ssleep(unsigned int sec) {
 void Thread::msleep(unsigned int msec) {
     usleep(msec * 1000);
 }
-
-
-void Thread::usleep(unsigned int usec) {
-    usleep(usec);
-}

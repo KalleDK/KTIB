@@ -77,7 +77,7 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
 		cout << "getting packet " << i << endl;
 		serialPort_.getPacket();
-		sleep(1);
+		msleep(1);
 	}
 	cout << "Msg done or timedout\n";
 
