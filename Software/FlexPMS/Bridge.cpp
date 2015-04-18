@@ -155,11 +155,6 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
 
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
-    Kar* kar = kar_list_.get(msg->kar_id);
-    
-    if(kar != NULL && kar->get_mwstatus()) {
-        kar->set_mwstatus(false);
-    }
 }
 
 
