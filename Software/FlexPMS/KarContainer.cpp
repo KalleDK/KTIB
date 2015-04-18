@@ -49,11 +49,10 @@ const unsigned int KarContainer::size() {
 void KarContainer::reload() {
     sql::Statement *stmt;
     sql::ResultSet *res;
+    Kar* kar;
     
     stmt = db_conn_->createStatement();
     res = stmt->executeQuery("SELECT * FROM Kar;");
-    
-    Kar* kar;
     
     while(res->next()) {
         kar = new Kar(db_conn_);
@@ -61,8 +60,11 @@ void KarContainer::reload() {
         kar->name = res->getString("name");
         kar->address = res->getInt("address");
         kar->ph = res->getInt("ph");
-        kar->volumen = res->getInt("id");
-        kar->humidity = res->getInt("id");
+        kar->volumen = res->getInt("volumen");
+        kar->humidity = res->getInt("humidity");
+        kar->mwstatus = res->getBoolean("mwstatus");
+        kar->ivalvestatus = res->getBoolean("ivalvestatus");
+        kar->ovalvestatus = res->getBoolean("ovalvestatus");
         map_[kar->id] = kar;
     }
     

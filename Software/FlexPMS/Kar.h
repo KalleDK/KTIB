@@ -18,29 +18,23 @@ public:
     double ph;
     unsigned int volumen;
     unsigned int humidity;
+    bool mwstatus;
+    bool ivalvestatus;
+    bool ovalvestatus;
     
     unsigned int unanswered_pings;
     time_t last_ping_sent;
     KarStatus status;
     
     Kar(sql::Connection* db_conn) : db_conn_(db_conn) {
-        mwstatus_ = false;
-        ivalvestatus_ = false;
-        ovalvestatus_ = false;
         unanswered_pings = 0;
         last_ping_sent = 0;
         status = OFFLINE;
     }
     
-    void set_mwstatus(bool mwstatus);
-    bool get_mwstatus();
-    void set_ovalvestatus(bool ovalvestatus);
-    bool get_ovalvestatus();
-    void set_ivalvestatus(bool ivalvestatus);
-    bool get_ivalvestatus();
+    void set_mwstatus(bool s);
+    void set_ovalvestatus(bool s);
+    void set_ivalvestatus(bool s);
 private:
     sql::Connection* db_conn_;
-    bool mwstatus_;
-    bool ivalvestatus_;
-    bool ovalvestatus_;
 };

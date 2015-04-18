@@ -144,7 +144,7 @@ void Bridge::handle_get_kar_sensor_data_cnf(KarBusMessage* msg) {
 void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
     
-    if(kar != NULL && !kar->get_mwstatus()) {
+    if(kar != NULL && !kar->mwstatus) {
 	cout << "SENDER!" << endl;
         kar->set_mwstatus(true);
         
@@ -166,28 +166,40 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
 /* -- INTAKE VALVE --------------------------------------------------------- */
 
 
-void Bridge::handle_ovalve_open(GuiMessage* msg) {
-    Kar* kar = kar_list_.get(msg->kar_id);
+void Bridge::handle_ivalve_open(GuiMessage* msg) {
+    char data[] = { 1, 1 };
     
-    if(kar != NULL) {
-        ovalve_open_ = true;
-    }
+    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data, 2);
+    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
 }
 
 
-void Bridge::handle_ovalve_close(GuiMessage* msg) {
-    ovalve_open_ = false;
+void Bridge::handle_ivalve_close(GuiMessage* msg) {
+    char data[] = { 1, 0 };
+    
+    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data, 2);
+    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
 }
 
 
 /* -- OUTTAKE VALVE -------------------------------------------------------- */
 
 
-void Bridge::handle_ivalve_open(GuiMessage* msg) {
-    ivalve_open_ = true;
+void Bridge::handle_ovalve_open(GuiMessage* msg) {
+    char data[] = { 2, 1 };
+    
+    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data, 2);
+    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
 }
 
 
-void Bridge::handle_ivalve_close(GuiMessage* msg) {
-    ivalve_open_ = false;
+void Bridge::handle_ovalve_close(GuiMessage* msg) {
+    char data[] = { 2, 0 };
+    
+    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data, 2);
+    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
 }
