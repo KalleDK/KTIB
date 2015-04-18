@@ -40,7 +40,7 @@ float32 getHumidity(){
         return humidity;
     //}
     //else{
-      //  return 35.5;
+    //    return 35.5;
     //}
 }
 
@@ -50,6 +50,8 @@ int main()
     Debug_Start();
     SensorBus_DebugInit(Debug_PutString);
     #endif
+    
+    uint8 measure_sleep = 0;
     
     SensorBus_Start();
     
@@ -66,7 +68,13 @@ int main()
         SensorBus_DebugChar(Debug_GetChar());
         #endif
        
-        SensorBus_LoadValue_Float32(getHumidity());
+        if (measure_sleep >= 100) {
+            SensorBus_LoadValue_Float32(getHumidity());
+            measure_sleep = 0;
+        } else {
+            CyDelay(1);
+            ++measure_sleep;
+        }
         SensorBus_Communicate();
         
     }

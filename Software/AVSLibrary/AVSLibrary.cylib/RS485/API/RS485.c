@@ -91,6 +91,7 @@ void `$INSTANCE_NAME`_Start()
     
     #if `$INSTANCE_NAME`_DEBUG_UART
     `$INSTANCE_NAME`_DEBUG("Initializing: Done\r\n\r\n");
+    `$INSTANCE_NAME`_DEBUG("\r\nPress 'h' for help\r\n");
     #endif
         
 }

@@ -61,6 +61,7 @@ void `$INSTANCE_NAME`_Start()
     #else
         `$INSTANCE_NAME`_DEBUG("\r\nSensoroe [ 0x%02X ] - Ready\r\n\r\n", `$INSTANCE_NAME`_GetAddress());
     #endif
+    `$INSTANCE_NAME`_DEBUG("Press h for help\r\n\r\n");
     #endif
 }
 
