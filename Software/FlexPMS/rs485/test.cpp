@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 	char pakke2[10] = "2HAAAT\r\n";
 	char retur[60];
 
-	sprintf(pakke, "%c%c%c%c", 0x4, 0x1, 0x0, 0x1);
+	sprintf(pakke, "%c%c%c%c", 0x2, 0x1, 0x0, 0x1);
 	char inBuf[10] = "a";
 	unsigned int i = 0;
 	unsigned int len = 0;

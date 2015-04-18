@@ -55,13 +55,14 @@ void KarContainer::reload() {
     res = stmt->executeQuery("SELECT * FROM Kar;");
     
     while(res->next()) {
+break;
         kar = new Kar(db_conn_);
         kar->id = res->getInt("id");
         kar->name = res->getString("name");
         kar->address = res->getInt("address");
         kar->ph = res->getDouble("ph");
-        kar->volumen = res->getInt("volumen");
-        kar->humidity = res->getInt("humidity");
+        kar->volumen = res->getUInt("volumen");
+        kar->humidity = res->getUInt("humidity");
         
         kar->mwstatus = res->getBoolean("mwstatus");
         kar->ivalvestatus = res->getBoolean("ivalvestatus");

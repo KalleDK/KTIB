@@ -143,10 +143,15 @@ void Bridge::handle_get_kar_sensor_data_cnf(KarBusMessage* msg) {
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+
+    //if(kar == NULL)
+//	cout << "KAR IS NULL!" < endl;
     
-    if(kar != NULL && !kar->mwstatus) {
+//    if(1 || kar != NULL && !kar->get_mwstatus()) {
+
+	if(1){
 	cout << "SENDER!" << endl;
-        kar->set_mwstatus(true);
+//        kar->set_mwstatus(true);
         
         KarBusMessage* kmsg = new KarBusMessage(this, NULL);
         kar_bus_->send(REQ_KAR_SENSOR_DATA, kmsg);

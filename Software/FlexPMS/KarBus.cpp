@@ -31,37 +31,43 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	{
 		case REQ_KAR_SENSOR_DATA:
 			cmd = 1;
-			response_id = CNF_KAR_SENSOR_DATA;
+			response_id = E_GET_KAR_SENSOR_DATA_CNF;
+			cout << "KarBus: E_REQ_KAR_SENSOR_DATA" << endl;
 			break;
 		case REQ_KAR_AKTUATOR_DATA:
 			cmd = 3;
 			response_id = CNF_KAR_AKTUATOR_DATA;
+			cout << "KarBus: E_REQ_KAR_AKTUATOR_DATA" << endl;
 			break;
 		case REQ_KAR_OE_SENSOR_DATA:
 			cmd = 5;
 			response_id = CNF_KAR_OE_SENSOR_DATA;
+			cout << "KarBus: E_REQ_KAR_OE_SENSOR_DATA" << endl;
 			break;
 		case REQ_KAR_OE_VENTIL:
 			cmd = 7;
 			response_id = CNF_KAR_OE_VENTIL;
+			cout << "KarBus: E_REQ_KAR_OE_VENTIL" << endl;
 			break;
 		case REQ_KAR_OE_SENSOR_TYPE:
 			cmd = 9;
 			response_id = CNF_KAR_OE_SENSOR_TYPE;
+			cout << "KarBus: E_REQ_KAR_OE_SENSOR_TYPE" << endl;
 			break;
 		case REQ_KAR_VENTIL:
 			cmd = 11;
 			response_id = CNF_KAR_VENTIL;
+			cout << "KarBus: E_REQ_KAR_VENTIL" << endl;
 			break;
 		case REQ_KAR_OE_LIST:
 			cmd = 13;
 			response_id = CNF_KAR_OE_LIST;
+			cout << "KarBus: E_REQ_KAR_OE_LIST" << endl;
 			break;
 		default:
 			break;
 	}
 	constructMessage(message, cmd, address, data_length);
-	data_[3] = 11;
 	serialPort_.sendPacket(this->data_, data_length + 4);
 
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
@@ -73,7 +79,7 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 
 	KarBusMessage* response = new KarBusMessage(this, kmsg->kar);
 	response->setData((data_ + 4), data_[3]);
-	kmsg->sender->send(1, response);
+	kmsg->sender->send(response_id, response);
 }
 
 
