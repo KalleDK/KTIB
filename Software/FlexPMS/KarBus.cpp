@@ -24,50 +24,54 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	char cmd;
 	unsigned long response_id;
 	const char* message;
-
+	
+	event_id = E_OE_GET_SENSOR_DATA;
 	message = kmsg->getData(data_length);
 
-	switch(event_id)
+	switch (event_id)
 	{
-		case REQ_KAR_SENSOR_DATA:
+		case E_KAR_GET_SENSOR_DATA:
 			cmd = 1;
-			response_id = E_GET_KAR_SENSOR_DATA_CNF;
+			response_id = E_KAR_SENSOR_DATA;
 			cout << "KarBus: E_REQ_KAR_SENSOR_DATA" << endl;
 			break;
-		case REQ_KAR_AKTUATOR_DATA:
+		case E_KAR_SET_PUMP_STATE:
 			cmd = 3;
-			response_id = CNF_KAR_AKTUATOR_DATA;
+			response_id = E_KAR_PUMP_STATE;
 			cout << "KarBus: E_REQ_KAR_AKTUATOR_DATA" << endl;
 			break;
-		case REQ_KAR_OE_SENSOR_DATA:
+		case E_OE_GET_SENSOR_DATA:
 			cmd = 5;
-			response_id = CNF_KAR_OE_SENSOR_DATA;
+			response_id = E_OE_SENSOR_DATA;
 			cout << "KarBus: E_REQ_KAR_OE_SENSOR_DATA" << endl;
 			break;
-		case REQ_KAR_OE_VENTIL:
+		case E_OE_SET_VALVE_STATE:
 			cmd = 7;
-			response_id = CNF_KAR_OE_VENTIL;
+			response_id = E_OE_VALVE_STATE;
 			cout << "KarBus: E_REQ_KAR_OE_VENTIL" << endl;
 			break;
-		case REQ_KAR_OE_SENSOR_TYPE:
+		case E_OE_GET_SENSOR_TYPE:
 			cmd = 9;
-			response_id = CNF_KAR_OE_SENSOR_TYPE;
+			response_id = E_OE_SENSOR_TYPE;
 			cout << "KarBus: E_REQ_KAR_OE_SENSOR_TYPE" << endl;
 			break;
-		case REQ_KAR_VENTIL:
+		case E_KAR_SET_VALVE_STATE:
 			cmd = 11;
-			response_id = CNF_KAR_VENTIL;
+			response_id = E_KAR_VALVE_STATE;
 			cout << "KarBus: E_REQ_KAR_VENTIL" << endl;
 			break;
-		case REQ_KAR_OE_LIST:
+		case E_KAR_GET_OE_LIST:
 			cmd = 13;
-			response_id = CNF_KAR_OE_LIST;
+			response_id = E_KAR_OE_LIST;
 			cout << "KarBus: E_REQ_KAR_OE_LIST" << endl;
 			break;
 		default:
 			break;
 	}
 	constructMessage(message, cmd, address, data_length);
+	data_[2] = 1;
+	data_[3] = 5;
+	data_[4] = 0x04;
 	serialPort_.sendPacket(this->data_, data_length + 4);
 
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {

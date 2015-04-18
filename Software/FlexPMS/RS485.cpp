@@ -29,7 +29,26 @@ RS485::~RS485()
 {
 	close(tty_fd_);	
 }
-
+/*
+RS485::initGPIO()
+{
+	int gpio_fd;
+	gpio_fd = open("/sys/class/gpio/export", O_WRONLY);
+	if(gpio_fd < 0)
+	{
+		cout << "Could not create gpio" << endl;
+	}
+	write(gpio_fd, "18", 2);
+	close(gpio_fd);
+	gpio_fd = open("/sys/class/gpio/gpio18/direction", O_WRONLY);
+	if(gpio_fd < 0)
+	{
+		cout << "Could not set gpio direction" << endl;
+	}
+	write(gpio_fd, "out", 3);
+	close(gpio_fd);
+}
+*/
 int RS485::set_interface_attribs(int speed)
 {
         memset(&tio_, 0, sizeof(tio_));
