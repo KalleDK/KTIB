@@ -71,10 +71,10 @@ void addSensoroe(uint8 addr) {
 
 void pollSensoroe()
 {
-        Debug_PutString("Polling\r\n");
+        //Debug_PutString("Polling\r\n");
         OEBUS_PutTxMessage(oer[polling_nr]->addr, 0, OEBUS_OE_REQ_FS_DATA);
         state = 1;
-        Debug_PutString("State 1");
+        //Debug_PutString("State 1");
         if (oer[++polling_nr] == 0)
             polling_nr = 0;
 }
@@ -90,7 +90,7 @@ void parseOEBUS()
     
     switch(msg.cmd) {
         case OEBUS_OE_RES_FS_DATA:
-            Debug_PutString("Got response\r\n");
+            //Debug_PutString("Got response\r\n");
             for ( i = 0; i < oer_connected; ++i) {
                 if (oer[i]->addr == msg.transmitter) {
                     //Not pretty as we overwrite and dont update
@@ -108,7 +108,7 @@ void parseOEBUS()
                 }
             }
             state = 0;
-            Debug_PutString("State 0");
+            //Debug_PutString("State 0");
             break;
         case OEBUS_OE_RES_VENTIL:
             Debug_PutString("Got response\r\n");
@@ -219,7 +219,7 @@ void debugUart() {
             
             break;
         case 'f':
-            
+            KARBUS_PutTxMessage(0x01, 0, 0);
             break;
         case '0':
         case '1':
