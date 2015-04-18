@@ -1,4 +1,5 @@
 #pragma once
+#include <unistd.h>
 #include <pthread.h>
 
 
@@ -13,6 +14,8 @@ private:
 protected:
     void enable_cancel();
     void disable_cancel();
-    void sleep(unsigned int ms);
+    void ssleep(unsigned int sec);
+    void msleep(unsigned int msec);
+    void usleep(unsigned int usec);
     pthread_t thread_;
 };

@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include "Thread.h"
 
 
@@ -35,6 +34,16 @@ void Thread::disable_cancel() {
 }
 
 
-void Thread::sleep(unsigned int ms) {
-    usleep(ms * 1000);
+void Thread::ssleep(unsigned int sec) {
+    sleep(sec);
+}
+
+
+void Thread::msleep(unsigned int msec) {
+    usleep(msec * 1000);
+}
+
+
+void Thread::usleep(unsigned int usec) {
+    usleep(usec);
 }

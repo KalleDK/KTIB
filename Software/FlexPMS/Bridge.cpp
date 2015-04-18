@@ -1,10 +1,8 @@
 #include <iostream>
 #include "Bridge.h"
-#include "Message.h"
-#include "events.h"
 
 
-#define PING_TIME 10
+#define PING_TIME_SEC 10
 #define PING_COUNT_TIMEOUT 2
 
 
@@ -14,31 +12,46 @@ using namespace std;
 void Bridge::dispatch(unsigned long event_id, Message* msg) {
     switch(event_id) {
         
-        // -- EVENTS FROM KarBus ----------------------------------------- //
+        // -- EVENTS FROM KarPinger ---------------------------------------- //
         
-        case E_READY_CNF:
-            cout << "Bridge recieved: E_READY_CNF" << endl;
-            handle_ready_cnf(static_cast<KarBusMessage*>(msg));
+        case E_PING:
+            cout << "Bridge recieved: E_PING" << endl;
+            handle_ping();
             break;
-        case E_PING_CNF:
-            cout << "Bridge recieved: E_PING_CNF" << endl;
-            handle_ready_cnf(static_cast<KarBusMessage*>(msg));
+        
+        // -- EVENTS FROM KarBus ------------------------------------------- //
+        
+        case E_KAR_READY_STATE:
+            cout << "Bridge recieved: E_KAR_READY_STATE" << endl;
+            handle_kar_ready_state(static_cast<KarBusMessage*>(msg));
             break;
-        case E_SET_PH_LEVEL_CNF:
-            cout << "Bridge recieved: E_SET_PH_LEVEL_CNF" << endl;
-            handle_set_ph_level_cnf(static_cast<KarBusMessage*>(msg));
+        case E_KAR_OE_LIST:
+            cout << "Bridge recieved: E_KAR_OE_LIST" << endl;
+            handle_kar_oe_list(static_cast<KarBusMessage*>(msg));
             break;
-        case E_SET_VOLUMEN_LEVEL_CNF:
-            cout << "Bridge recieved: E_SET_VOLUMEN_LEVEL_CNF" << endl;
-            handle_set_volumen_level_cnf(static_cast<KarBusMessage*>(msg));
+        case E_KAR_SENSOR_DATA:
+            cout << "Bridge recieved: E_KAR_SENSOR_DATA" << endl;
+            handle_kar_sensor_data(static_cast<KarBusMessage*>(msg));
             break;
-        case E_SET_SOIL_HUMIDITY_LEVEL_CNF:
-            cout << "Bridge recieved: E_SET_SOIL_HUMIDITY_LEVEL_CNF" << endl;
-            handle_set_soil_humidity_level_cnf(static_cast<KarBusMessage*>(msg));
+        case E_KAR_VALVE_STATE:
+            cout << "Bridge recieved: E_KAR_VALVE_STATE" << endl;
+            handle_kar_valve_state(static_cast<KarBusMessage*>(msg));
             break;
-        case E_GET_KAR_SENSOR_DATA_CNF:
-            cout << "Bridge recieved: E_GET_KAR_SENSOR_DATA_CNF" << endl;
-            handle_get_kar_sensor_data_cnf(static_cast<KarBusMessage*>(msg));
+        case E_KAR_PUMP_STATE:
+            cout << "Bridge recieved: E_KAR_PUMP_STATE" << endl;
+            handle_kar_pump_state(static_cast<KarBusMessage*>(msg));
+            break;
+        case E_OE_VALVE_STATE:
+            cout << "Bridge recieved: E_OE_VALVE_STATE" << endl;
+            handle_oe_valve_state(static_cast<KarBusMessage*>(msg));
+            break;
+        case E_OE_SENSOR_DATA:
+            cout << "Bridge recieved: E_OE_SENSOR_DATA" << endl;
+            handle_oe_sensor_data(static_cast<KarBusMessage*>(msg));
+            break;
+        case E_OE_SENSOR_TYPE:
+            cout << "Bridge recieved: E_OE_SENSOR_TYPE" << endl;
+            handle_oe_sensor_type(static_cast<KarBusMessage*>(msg));
             break;
         
         // -- EVENTS FROM Gui ---------------------------------------------- //
@@ -70,12 +83,8 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             handle_ivalve_close(static_cast<GuiMessage*>(msg));
             break;
         
-        // -- OTHER EVENTS ----------------------------------------------- //
+        // -- OTHER EVENTS ------------------------------------------------- //
         
-        //case E_QUIT:
-        //    cout << "Bridge recieved: E_QUIT" << endl;
-        //    running_ = false;
-        //    break;
         default:
             cout << "Bridge recieved: unknown command: " << event_id << endl;
             break;
@@ -83,7 +92,12 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
 }
 
 
-void Bridge::ping_kars() {
+/* ------------------------------------------------------------------------- */
+/* -- EVENTS FROM KarPinger ------------------------------------------------ */
+/* ------------------------------------------------------------------------- */
+
+
+void Bridge::handle_ping() {
     Kar* kar;
     KarBusMessage* msg;
     time_t now = time(NULL);
@@ -91,54 +105,69 @@ void Bridge::ping_kars() {
     kar_list_.iter();
     
     while(kar = kar_list_.next()) {
-        if(difftime(now, kar->last_ping_sent) >= PING_TIME) {
-            // Send PING command
-            msg = new KarBusMessage(this, kar);
-            msg->setData(to_string(0xA));
-            kar_bus_->send(E_PING_REQ, msg);
-            
-            // Register PING on Kar and handle unanswered PINGs
-            kar->last_ping_sent = now;
-            kar->unanswered_pings++;
-            if(kar->unanswered_pings > PING_COUNT_TIMEOUT) {
-                kar->status = OFFLINE;
-            }
+        // Send PING command
+        msg = new KarBusMessage(this, kar);
+        msg->setData(to_string(0xA));
+        //kar_bus_->send(E_PING_REQ, msg);
+        
+        // Register PING on Kar and handle unanswered PINGs
+        kar->last_ping_sent = now;
+        kar->unanswered_pings++;
+        if(kar->unanswered_pings > PING_COUNT_TIMEOUT) {
+            kar->status = OFFLINE;
         }
     }
 }
 
 
 /* ------------------------------------------------------------------------- */
-/* -- EVENT HANDLERS ------------------------------------------------------- */
+/* -- EVENTS FROM KarBus --------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
 
 
-void Bridge::handle_ready_cnf(KarBusMessage* msg) {
+void Bridge::handle_kar_ready_state(KarBusMessage* msg) {
     
 }
 
 
-void Bridge::handle_set_ph_level_cnf(KarBusMessage* msg) {
+void Bridge::handle_kar_oe_list(KarBusMessage* msg) {
     
 }
 
 
-void Bridge::handle_set_volumen_level_cnf(KarBusMessage* msg) {
+void Bridge::handle_kar_sensor_data(KarBusMessage* msg) {
     
 }
 
 
-void Bridge::handle_set_soil_humidity_level_cnf(KarBusMessage* msg) {
+void Bridge::handle_kar_valve_state(KarBusMessage* msg) {
     
 }
 
 
-void Bridge::handle_get_kar_sensor_data_cnf(KarBusMessage* msg) {
+void Bridge::handle_kar_pump_state(KarBusMessage* msg) {
     
 }
 
 
-/* -- MANUAL WATERING ------------------------------------------------------ */
+void Bridge::handle_oe_valve_state(KarBusMessage* msg) {
+    
+}
+
+
+void Bridge::handle_oe_sensor_data(KarBusMessage* msg) {
+    
+}
+
+
+void Bridge::handle_oe_sensor_type(KarBusMessage* msg) {
+    
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* -- EVENTS FROM Gui ------------------------------------------------------ */
+/* ------------------------------------------------------------------------- */
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
@@ -222,4 +251,17 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
     kmsg->setData(data, 2);
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* -- KAR PINGER ----------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+
+void Bridge::KarPinger::run() {
+    while(1) {
+        bridge_->send(E_PING);
+        ssleep(PING_TIME_SEC);
+    }
 }
