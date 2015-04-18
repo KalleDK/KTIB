@@ -142,24 +142,44 @@ void Bridge::handle_get_kar_sensor_data_cnf(KarBusMessage* msg) {
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
-    Kar* kar = kar_list_.get(msg->kar_id);
-
-    //if(kar == NULL)
-//	cout << "KAR IS NULL!" < endl;
+    KarBusMessage* kmsg;
     
-//    if(1 || kar != NULL && !kar->get_mwstatus()) {
-
-	if(1){
-	cout << "SENDER!" << endl;
-//        kar->set_mwstatus(true);
-        
-        KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-        kar_bus_->send(REQ_KAR_SENSOR_DATA, kmsg);
-    }
+    // FOR EACH OE - SET VALVE STATE (open)
+    char data1[] = { 0x04, 1 };
+    
+    kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data1, 2);
+    kar_bus_->send(E_OE_SET_VALVE_STATE, kmsg);
+    
+    
+    // SET PUMP STATE ON KAR
+    char state = 1; // 0-3
+    char data2[] = { state };
+    
+    kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data2, 1);
+    kar_bus_->send(E_KAR_SET_PUMP_STATE, kmsg);
 }
 
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
+    KarBusMessage* kmsg;
+    
+    // FOR EACH OE - SET VALVE STATE (open)
+    char data1[] = { 0x04, 0 };
+    
+    kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data1, 2);
+    kar_bus_->send(E_OE_SET_VALVE_STATE, kmsg);
+    
+    
+    // SET PUMP STATE ON KAR
+    char state = 0; // 0-3
+    char data2[] = { state };
+    
+    kmsg = new KarBusMessage(this, NULL);
+    kmsg->setData(data2, 1);
+    kar_bus_->send(E_KAR_SET_PUMP_STATE, kmsg);
 }
 
 
@@ -171,7 +191,7 @@ void Bridge::handle_ivalve_open(GuiMessage* msg) {
     
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
     kmsg->setData(data, 2);
-    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
+    kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
 
@@ -180,7 +200,7 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
     
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
     kmsg->setData(data, 2);
-    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
+    kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
 
@@ -192,7 +212,7 @@ void Bridge::handle_ovalve_open(GuiMessage* msg) {
     
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
     kmsg->setData(data, 2);
-    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
+    kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
 
@@ -201,5 +221,5 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
     
     KarBusMessage* kmsg = new KarBusMessage(this, NULL);
     kmsg->setData(data, 2);
-    kar_bus_->send(REQ_KAR_VENTIL, kmsg);
+    kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
