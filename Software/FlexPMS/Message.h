@@ -267,7 +267,7 @@ public:
         return data_;
     }
 };
-E_OE_GET_SENSOR_DATA
+
 
 class MKarValveState : public KarBusMessage {
 public:
