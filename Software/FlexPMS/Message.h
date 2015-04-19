@@ -59,6 +59,7 @@ class MKarReady : public KarBusMessage {
 
 class MKarReadyState : public KarBusMessage {
 public:
+    MKarReadyState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     bool is_ready;
 };
 
@@ -115,6 +116,7 @@ public:
 
 class MKarPumpState : public KarBusMessage {
 public:
+    MKarPumpState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum PumpState { OFF = 0, SLOW = 1, MIDDLE = 2, FAST = 3 };
     PumpState state;
 };
@@ -179,6 +181,7 @@ public:
 
 class MOeValveState : public KarBusMessage {
 public:
+    MOeValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveType { INTAKE = 1, OUTTAKE = 2 };
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
@@ -264,7 +267,7 @@ public:
         return data_;
     }
 };
-
+E_OE_GET_SENSOR_DATA
 
 class MKarValveState : public KarBusMessage {
 public:
