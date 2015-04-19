@@ -12,7 +12,7 @@ if(!$k->loadFromDB($id)){
 }
 
 $k->ph = $_POST['ph'];
-$k->volume = $_POST['volume'];
+$k->volumen = $_POST['volumen'];
 $k->humidity = $_POST['humidity'];
 
 $k->save();

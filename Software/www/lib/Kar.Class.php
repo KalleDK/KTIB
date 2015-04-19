@@ -9,7 +9,7 @@ class Kar
     public $name;
     public $address;
     public $ph;
-    public $volume;
+    public $volumen;
     public $humidity;
     public $MWSTATUS;
 	public $IVALVESTATUS;
@@ -29,7 +29,7 @@ class Kar
 			$this->name = $row['name'];
 			$this->address = $row['address'];
 			$this->ph = $row['ph'];
-			$this->volume = $row['volume'];
+			$this->volumen= $row['volumen'];
 			$this->humidity = $row['humidity'];
 			$this->MWSTATUS = $row['MWSTATUS'];
 			$this->IVALVESTATUS = $row['IVALVESTATUS'];
@@ -43,10 +43,10 @@ class Kar
     public function save()
     {
 		if($this->created){
-			$sql = "UPDATE Kar SET name = '".$this->name."', address = '".$this->address."', ph = '".$this->ph."', volume = '".$this->volume."', humidity = '".$this->humidity."', MWSTATUS = '".$this->MWSTATUS."', IVALVESTATUS = '".$this->IVALVESTATUS."', OVALVESTATUS = '".$this->OVALVESTATUS."' WHERE id = ".$this->id;
+			$sql = "UPDATE Kar SET name = '".$this->name."', address = '".$this->address."', ph = '".$this->ph."', volumen = '".$this->volumen."', humidity = '".$this->humidity."', MWSTATUS = '".$this->MWSTATUS."', IVALVESTATUS = '".$this->IVALVESTATUS."', OVALVESTATUS = '".$this->OVALVESTATUS."' WHERE id = ".$this->id;
 			echo $sql;	
 		} else {
-			$sql = "INSERT INTO Kar(name, address, ph, volume, humidity, MWSTATUS, IVALVESTATUS, OVALVESTATUS) VALUES ('".$this->name."','".$this->address."','".$this->pH."','".$this->volume."', '".$this->humidity."', '".$this->MWSTATUS."', '".$this->IVALVESTATUS."', '".$this->OVALVESTATUS."')";
+			$sql = "INSERT INTO Kar(name, address, ph, volumen, humidity, MWSTATUS, IVALVESTATUS, OVALVESTATUS) VALUES ('".$this->name."','".$this->address."','".$this->pH."','".$this->volumen."', '".$this->humidity."', '".$this->MWSTATUS."', '".$this->IVALVESTATUS."', '".$this->OVALVESTATUS."')";
 			$this->created = TRUE;
 			echo $sql;
 		}
