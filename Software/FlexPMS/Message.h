@@ -64,7 +64,7 @@ class MKarSensorData : public KarBusMessage {};
 
 class MKarSetValveState : public KarBusMessage {
 public:
-    using KarBusMessage::KarBusMessage;
+    MKarSetValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveType { INTAKE = 1, OUTTAKE = 2 };
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveType valve;
@@ -84,6 +84,7 @@ public:
 
 class MKarValveState : public KarBusMessage {
 public:
+    MKarValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveType { INTAKE = 1, OUTTAKE = 2 };
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveType valve;
@@ -93,6 +94,7 @@ public:
 
 class MKarSetPumpState : public KarBusMessage {
 public:
+    MKarSetPumpState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum PumpState { OFF = 0, SLOW = 1, MIDDLE = 2, FAST = 3 };
     PumpState state;
     
