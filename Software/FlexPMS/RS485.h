@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 #define BUFFER_SIZE 50
-#define RS485DEBUG
+//#define RS485DEBUG
 //#define DEVKIT8000
 
 
@@ -52,13 +52,16 @@ class RS485
 		bool getMessage(char* msg);
 		void initBuffer();
 		int set_interface_attribs(int baud);
-		
+
 	private:
+		void initGPIO();
+		void txEnable(bool state);
 		void sendChar(char ch, bool address = false);
 		int getChar(char &ch, bool &address);
 		bool parityCheck(char &ch, bool parity = false);
 		struct termios tio_;
 		int tty_fd_;
+		int gpio_fd_;
 		rawMsg buffer_array[1];
 		rawMsg* readInBuf;
 };

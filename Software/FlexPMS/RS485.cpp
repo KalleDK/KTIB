@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdint.h>
 #include "RS485.h"
-//#define RS485DEBUG
+
 
 using namespace std;
 
@@ -23,32 +23,51 @@ RS485::RS485(char* port_path, int baud)
 	#endif
 	readInBuf = buffer_array;
 	initBuffer();
+	initGPIO();
 }
 
 RS485::~RS485()
 {
-	close(tty_fd_);	
+	close(tty_fd_);
+	close(gpio_fd_);
+	gpio_fd_ =  open("/sys/class/gpio/unexport", O_WRONLY);
+	write(gpio_fd_, "18", 2);
+	close(gpio_fd_);
 }
-/*
-RS485::initGPIO()
+
+void RS485::initGPIO()
 {
-	int gpio_fd;
-	gpio_fd = open("/sys/class/gpio/export", O_WRONLY);
-	if(gpio_fd < 0)
+	gpio_fd_ = open("/sys/class/gpio/export", O_WRONLY);
+	if(gpio_fd_ < 0)
 	{
 		cout << "Could not create gpio" << endl;
 	}
-	write(gpio_fd, "18", 2);
-	close(gpio_fd);
-	gpio_fd = open("/sys/class/gpio/gpio18/direction", O_WRONLY);
-	if(gpio_fd < 0)
+	write(gpio_fd_, "18", 2);
+	close(gpio_fd_);
+	gpio_fd_ = open("/sys/class/gpio/gpio18/direction", O_WRONLY);
+	if(gpio_fd_ < 0)
 	{
 		cout << "Could not set gpio direction" << endl;
 	}
-	write(gpio_fd, "out", 3);
-	close(gpio_fd);
+	write(gpio_fd_, "out", 3);
+	gpio_fd_ = open("/sys/class/gpio/gpio18/value", O_WRONLY);
+	if(gpio_fd_ < 0)
+	{
+		cout << "could not open gpio for changing state" << endl;
+	}
 }
-*/
+
+void RS485::txEnable(bool state)
+{
+	char setDirection;
+	setDirection = (state ? '0' : '1');
+	cout << "state: "  << state << "\n";
+	if(!write(gpio_fd_, &setDirection, 1))
+	{
+		cout << "I did not write to the GPIO" << endl;
+	}
+}
+
 int RS485::set_interface_attribs(int speed)
 {
         memset(&tio_, 0, sizeof(tio_));
@@ -199,10 +218,15 @@ void RS485::sendPacket(char *packet, unsigned int len)
 	#ifdef RS485DEBUG
 	cout << "Sending packet\n";
 	#endif
+	txEnable(true);
 	sendChar(packet[0], true);
 	for (int i=1; i<len; i++) {
 		sendChar(packet[i]);
 	}
+	#ifdef RS485DEBUG
+	cout << "Done sending\n";
+	#endif
+	txEnable(false);
 	tio_.c_cflag &= ~PARODD;
 	tcsetattr(tty_fd_, TCSADRAIN, &tio_);
 //	if (tcflush(tty_fd_, TCIFLUSH) == 0)

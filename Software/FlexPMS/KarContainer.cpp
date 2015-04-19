@@ -60,7 +60,7 @@ void KarContainer::reload() {
         kar->name = res->getString("name");
         kar->address = res->getInt("address");
         kar->ph = res->getDouble("ph");
-        kar->volumen = res->getUInt("volume");
+        kar->volumen = res->getUInt("volumen");
         kar->humidity = res->getUInt("humidity");
         
         kar->mwstatus = res->getBoolean("mwstatus");

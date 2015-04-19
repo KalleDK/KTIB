@@ -45,8 +45,9 @@ protected:
 
 
 class MKarReady : public KarBusMessage {
+public:
     MKarReady(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    
+
     const char* getData(unsigned int& length) {
         data_ = new char[2];
         data_[0] = 0;
@@ -181,7 +182,7 @@ public:
 
 class MOeValveState : public KarBusMessage {
 public:
-    MOeValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
+	MOeValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveType { INTAKE = 1, OUTTAKE = 2 };
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
