@@ -18,7 +18,7 @@ public:
         pinger_(this) {
             pinger_.start();
         };
-        
+
 private:
     
     class KarPinger : public Thread {
@@ -41,14 +41,14 @@ private:
     void handle_ping();
     
     // Eventhandlers for messages from KarBus
-    void handle_kar_ready_state(KarBusMessage* msg);
-    void handle_kar_oe_list(KarBusMessage* msg);
-    void handle_kar_sensor_data(KarBusMessage* msg);
-    void handle_kar_valve_state(KarBusMessage* msg);
-    void handle_kar_pump_state(KarBusMessage* msg);
-    void handle_oe_valve_state(KarBusMessage* msg);
-    void handle_oe_sensor_data(KarBusMessage* msg);
-    void handle_oe_sensor_type(KarBusMessage* msg);
+    void handle_kar_ready_state(MKarReadyState* msg);
+    void handle_kar_oe_list(MKarOeList* msg);
+    void handle_kar_sensor_data(MKarSensorData* msg);
+    void handle_kar_valve_state(MKarValveState* msg);
+    void handle_kar_pump_state(MKarPumpState* msg);
+    void handle_oe_valve_state(MOeValveState* msg);
+    void handle_oe_sensor_data(MOeSensorData* msg);
+    void handle_oe_sensor_type(MOeSensorType* msg);
     
     // Eventhandlers for messages from Gui
     void handle_start_watering(GuiMessage* msg);

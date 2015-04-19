@@ -1,5 +1,4 @@
 #include "MessageThread.h"
-#include "Message.h"
 
 
 void MessageThread::run() {

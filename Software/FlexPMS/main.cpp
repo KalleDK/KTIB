@@ -33,7 +33,7 @@ sql::Connection* mysql_connect() {
 
 void run(sql::Connection *db_conn) {
     // Create threads
-    cout << "Creating KarBus thread" << endl;
+    cout << "Running KarBus thread" << endl;
     KarBus kar_bus;
     kar_bus.start();
     
@@ -41,7 +41,7 @@ void run(sql::Connection *db_conn) {
     Bridge bridge(db_conn, &kar_bus);
     bridge.start();
     
-    cout << "Creating SocketServer thread" << endl;
+    cout << "Running SocketServer thread" << endl;
     SocketServer server(&bridge);
     server.start();
     
