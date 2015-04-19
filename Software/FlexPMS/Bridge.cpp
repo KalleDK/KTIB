@@ -172,30 +172,48 @@ void Bridge::handle_oe_sensor_type(MOeSensorType* msg) {
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     // FOR EACH OE - SET VALVE STATE (open)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, NULL);
+    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
     vmsg->oe_id = 4;
     vmsg->state = MOeSetValveState::OPEN;
     kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
     
     // SET PUMP STATE ON KAR
-    MKarSetPumpState* pmsg = new MKarSetPumpState(this, NULL);
+    MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
     pmsg->state = MKarSetPumpState::MIDDLE;
     kar_bus_->send(E_KAR_SET_PUMP_STATE, pmsg);
+    
+    kar->set_mwstatus(true);
 }
 
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     // FOR EACH OE - SET VALVE STATE (closed)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, NULL);
+    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
     vmsg->oe_id = 4;
     vmsg->state = MOeSetValveState::CLOSED;
     kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
     
     // SET PUMP STATE ON KAR
-    MKarSetPumpState* pmsg = new MKarSetPumpState(this, NULL);
+    MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
     pmsg->state = MKarSetPumpState::OFF;
     kar_bus_->send(E_KAR_SET_PUMP_STATE, pmsg);
+    
+    kar->set_mwstatus(false);
 }
 
 
@@ -203,18 +221,36 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
 
 
 void Bridge::handle_ivalve_open(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ivalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
+    
+    kar->set_ivalvestatus(true);
 }
 
 
 void Bridge::handle_ivalve_close(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ivalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
+    
+    kar->set_ivalvestatus(false);
 }
 
 
@@ -222,18 +258,36 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
 
 
 void Bridge::handle_ovalve_open(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
+    
+    kar->set_ovalvestatus(true);
 }
 
 
 void Bridge::handle_ovalve_close(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
     MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
+    
+    kar->set_ovalvestatus(false);
 }
 
 

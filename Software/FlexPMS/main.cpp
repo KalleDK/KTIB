@@ -11,6 +11,7 @@
 #include "Bridge.h"
 #include "KarBus.h"
 #include "SocketServer.h"
+#include "Message.h"
 
 
 using namespace std;

@@ -16,19 +16,8 @@ void Kar::set_mwstatus(bool s) {
     pstmt->setBoolean(1, s);
     pstmt->setInt(2, id);
     pstmt->executeUpdate();
-}
-
-
-void Kar::set_ovalvestatus(bool s) {
-    sql::PreparedStatement *pstmt;
-    std::string query;
-
-    ovalvestatus = s;
-    query = "UPDATE Kar SET ovalvestatus = ? WHERE id = ?";
-    pstmt = db_conn_->prepareStatement(query);
-    pstmt->setBoolean(1, s);
-    pstmt->setInt(2, id);
-    pstmt->executeUpdate();
+    
+    delete pstmt;
 }
 
 
@@ -42,4 +31,21 @@ void Kar::set_ivalvestatus(bool s) {
     pstmt->setBoolean(1, s);
     pstmt->setInt(2, id);
     pstmt->executeUpdate();
+    
+    delete pstmt;
+}
+
+
+void Kar::set_ovalvestatus(bool s) {
+    sql::PreparedStatement *pstmt;
+    std::string query;
+
+    ovalvestatus = s;
+    query = "UPDATE Kar SET ovalvestatus = ? WHERE id = ?";
+    pstmt = db_conn_->prepareStatement(query);
+    pstmt->setBoolean(1, s);
+    pstmt->setInt(2, id);
+    pstmt->executeUpdate();
+    
+    delete pstmt;
 }

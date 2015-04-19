@@ -33,8 +33,8 @@ public:
     }
     
     void set_mwstatus(bool s);
-    void set_ovalvestatus(bool s);
     void set_ivalvestatus(bool s);
+    void set_ovalvestatus(bool s);
 private:
     sql::Connection* db_conn_;
 };
