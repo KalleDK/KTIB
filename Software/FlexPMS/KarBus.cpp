@@ -5,15 +5,6 @@
 
 using namespace std;
 
-#define UART_FILE "/dev/ttyAMA0"
-#define UART_BAUD 19200
-
-
-
-KarBus::KarBus(char masterAddr)	: masterAddr_(masterAddr), serialPort_(UART_FILE, UART_BAUD) {
-
-}
-
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
 

@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "SocketClient.h"
+#include "Message.h"
 #include "events.h"
 
 
@@ -104,14 +105,14 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
         handle_start_watering(args);
     } else if(cmd == "MWSTOP") {
         handle_stop_watering(args);
-    } else if(cmd == "OVALVEOPEN") {
-        handle_ovalve_open(args);
-    } else if(cmd == "OVALVECLOSE") {
-        handle_ovalve_close(args);
     } else if(cmd == "IVALVEOPEN") {
         handle_ivalve_open(args);
     } else if(cmd == "IVALVECLOSE") {
         handle_ivalve_close(args);
+    } else if(cmd == "OVALVEOPEN") {
+        handle_ovalve_open(args);
+    } else if(cmd == "OVALVECLOSE") {
+        handle_ovalve_close(args);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }
@@ -126,6 +127,8 @@ void SocketClient::handle_start_watering(string args) {
     if(kar_id != 0) {
         GuiMessage* msg = new GuiMessage(this, kar_id);
         bridge_->send(E_START_WATERING, msg);
+    } else {
+        cout << "SocketClient ignoring MWSTART. Invalid KarID given: " << args << endl;
     }
 }
 
@@ -135,6 +138,8 @@ void SocketClient::handle_stop_watering(string args) {
     if(kar_id != 0) {
         GuiMessage* msg = new GuiMessage(this, kar_id);
         bridge_->send(E_STOP_WATERING, msg);
+    } else {
+        cout << "SocketClient ignoring MWSTOP. Invalid KarID given: " << args << endl;
     }
 }
 
@@ -142,32 +147,13 @@ void SocketClient::handle_stop_watering(string args) {
 /* -- INTAKE VALVE --------------------------------------------------------- */
 
 
-void SocketClient::handle_ovalve_open(string args) {
-    int kar_id = atoi(args.c_str());
-    if(kar_id != 0) {
-        GuiMessage* msg = new GuiMessage(this, kar_id);
-        bridge_->send(E_OVALVE_OPEN, msg);
-    }
-}
-
-
-void SocketClient::handle_ovalve_close(string args) {
-    int kar_id = atoi(args.c_str());
-    if(kar_id != 0) {
-        GuiMessage* msg = new GuiMessage(this, kar_id);
-        bridge_->send(E_OVALVE_CLOSE, msg);
-    }
-}
-
-
-/* -- OUTTAKE VALVE -------------------------------------------------------- */
-
-
 void SocketClient::handle_ivalve_open(string args) {
     int kar_id = atoi(args.c_str());
     if(kar_id != 0) {
         GuiMessage* msg = new GuiMessage(this, kar_id);
         bridge_->send(E_IVALVE_OPEN, msg);
+    } else {
+        cout << "SocketClient ignoring IVALVEOPEN. Invalid KarID given: " << args << endl;
     }
 }
 
@@ -177,6 +163,33 @@ void SocketClient::handle_ivalve_close(string args) {
     if(kar_id != 0) {
         GuiMessage* msg = new GuiMessage(this, kar_id);
         bridge_->send(E_IVALVE_CLOSE, msg);
+    } else {
+        cout << "SocketClient ignoring IVALVECLOSE. Invalid KarID given: " << args << endl;
+    }
+}
+
+
+/* -- OUTTAKE VALVE -------------------------------------------------------- */
+
+
+void SocketClient::handle_ovalve_open(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_OVALVE_OPEN, msg);
+    } else {
+        cout << "SocketClient ignoring OVALVEOPEN. Invalid KarID given: " << args << endl;
+    }
+}
+
+
+void SocketClient::handle_ovalve_close(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this, kar_id);
+        bridge_->send(E_OVALVE_CLOSE, msg);
+    } else {
+        cout << "SocketClient ignoring OVALVECLOSE. Invalid KarID given: " << args << endl;
     }
 }
 
@@ -201,7 +214,7 @@ void SocketClient::SocketReader::run() {
             msg->setData(string(buf, n));
             client_->send(E_RECV_DATA, msg);
         } else {
-            cout << "ERROR reading from socket" << endl;
+            cout << "SocketClient: ERROR reading from socket, closing connection" << endl;
             client_->send(E_KILL);
             break;
         }

@@ -23,11 +23,93 @@ private:
 };
 
 
+/* ------------------------------------------------------------------------- */
+/* -- KarBus MESSAGES ------------------------------------------------------ */
+/* ------------------------------------------------------------------------- */
+
+
 class KarBusMessage : public Message {
 public:
     KarBusMessage(MessageThread* s, Kar* k) : kar(k), Message(s) {};
     Kar* kar;
+protected:
+    char* data_;
 };
+
+
+class MKarReady : public KarBusMessage {};
+
+
+class MKarReadyState : public KarBusMessage {
+public:
+    bool is_ready;
+};
+
+
+class MKarGetOeList : public KarBusMessage {};
+
+
+class MKarOeList : public KarBusMessage {
+    
+};
+
+
+class MKarGetSensorData : public KarBusMessage {
+    
+};
+
+
+class MKarSensorData : public KarBusMessage {};
+
+
+class MKarSetValveState : public KarBusMessage {
+public:
+    using KarBusMessage::KarBusMessage;
+    enum ValveType { INTAKE = 1, OUTTAKE = 2 };
+    enum ValveState { CLOSED = 0, OPEN = 1 };
+    ValveType valve;
+    ValveState state;
+    
+    const char* getData(unsigned int& length) {
+        data_ = new char[4];
+        data_[0] = 2;
+        data_[1] = 0x07;
+        data_[2] = valve;
+        data_[3] = state;
+        length = 4;
+        return data_;
+    }
+};
+
+
+class MKarValveState : public KarBusMessage {
+public:
+    enum ValveType { INTAKE = 1, OUTTAKE = 2 };
+    enum ValveState { CLOSED = 0, OPEN = 1 };
+    ValveType valve;
+    ValveState state;
+};
+
+
+class MKarSetPumpState : public KarBusMessage {
+public:
+    enum PumpState { OFF = 0, SLOW = 1, MIDDLE = 2, FAST = 3 };
+    PumpState state;
+    
+    const char* getData(unsigned int& length) {
+        data_ = new char[3];
+        data_[0] = 1;
+        data_[1] = 0x03;
+        data_[2] = state;
+        length = 3;
+        return data_;
+    }
+};
+
+
+/* ------------------------------------------------------------------------- */
+/* -- Gui MESSAGES --------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 
 
 class GuiMessage : public Message {

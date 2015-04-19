@@ -6,10 +6,10 @@ EXE=FlexPMS
 CXXFLAGS=-I.
 
 $(EXE):$(DEPS) $(OBJECTS)
-	$(CXX) -Wall -g $(CXXFLAGS) -o $@ $(OBJECTS) -lpthread -lmysqlcppconn
+	$(CXX) -Wall -g -std=gnu++11 $(CXXFLAGS) -o $@ $(OBJECTS) -lpthread -lmysqlcppconn
 
 %.d:%.cpp
-	$(CXX) -Wall -g -MT$(@:.d=.o) -MM $(CXXFLAGS) $^ > $@
+	$(CXX) -Wall -g -std=gnu++11 -MT$(@:.d=.o) -MM $(CXXFLAGS) $^ > $@
 
 clean:
 	rm $(OBJECTS) $(EXE) *.d *.o

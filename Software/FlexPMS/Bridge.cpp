@@ -171,6 +171,12 @@ void Bridge::handle_oe_sensor_type(KarBusMessage* msg) {
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    if(kar == NULL) {
+        cout << "handle_start_watering() got unknown KarID" << msg->kar_id << endl;
+        return;
+    }
+    
     KarBusMessage* kmsg;
     
     // FOR EACH OE - SET VALVE STATE (open)
@@ -216,19 +222,17 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
 
 
 void Bridge::handle_ivalve_open(GuiMessage* msg) {
-    char data[] = { 1, 1 };
-    
-    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-    kmsg->setData(data, 2);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    kmsg->valve = MKarSetValveState::INTAKE;
+    kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
 
 void Bridge::handle_ivalve_close(GuiMessage* msg) {
-    char data[] = { 1, 0 };
-    
-    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-    kmsg->setData(data, 2);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    kmsg->valve = MKarSetValveState::INTAKE;
+    kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
@@ -237,19 +241,17 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
 
 
 void Bridge::handle_ovalve_open(GuiMessage* msg) {
-    char data[] = { 2, 1 };
-    
-    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-    kmsg->setData(data, 2);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    kmsg->valve = MKarSetValveState::OUTTAKE;
+    kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
 
 void Bridge::handle_ovalve_close(GuiMessage* msg) {
-    char data[] = { 2, 0 };
-    
-    KarBusMessage* kmsg = new KarBusMessage(this, NULL);
-    kmsg->setData(data, 2);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    kmsg->valve = MKarSetValveState::OUTTAKE;
+    kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
 }
 
