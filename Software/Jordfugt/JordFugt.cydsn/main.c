@@ -11,6 +11,9 @@
 #include <project.h>
 #include <math.h>
 
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_debug.c"
+
 // Til udregning af fugtigheden 
 #define SIZE 2
 #define CHANNEL 0
@@ -35,7 +38,7 @@ float32 getHumidity(){
     MOSFET_Write(0);
     Rspd = -((Vout*RESISTOR)/(Vout-VDD));
     humidity = 113.47/pow(Rspd,0.26472);
-  
+    
     //if( (humidity >=0) && (humidity <=25)){
         return humidity;
     //}
@@ -46,14 +49,18 @@ float32 getHumidity(){
 
 int main()
 {    //Starting components
-    #if SensorBus_DEBUG_UART
-    Debug_Start();
-    SensorBus_DebugInit(Debug_PutString);
+    
+    #if defined(DEBUG_UART)
+        Clock_Start();
+        Debug_Start();
+        #if SB_DEBUG_UART
+            Debug_AddComponent(SB_DebugHandle);
+        #endif
     #endif
     
     uint8 measure_sleep = 0;
     
-    SensorBus_Start();
+    SB_Start();
     
     ADC_SAR_Seq_1_Start(); 
     ADC_SAR_Seq_1_StartConvert();
@@ -64,18 +71,18 @@ int main()
     for(;;)
     {
         
-        #if SensorBus_DEBUG_UART
-        SensorBus_DebugChar(Debug_GetChar());
+        #if defined(DEBUG_UART)
+        Debug_Communicate();
         #endif
        
         if (measure_sleep >= 100) {
-            SensorBus_LoadValue_Float32(getHumidity());
+            SB_LoadValue_Float32(getHumidity());
             measure_sleep = 0;
         } else {
             CyDelay(1);
             ++measure_sleep;
         }
-        SensorBus_Communicate();
+        SB_Communicate();
         
     }
  

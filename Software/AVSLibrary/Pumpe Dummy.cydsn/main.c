@@ -11,27 +11,29 @@
 */
 #include <project.h>
 
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_debug.c"
+
+
 int main()
 {
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+    #if defined(DEBUG_UART)
+        Clock_Start();
+        Debug_Start();
+        #if Pumpe_DEBUG_UART
+            Debug_AddComponent(Pumpe_DebugHandle);
+        #endif
+    #endif
     Pumpe_Start();
     /* CyGlobalIntEnable; */ /* Uncomment this line to enable global interrupts. */
     for(;;)
     {
-        //Full speed for 2 sec
-        Pumpe_SetSpeed(25);
-        Pumpe_Run();
-        CyDelay(1000);
         
-        Pumpe_SetSpeed(50);
-        Pumpe_Run();
-        CyDelay(1000);
+        #if defined(DEBUG_UART)
+        Debug_Communicate();
+        #endif    
         
-        Pumpe_SetSpeed(99);
-        Pumpe_Run();
-        CyDelay(1000);
         
-        /* Place your application code here. */
     }
 }
 

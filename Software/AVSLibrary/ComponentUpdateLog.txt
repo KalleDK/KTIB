@@ -1,0 +1,20 @@
+Last Modified Date & Time: 04/24/2015 10:57:35
+
+AVSLibrary: ADC_DelSig_v3_10
+	Bypass_P32 [v2.0] to [v2.10]
+	Bypass_P03 [v2.0] to [v2.10]
+
+AVSLibrary: ADC_DelSig_v3_10
+	Bypass_P32 [v2.0] to [v2.10]
+	Bypass_P03 [v2.0] to [v2.10]
+
+
+Last Modified Date & Time: 04/25/2015 22:21:27
+
+AVSLibrary: DebugUart
+	UART [v2.30] to [v2.40]
+
+AVSLibrary: Doseringspumpe
+	PWM [v3.10] to [v3.20]
+
+

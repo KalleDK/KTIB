@@ -3,20 +3,27 @@
 <!--This file is machine generated and read. It is not intended to be edited by hand.-->
 <!--Due to this, there is no schema for this file.-->
 <CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspc" version="5" xml_contents_version="3" name="AVSLibrary" persistent="" platform="NOT_USED">
-<current_project name=".\Fieldsensor Tester.cydsn\Fieldsensor Tester.cyprj" />
+<current_project name=".\SensorBus Dummy.cydsn\SensorBus Dummy.cyprj" />
 <wrkspc_folders />
 <files />
 <projects>
 <v>.\AVSLibrary.cylib\AVSLibrary.cyprj</v>
-<v>.\Demo01.cydsn\Demo01.cyprj</v>
 <v>.\Fieldsensor Dummy.cydsn\Fieldsensor Dummy.cyprj</v>
 <v>.\Fieldsensor Tester.cydsn\Fieldsensor Tester.cyprj</v>
+<v>.\Pumpe Dummy.cydsn\Pumpe Dummy.cyprj</v>
+<v>.\Debug Tester.cydsn\Debug Tester.cyprj</v>
+<v>.\SensorBus Dummy.cydsn\SensorBus Dummy.cyprj</v>
+<v>.\RS485 Dummy.cydsn\RS485 Dummy.cyprj</v>
 </projects>
 <workspace_id v="f0186140-c9b4-4cf5-87d3-4f416eee95ca" />
-<WriteAppVersionLastSavedWith v="3.1.0.1570" />
-<WriteAppMarketingVersionLastSavedWith v="3.1 Component Pack 1" />
+<WriteAppVersionLastSavedWith v="3.1.0.2177" />
+<WriteAppMarketingVersionLastSavedWith v="3.1 SP2" />
 <CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjDependencyList" version="4">
-<wrkspc_dependencies />
+<wrkspc_dependencies>
+<wrkspc_dependency project="Debug Tester.cydsn\Debug Tester.cyprj" dependency=".\AVSLibrary.cylib\AVSLibrary.cyprj" />
+<wrkspc_dependency project="SensorBus Dummy.cydsn\SensorBus Dummy.cyprj" dependency=".\AVSLibrary.cylib\AVSLibrary.cyprj" />
+<wrkspc_dependency project="RS485 Dummy.cydsn\RS485 Dummy.cyprj" dependency=".\AVSLibrary.cylib\AVSLibrary.cyprj" />
+</wrkspc_dependencies>
 </CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316>
 <CyGuid_63b68103-67f5-4406-8da6-5c8625765b82 type_name="CyDesigner.Common.ProjMgmt.Model.CyIgnoredSystemDepsList" version="1">
 <wrkspc_dependencies />

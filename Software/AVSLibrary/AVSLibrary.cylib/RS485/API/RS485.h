@@ -14,49 +14,19 @@
 #if !defined(`$INSTANCE_NAME`_H_)
 #define `$INSTANCE_NAME`_H_
 
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_enums.h"
+    
+    
 #define `$INSTANCE_NAME`_DEBUG_UART                 (`$RS485_DEBUG`)
     
 #include <cytypes.h>
-    
-#if `$INSTANCE_NAME`_DEBUG_UART
-#include <stdio.h>
-#endif
+
 /***************************************
 *       Type Definitions
 ***************************************/
 
 #define `$INSTANCE_NAME`_MSG_BUFFER_SIZE            (`$RS485_MSG_SIZE`)
-
-enum {
-    `$INSTANCE_NAME`_FS_OFFLINE = 0,
-    `$INSTANCE_NAME`_FS_ONLINE = 1,
-};
-
-enum {
-	`$INSTANCE_NAME`_OE_REQ_NONE = 0,
-	`$INSTANCE_NAME`_OE_REQ_FS_DATA,
-	`$INSTANCE_NAME`_OE_RES_FS_DATA,
-	`$INSTANCE_NAME`_OE_REQ_VENTIL,
-	`$INSTANCE_NAME`_OE_RES_VENTIL,
-};
-
-enum {
-	`$INSTANCE_NAME`_REQ_KAR_NONE = 0,
-    `$INSTANCE_NAME`_REQ_KAR_SENSOR_DATA,
-	`$INSTANCE_NAME`_RES_KAR_SENSOR_DATA,
-    `$INSTANCE_NAME`_REQ_KAR_AKTUATOR_DATA,
-	`$INSTANCE_NAME`_RES_KAR_AKTUATOR_DATA,
-    `$INSTANCE_NAME`_REQ_KAR_OE_SENSOR_DATA,
-    `$INSTANCE_NAME`_RES_KAR_OE_SENSOR_DATA,
-	`$INSTANCE_NAME`_REQ_KAR_OE_VENTIL,
-    `$INSTANCE_NAME`_RES_KAR_OE_VENTIL,
-    `$INSTANCE_NAME`_REQ_KAR_OE_SENSOR_TYPE,
-    `$INSTANCE_NAME`_RES_KAR_OE_SENSOR_TYPE,
-    `$INSTANCE_NAME`_REQ_KAR_VENTIL,
-    `$INSTANCE_NAME`_RES_KAR_VENTIL,
-    `$INSTANCE_NAME`_REQ_KAR_OE_LIST,
-    `$INSTANCE_NAME`_RES_KAR_OE_LIST,
-};
 
 enum {
     `$INSTANCE_NAME`_MSG_RECEIVER_POS = 0,
@@ -107,8 +77,8 @@ void  `$INSTANCE_NAME`_PutTxMessage(uint8 receiver, uint8 len, uint8 cmd);
 void  `$INSTANCE_NAME`_PutTxMessageArg(uint8 arg);
 
 #if `$INSTANCE_NAME`_DEBUG_UART
-    void `$INSTANCE_NAME`_DebugInit(void (*UART_PutString)(const char8 string[]));
-    void `$INSTANCE_NAME`_DebugMsg(`$INSTANCE_NAME`_MSG_STRUCT *msg);
+    void  `$INSTANCE_NAME`_DebugHandle(const char ch);
+    void  `$INSTANCE_NAME`_DebugMsg(`$INSTANCE_NAME`_MSG_STRUCT *msg);
 #endif
 
 #endif

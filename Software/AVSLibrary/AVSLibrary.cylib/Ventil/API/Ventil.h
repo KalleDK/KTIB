@@ -14,11 +14,20 @@
 #define `$INSTANCE_NAME`_H_
     
 #include <cytypes.h>
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_enums.h"
+    
+#define `$INSTANCE_NAME`_DEBUG_UART                 (`$VENTIL_DEBUG`)
 
-#define `$INSTANCE_NAME`_OPEN 1
-#define `$INSTANCE_NAME`_CLOSE 0
+void  `$INSTANCE_NAME`_Start();
+void  `$INSTANCE_NAME`_SetState(uint8 state);
+uint8 `$INSTANCE_NAME`_GetState(void);
 
-void `$INSTANCE_NAME`_ChangeState(uint8 state);
+
+#if `$INSTANCE_NAME`_DEBUG_UART
+    void  `$INSTANCE_NAME`_DebugHandle(const char ch);
+    void  `$INSTANCE_NAME`_DebugState();
+#endif
 
 #endif
 
