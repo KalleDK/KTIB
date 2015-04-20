@@ -12,195 +12,269 @@
 #include <project.h>
 #include <stdlib.h>
 
-#include "../../Includes/OE_Bus.h"
-#include "../../Includes/Kar_Bus.h"
+#define HIGH 0
+#define LOW 1
 
-#ifdef DEBUG
-#include <stdio.h>
-#endif
+typedef struct {
+    uint8 addr;
+    uint8 status;
+    uint8 type;
+    uint8 values[2];
+} Fieldsensor;
 
-volatile RS485Bus* oebus;
-volatile RS485Bus* karbus;
+typedef struct {
+    uint8 addr;
+    Fieldsensor* fieldsensors[10];
+    uint8 fieldsensor_connected;
+    uint8 status;
+    uint8 ventil;
+} Sensoroe;
 
-#ifdef DEBUG
-char debug_msg[50];
-void printMessage(volatile RS485Bus* bus);
-#endif
+Sensoroe* oer[2];
+uint8 oer_connected = 0;
+uint8 state = 0;
+uint8 polling_nr = 0;
 
-CY_ISR_PROTO(RX485_OEBUS);
-CY_ISR_PROTO(RX485_KARBUS);
-
-//Debug UART
-#ifdef DEBUG    
-void printRS485Bus(volatile RS485Bus* bus) {
-        uint16 len;
-        uint16 i = 0;
-        len = bus->msg[RS_LEN_HIGH];
-        len <<= 8;
-        len += bus->msg[RS_LEN_LOW];
-        sprintf(debug_msg, "Status:\t\t0x%02X (", bus->status);
-        UART_PC_PutString(debug_msg);
-        UART_PC_PutString(msg_status_str(bus->status));
-        UART_PC_PutString(")\r\n");
-        sprintf(debug_msg, "Receiver:\t0x%02X\r\n", bus->msg[RS_RECEIVER]);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Sender:\t\t0x%02X\r\n", bus->msg[RS_TRANSMITTER]);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Len High:\t%d\r\n", bus->msg[RS_LEN_HIGH]);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Len Low:\t%d\r\n", bus->msg[RS_LEN_LOW]);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Len Toal:\t%d\r\n", len);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Missing Args:\t%d\r\n", bus->missing_args);
-        UART_PC_PutString(debug_msg);
-        sprintf(debug_msg, "Command:\t0x%02X (", bus->msg[RS_CMD]);
-        UART_PC_PutString(debug_msg);
-        UART_PC_PutString(oeb_cmd_str(bus->msg[RS_CMD]));
-        UART_PC_PutString(")\r\n");
-        UART_PC_PutString("Message:\t");
-        for(i = 0; i < len; ++i) {
-            sprintf(debug_msg, "0x%02X ", bus->msg[RS_ARG_START+i]);
-            UART_PC_PutString(debug_msg); 
-        }
-        UART_PC_PutString("\r\n\r\n");
+Sensoroe* findSensorOe(uint8 addr)
+{
+    uint8 i;
+    for (i = 0; i < oer_connected; ++i) {
+        if (oer[i]->addr == addr)
+            return oer[i];
+    }
+    return NULL;
 }
+
+Fieldsensor* findFieldsensor(uint8 oe_addr, uint8 sensor_addr)
+{
+    uint8 i;
+    Sensoroe* oe;
+    oe = findSensorOe(oe_addr);
+    if (oe != NULL) {
+        for (i = 0; i < oe->fieldsensor_connected; ++i) {
+            if (oe->fieldsensors[i]->addr == sensor_addr)
+                return oe->fieldsensors[i];
+        }
+    }
+    return NULL;    
+}
+void addSensoroe(uint8 addr) {
+    int i;
+    oer[oer_connected] = malloc(sizeof(Sensoroe));
+    oer[oer_connected]->addr = addr;
+    oer[oer_connected]->status = 0;
+    oer[oer_connected]->ventil = 0;
+    for (i = 0; i < 10; ++i)
+        oer[oer_connected]->fieldsensors[i] = 0;
+    ++oer_connected;
+}
+
+void pollSensoroe()
+{
+        //Debug_PutString("Polling\r\n");
+        OEBUS_PutTxMessage(oer[polling_nr]->addr, 0, OEBUS_OE_REQ_FS_DATA);
+        state = 1;
+        //Debug_PutString("State 1");
+        if (oer[++polling_nr] == 0)
+            polling_nr = 0;
+}
+
+void parseOEBUS()
+{
+    OEBUS_MSG_STRUCT msg;
+    int i, j;
+    OEBUS_GetRxMessage(&msg);
+    #if OEBUS_DEBUG_UART
+    OEBUS_DebugMsg(&msg);
+    #endif
     
+    switch(msg.cmd) {
+        case OEBUS_OE_RES_FS_DATA:
+            //Debug_PutString("Got response\r\n");
+            for ( i = 0; i < oer_connected; ++i) {
+                if (oer[i]->addr == msg.transmitter) {
+                    //Not pretty as we overwrite and dont update
+                    oer[i]->fieldsensor_connected = msg.len/4;
+                    for (j=0; j<oer[i]->fieldsensor_connected; ++j) {
+                        if (oer[i]->fieldsensors[j] == NULL)
+                            oer[i]->fieldsensors[j] = malloc(sizeof(Fieldsensor));
+                        
+                        oer[i]->fieldsensors[j]->addr           = msg.args[j * 4 + 0];
+                        oer[i]->fieldsensors[j]->status         = msg.args[j * 4 + 1];
+                        oer[i]->fieldsensors[j]->values[HIGH]   = msg.args[j * 4 + 2];
+                        oer[i]->fieldsensors[j]->values[LOW]    = msg.args[j * 4 + 3];
+                    }
+                    break;
+                }
+            }
+            state = 0;
+            //Debug_PutString("State 0");
+            break;
+        case OEBUS_OE_RES_VENTIL:
+            Debug_PutString("Got response\r\n");
+            for ( i = 0; i < oer_connected; ++i) {
+                if (oer[i]->addr == msg.transmitter) {
+                    oer[i]->ventil = msg.args[0];
+                    break;
+                }
+            }
+            state = 0;
+            Debug_PutString("State 0");
+            break;
+        default:
+            break;
+    }
+    OEBUS_ClearRxMessage();
+}
+
+void parseKARBUS()
+{
+    KARBUS_MSG_STRUCT msg;
+    int i;
+    Sensoroe* oe;
+    Fieldsensor* fs;
+    
+    KARBUS_GetRxMessage(&msg);
+    #if KARBUS_DEBUG_UART
+    KARBUS_DebugMsg(&msg);
+    #endif
+    
+    switch(msg.cmd) {
+        case KARBUS_REQ_KAR_VENTIL:
+            if (msg.args[0] == 1)
+                Indloeb_ChangeState(msg.args[1]);
+            else
+                Afloeb_ChangeState(msg.args[1]);
+            KARBUS_PutTxMessage(msg.transmitter,1,KARBUS_RES_KAR_VENTIL);
+            KARBUS_PutTxMessageArg(msg.args[1]);
+            break;
+        case KARBUS_REQ_KAR_OE_LIST:
+            KARBUS_PutTxMessage(msg.transmitter,oer_connected,KARBUS_RES_KAR_OE_LIST);
+            for (i = 0; i < oer_connected; ++i)
+                KARBUS_PutTxMessageArg(oer[i]->addr);
+            break;
+        case KARBUS_REQ_KAR_OE_SENSOR_TYPE:
+            fs = findFieldsensor(msg.args[0], msg.args[1]);
+            if (fs != NULL) {
+                KARBUS_PutTxMessage(msg.transmitter,1,KARBUS_RES_KAR_OE_SENSOR_TYPE);
+                KARBUS_PutTxMessageArg(fs->type);
+            } else {
+                KARBUS_PutTxMessage(msg.transmitter,0,KARBUS_REQ_KAR_NONE);
+            }
+            break;
+        case KARBUS_REQ_KAR_OE_VENTIL:
+            oe = findSensorOe(msg.args[0]);
+            if (oe != NULL) {
+                OEBUS_PutTxMessage(msg.args[0], 1, OEBUS_OE_REQ_VENTIL);
+                OEBUS_PutTxMessageArg(msg.args[1]);
+                KARBUS_PutTxMessage(msg.transmitter, 1, KARBUS_RES_KAR_OE_VENTIL);
+                KARBUS_PutTxMessageArg(msg.args[1]);
+            } else {
+                KARBUS_PutTxMessage(msg.transmitter,0,KARBUS_REQ_KAR_NONE);
+            }
+        case KARBUS_REQ_KAR_OE_SENSOR_DATA:
+            oe = findSensorOe(msg.args[0]);
+            if (oe != NULL) {
+                KARBUS_PutTxMessage(msg.transmitter,oe->fieldsensor_connected*4,KARBUS_RES_KAR_OE_SENSOR_DATA);
+                for (i = 0; i < oe->fieldsensor_connected; ++i) {
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->addr);
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->status);
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[HIGH]);
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[LOW]);
+                }
+            } else {
+                KARBUS_PutTxMessage(msg.transmitter,0,KARBUS_REQ_KAR_NONE);
+            }
+            break;
+        case KARBUS_REQ_KAR_AKTUATOR_DATA:
+            KARBUS_PutTxMessage(msg.transmitter,1,KARBUS_RES_KAR_AKTUATOR_DATA);
+            KARBUS_PutTxMessageArg(Pumpe_GetSpeed());
+            break;
+        case KARBUS_REQ_KAR_SENSOR_DATA:
+            KARBUS_PutTxMessage(msg.transmitter,0,KARBUS_REQ_KAR_NONE);
+            break;
+        default:
+            break;
+    }
+    KARBUS_ClearRxMessage();
+}
+
+#if KARBUS_DEBUG_UART || OEBUS_DEBUG_UART
 void debugUart() {
     char ch;
-    ch = UART_PC_GetChar();
- 
+    char debug_msg[50];
+    ch = Debug_GetChar();
+    
     switch(ch)
     {
-        case '?':
-            UART_PC_PutString("Commands\r\n\r\n");
-            UART_PC_PutString("k\tShow karbus message\r\n");
-            UART_PC_PutString("c\tClear karbus message\r\n");
-            UART_PC_PutString("r\tRequest Fieldsensors from 0x03\r\n");
-            UART_PC_PutString("o\tOpen ventil at 0x03\r\n");
-            UART_PC_PutString("O\tClose ventil at 0x03\r\n");
-            UART_PC_PutString(".\tToggle address 0x03 0x04\r\n");
-            UART_PC_PutString("\r\n");
-            break;
-        case 'o':
-            UART_PC_PutString("Opening ventil\r\n\r\n");
-            sendCommand(oebus, 0x03, 1, OEB_REQ_VENTIL);
-            sendArg(oebus,1);
-            break;
-        case 'O':
-            UART_PC_PutString("Closing ventil\r\n\r\n");
-            sendCommand(oebus, 0x03, 1, OEB_REQ_VENTIL);
-            sendArg(oebus,0);
-            break;
-        case 'r':
-            UART_PC_PutString("Requesting sensors\r\n\r\n");
-            sendCommand(oebus, 0x03, 0, OEB_REQ_FS_DATA);
-            break;
-        case '.':
-            if (oebus->busid == 0x03)
-                oebus->busid = 0x04;
-            else
-                oebus->busid = 0x03;
-            OEBUS_Master_UartSetRxAddress(oebus->busid);
-            sprintf(debug_msg, "ID: 0x%02X\r\n\r\n", oebus->busid);
-            UART_PC_PutString(debug_msg);
+        case 'h':
+            Debug_PutString("Commands\r\n\r\n");
+            Debug_PutString("0-5\tShow SensorOe 0-9\r\n");
             
             break;
-        case 'k':
-            printRS485Bus(oebus);
+        case 'o':
+            
             break;
-        case 'c':
-            clearRS485Bus(oebus);
-            printRS485Bus(oebus);
+        case 'O':
+            
             break;
-        
+        case 'f':
+            KARBUS_PutTxMessage(0x01, 0, 0);
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+            
+            break;
         default:
             break;
     }
     
 }
-
 #endif
 
-void parseKARBus(volatile RS485Bus* bus) {
-    if (bus->status == RS_MSG_READY) {
-        switch(bus->msg[RS_CMD]) {
-            
-            default:
-                break;
-        }
-        #ifdef DEBUG
-        printRS485Bus(bus);
-        #endif
-        clearRS485Bus(bus);
-    }
-}
-
-void parseOEBus(volatile RS485Bus* bus) {
-    if (bus->status == RS_MSG_READY) {
-        switch(bus->msg[RS_CMD]) {
-            case OEB_RES_FS_DATA:
-                
-                break;
-            case OEB_RES_VENTIL:
-                
-            break;
-            default:
-                break;
-        }
-        #ifdef DEBUG
-        printRS485Bus(bus);
-        #endif
-        clearRS485Bus(bus);
-    }
-}
-
-CY_ISR(RX485_OEBUS) {
-    pushRS485Bus(oebus, OEBUS_Master_UartGetChar());
-    OEBUS_Master_ClearRxInterruptSource(OEBUS_Master_INTR_RX_NOT_EMPTY);
-}
-
-CY_ISR(RX485_KARBUS) {
-    pushRS485Bus(karbus, KARBUS_Slave_UartGetChar());
-    KARBUS_Slave_ClearRxInterruptSource(KARBUS_Slave_INTR_RX_NOT_EMPTY);
-}
-
-int main()
-{    
-    //Populate variables
-    initRS485Bus(&oebus, 0x04, OEBUS_Master_SpiUartWriteTxData);
-    initRS485Bus(&karbus, 0x03, KARBUS_Slave_SpiUartWriteTxData);
-    
-    //Initialise components
-    
-    OEBUS_Master_Start();
-    isr_RS485_OEBUS_StartEx(RX485_OEBUS);
-    isr_RS485_KARBUS_StartEx(RX485_KARBUS);
-    
-    #ifdef DEBUG
-    Clock_Start();
-    UART_PC_Start();
-    UART_PC_PutString("Initializing: Done\r\n");
+int main(void)
+{
+    #if KARBUS_DEBUG_UART || OEBUS_DEBUG_UART
+    Debug_Start();
     #endif
     
-    OEBUS_Master_UartSetRxAddress(oebus->busid);
-    KARBUS_Slave_UartSetRxAddress(karbus->busid);
+    #if KARBUS_DEBUG_UART
+    KARBUS_DebugInit(Debug_PutString);
+    #endif
+    
+    #if OEBUS_DEBUG_UART
+    OEBUS_DebugInit(Debug_PutString);
+    #endif
+    
+    addSensoroe(0x04);
+    
+    OEBUS_Start();
+    
+    KARBUS_Start();
     
     CyGlobalIntEnable;
     
     for(;;)
     {
-        #ifdef DEBUG
+        
+        #if KARBUS_DEBUG_UART || OEBUS_DEBUG_UART
         debugUart();
         #endif
 
-        verifyRS485Bus(oebus);
-        parseOEBus(oebus);
+       if (OEBUS_ReadRxStatus() == OEBUS_MSG_READY)
+            parseOEBUS();
         
-        verifyRS485Bus(karbus);
-        parseKARBus(karbus);
+        if (KARBUS_ReadRxStatus() == KARBUS_MSG_READY)
+            parseKARBUS();
         
-        CyDelay(50);
+        if (state == 0 && oer[polling_nr] != 0)
+            pollSensoroe();
+        
+        CyDelay(1);
     }
 }
 
