@@ -12,7 +12,7 @@ void KarBus::eHandleKarReady(MKarReady* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHandleKarGetSensorData(MKarGetSensorData* msg){
@@ -22,7 +22,7 @@ void KarBus::eHandleKarGetSensorData(MKarGetSensorData* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHandleKarSetPumpState(MKarSetPumpState* msg){
@@ -32,7 +32,7 @@ void KarBus::eHandleKarSetPumpState(MKarSetPumpState* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHendleOeGetSensorData(MOeGetSensorData* msg){
@@ -42,7 +42,7 @@ void KarBus::eHendleOeGetSensorData(MOeGetSensorData* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 
@@ -54,7 +54,7 @@ void KarBus::eHandleOeSetValve(MOeSetValveState* msg){
 	cout << "String to send: " << (int)message[0] << (int)message[1] << (int)message[2] << (int)message[3] << endl;
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHandleOeGetSensorType(MOeGetSensorType* msg){
@@ -64,7 +64,7 @@ void KarBus::eHandleOeGetSensorType(MOeGetSensorType* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHandleKarSetValve(MKarSetValveState* msg){
@@ -73,8 +73,13 @@ void KarBus::eHandleKarSetValve(MKarSetValveState* msg){
 	const char* message;
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
+/*	data_[0] = 0x2;
+	data_[1] = 0x1;
+	data_[2] = 0x1;
+	data_[3] = 0xb;
+	data_[4] = 0x1;*/
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 void KarBus::eHandleKerGetOeList(MKarGetOeList* msg){
@@ -84,7 +89,7 @@ void KarBus::eHandleKerGetOeList(MKarGetOeList* msg){
 	message = msg->getData(data_length);
 	constructMessage(message, address, data_length);
 	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 4);
+	serialPort_.sendPacket(this->data_, data_length + 2);
 }
 
 
@@ -97,7 +102,10 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 	char address = 0x2;
 	unsigned int data_length;
 	char cmd;
-
+	
+	for(int j = 0; j < BUFFER_SIZE; ++j){
+		data_[j] = 0;
+	}
 	
 
 
@@ -145,11 +153,13 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 
 
 	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
-		cout << "getting packet " << i << endl;
+	//	cout << "getting packet " << i << endl;
 		serialPort_.getPacket();
 		msleep(1);
+		if(i == 9)
+			cout << "Msg timedout\n";
 	}
-	cout << "Msg done or timedout\n";
+	
 	
 	
 	switch ((int)data_[3])

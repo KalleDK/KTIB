@@ -15,7 +15,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
         // -- EVENTS FROM KarPinger ---------------------------------------- //
         
         case E_PING:
-            cout << "Bridge recieved: E_PING" << endl;
+            //cout << "Bridge recieved: E_PING" << endl;
             handle_ping();
             break;
         

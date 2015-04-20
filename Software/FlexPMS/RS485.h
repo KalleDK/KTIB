@@ -11,7 +11,9 @@
 #include <stdint.h>
 
 #define BUFFER_SIZE 50
-//#define RS485DEBUG
+#define RS485_DEBUG_STATE_MACHINE_MSG
+#define RS485_DEBUG_SENDER
+#define RS485_DEBUG_STATE_MACHINE
 //#define DEVKIT8000
 
 

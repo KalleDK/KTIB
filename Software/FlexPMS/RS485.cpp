@@ -30,7 +30,7 @@ RS485::~RS485()
 {
 	close(tty_fd_);
 	close(gpio_fd_);
-	gpio_fd_ =  open("/sys/class/gpio/unexport", O_WRONLY);
+	gpio_fd_ = open("/sys/class/gpio/unexport", O_WRONLY);
 	write(gpio_fd_, "18", 2);
 	close(gpio_fd_);
 }
@@ -61,7 +61,7 @@ void RS485::txEnable(bool state)
 {
 	char setDirection;
 	setDirection = (state ? '0' : '1');
-	cout << "state: "  << state << "\n";
+	cout << "gpio value is: "  << state << "\n";
 	if(!write(gpio_fd_, &setDirection, 1))
 	{
 		cout << "I did not write to the GPIO" << endl;
@@ -107,7 +107,7 @@ int RS485::set_interface_attribs(int speed)
 
 
 void RS485::sendChar(char ch, bool address) {
-	if (parityCheck(ch, address)) {
+	if (parityCheck(ch, address) == true) {
 		tio_.c_cflag |= PARODD;
 	} else {
 		tio_.c_cflag &= ~PARODD;
@@ -122,6 +122,7 @@ bool RS485::parityCheck(char &ch, bool parity){
 			parity = (parity ? false : true);
 		}
 	}
+	cout << "Char: \t" << (int)ch << " Parity: " << parity << endl; 
 	return parity;
 }
 
@@ -130,6 +131,7 @@ int RS485::getChar(char &ch, bool &address)
 	int readRetur;
 	bool parity = true;
 	address = true;
+	cout << "Reveicer in parity: " << (int)(tio_.c_cflag & PARODD) << "  ";
 	readRetur = read(tty_fd_, &ch, 1);
 	if(ch == 0xFF){
 		readRetur = read(tty_fd_, &ch, 1);
@@ -139,8 +141,9 @@ int RS485::getChar(char &ch, bool &address)
 		}
 	}
 	address = parityCheck(ch, address) == parity;
-	#ifdef RS485DEBUG
-	cout << "Character: " << (unsigned int)ch << " " << "Bytes read: " << readRetur  << " \n";
+	#ifdef RS485_DEBUG_DEEP_PACKET
+	cout << "Reading a single byte:" << "\t" << "Number of bytes read:\n";
+	cout << "Character as integer: " << (unsigned int)ch << "\t" << "Bytes read: " << readRetur << "\n\n";
 	#endif
 	return readRetur;
 }
@@ -151,13 +154,17 @@ void RS485::getPacket()
 	bool addr = true;
 
 	while(getChar(in, addr) > 0){
-		#ifdef RS485DEBUG
-		cout << "Char in packet: " << (unsigned int)in << " addr: " << addr << "\n\n";
+		#ifdef RS485_DEBUG_STATE_MACHINE
+		cout << hex;
+		cout << "------ State Machine Received Byte ------\n";
+		cout << "|Receiving chars:\t\t\t|\n";
+		cout << "|State is        \t" << (unsigned int)readInBuf->status << "\t        |\n";
+		cout << "|Char in packet: \t" << (unsigned int)in << "\t        |\n" ;
+		cout << "|addr:           \t" << addr << "\t        |\n";
+		cout << "-----------------------------------------\n";
+		cout << dec;
 		#endif
 		if(addr == true){
-			#ifdef RS485DEBUG
-			cout << "addr true\n";
-			#endif
 			if(readInBuf->status == MSG_IDLE){
 				if(in == 1){
 					readInBuf->head = readInBuf->data;
@@ -202,6 +209,16 @@ void RS485::getPacket()
 		}
 		if(readInBuf->status == MSG_ARGS && readInBuf->remainingArgs == 0){
 			readInBuf->status = MSG_READY;
+			#ifdef RS485_DEBUG_STATE_MACHINE_MSG
+			cout << hex;
+			cout << "----- ReceivedPacket -----\n";
+			cout << "|RX addr \t" << "0x" << (int)buffer_array[0].data[0] << "\t |\n";
+			cout << "|TX addr \t" << "0x" << (int)buffer_array[0].data[1] << "\t |\n";
+			cout << "|Length  \t" << "0x" << (int)buffer_array[0].data[2] << "\t |\n";
+			cout << "|Command \t" << "0x" << (int)buffer_array[0].data[3] << "\t |\n";
+			cout << "--------------------------\n";
+			cout << dec;
+			#endif
 			break;
 		}
 		if(readInBuf->errorCount >= 5){
@@ -209,14 +226,25 @@ void RS485::getPacket()
 			tcflush(tty_fd_, TCIFLUSH);
 			break;
 		}
-		cout << "State is " << (unsigned int)readInBuf->status << "\n";
 	}
 }
 
 void RS485::sendPacket(char *packet, unsigned int len)
 {
-	#ifdef RS485DEBUG
-	cout << "Sending packet\n";
+	char flip = 0x1;
+	#ifdef RS485_DEBUG_SENDER
+	cout << hex;
+	cout << "----- Sending packet -----\n";
+	cout << "|RX addr \t" << "0x" << (int)packet[0] << "\t |\n";
+	cout << "|TX addr \t" << "0x" << (int)packet[1] << "\t |\n";
+	cout << "|Length  \t" << "0x" << (int)packet[2] << "\t |\n";
+	cout << "|Command \t" << "0x" << (int)packet[3] << "\t |\n";
+	cout << "|Arg1    \t" << "0x" << (int)packet[4] << "\t |\n";
+	cout << "|Arg2    \t" << "0x" << (int)packet[5] << "\t |\n";
+	cout << "|Arg3    \t" << "0x" << (int)packet[6] << "\t |\n";
+	cout << "|Real Len\t" << "0x" << (int)packet[6] << "\t |\n";
+	cout << "--------------------------\n";
+	cout << dec;
 	#endif
 	txEnable(true);
 	sendChar(packet[0], true);
@@ -227,7 +255,11 @@ void RS485::sendPacket(char *packet, unsigned int len)
 	cout << "Done sending\n";
 	#endif
 	txEnable(false);
-	tio_.c_cflag &= ~PARODD;
+	if (parityCheck( flip, false) == true) {
+		tio_.c_cflag |= PARODD;
+	} else {
+		tio_.c_cflag &= ~PARODD;
+	}
 	tcsetattr(tty_fd_, TCSADRAIN, &tio_);
 //	if (tcflush(tty_fd_, TCIFLUSH) == 0)
 //	{
