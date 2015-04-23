@@ -25,23 +25,24 @@ float32 getHumidity(){
     float32 Rspd;
     float32 humidity;
     int16 adcResult;
-    
+    Pin_1_Write(1);
     MOSFET_Write(1);
     ADC_SAR_Seq_1_Wakeup();
-    ADC_SAR_Seq_1_IsEndConversion(ADC_SAR_Seq_1_WAIT_FOR_RESULT);
+    //CyDelay(10);
+    while(ADC_SAR_Seq_1_IsEndConversion(ADC_SAR_Seq_1_WAIT_FOR_RESULT) == 0){}
     adcResult = ADC_SAR_Seq_1_GetResult16(CHANNEL);
     Vout = ADC_SAR_Seq_1_CountsTo_Volts(CHANNEL,adcResult);
     ADC_SAR_Seq_1_Sleep();
-    MOSFET_Write(0);
+    //MOSFET_Write(0);
     Rspd = -((Vout*RESISTOR)/(Vout-VDD));
     humidity = 113.47/pow(Rspd,0.26472);
   
-    //if( (humidity >=0) && (humidity <=25)){
+    if( (humidity >=0) && (humidity <=25)){
         return humidity;
-    //}
-    //else{
-    //    return 35.5;
-    //}
+    }
+    else{
+        return 35.5;
+    }
 }
 
 int main()
@@ -63,7 +64,7 @@ int main()
     
     for(;;)
     {
-        
+        getHumidity();
         #if SensorBus_DEBUG_UART
         SensorBus_DebugChar(Debug_GetChar());
         #endif
