@@ -1,0 +1,36 @@
+%!TEX root = ../../main.tex
+
+\section{Flowsensor}
+Til kontrol at vandflow til system er valgt at benytte en flow sensor af typen YF S201. 
+Dette er en Hall Effect sensor. En Hall Effekt sensor benytter ændringer i et nær-magnetfelt til at 
+ændre sensorens outputspænding, dette genererer et PWM-output som identificerer den mængde vand 
+der flyder igennem sensoren pr. tidsenhed.
+
+Flowraten udregnes efter formlen: 
+				
+\begin{figure}[!h]
+    \begin{align*}
+       \frac{Pulse frequency [Hz]}{7.5} = flowrate[L/min]
+    \end{align*}
+\label{eq:PWM}
+\caption{Beregning af flowrate}
+\end{figure}				
+
+Ved denne udregning svarer eks. 16Hz = 2L/min, og 65.5HZ = 8L/min. 
+Flowsensoren tilkobles via 3 medfølgende pins.
+
+\begin{figure}[!h]
+	\begin{center}
+		\begin{tabular}{ l l }
+			 \textcolor{black}{Sort}:   & $GND(-)$ 		\\ 
+			 \textcolor{yellow}{Gul}:   & $PWM output$ 	\\  
+			 \textcolor{red}{Red}:    	& $VCC(+5V)$ 	\\
+		\end{tabular}
+	\end{center}
+\caption{Værdier hentet fra datablad}
+\end{figure}
+
+Output fra sensoren følger TTL-standarden, det vil sige at den kan kobles direkte til en given inputpin på PSoC'en. Output-raten gives som udgangspunkt med en målepræcision på +/- 10%.
+ 
+Under operation sinker sensoren 15mA, derved kan den kan trække sin forsyning direkte fra PSoC'en.
+

@@ -1,0 +1,14 @@
+Til kontrol at vandflow til system er valgt at benytte en flow sensor af typen YF S201. 
+Dette er en Hall Effect sensor. En Hall Effekt sensor benytter ændringer i et nær-magnetfelt til at 
+ændre sensorens outputspænding, dette genererer et PWM-output som identificerer den mængde vand 
+der flyder igennem sensoren pr. tidsenhed.
+
+
+Flowraten udregnes efter formlen: 
+				
+				Pulse frequency (Hz) / 7.5 = flow rate i L/min.
+Ved denne udregning svarer eks. 16Hz = 2L/min, og 65.5HZ = 8L/min. 
+Flowsensoren tilkoble via 3 medfølgende pins. 
+
+				
+
