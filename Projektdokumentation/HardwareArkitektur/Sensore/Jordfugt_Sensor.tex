@@ -89,6 +89,7 @@ Denne funktion kan bruges i en mikroprocessor med en analog til digital konverte
 	\label{photo:jordspyd_modstand}
 \end{figure}  
 
+\subsection{Test og opbygning}
 Næste punkt var at finde en metode til at måle modstanden i spyddet. Dette kunne gøres ved at koble jordspyddet som en spændingsdeler med en MOSFET transistor til at lede strømmen når der måles. På figur \ref{photo:jordspyd_diagram} ses diagrammet over forklaringen. 
  
 \begin{figure}[H]
@@ -120,13 +121,32 @@ I PSoC creator laves der en funktion der udlæser værdien fra ADC'en og omregne
 	\label{photo:debug100}
 \end{figure} 
 
-Aflæser vi 100$\Omega$ på figur \ref{photo:jordspyd_modstand} kan vi se at en fugtighed på 33 stemmer fint overens med det forventede og funktion antages efter flere ligende resultater at virke. Efterfølgende laves den om så den også kan håntere et int8 array med to pladser som parameter og skrive værdien ind i det som et heltal og et halvtal samt tænde og slukke for mosfetten. 
+Aflæser vi 100$\Omega$ på figur \ref{photo:jordspyd_modstand} kan vi se at en fugtighed på 33 stemmer fint overens med det forventede og funktion antages efter flere ligende resultater at virke. Efterfølgende er funktionen lavet om således den også kommunikerer med sensor ø'en. Den færdige kode fildes i bilagende. 
 
+Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme program tegnet et printlayout. Dette ses på figur \ref{photo:Print_2} og \ref{photo:Print_2}.
 
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.1]{HardwareArkitektur/Sensore/Jordfugt_billeder/Print_2.jpg}
+	\caption{Printplade set fra bunden}
+	\label{photo:Print_2}
+\end{figure} 
 
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.1]{HardwareArkitektur/Sensore/Jordfugt_billeder/Print_1.jpg}
+	\caption{Printplade set fra overfladen}
+	\label{photo:Print_1}
+\end{figure} 
 
+Det ses på printet at der er blevet lavet nogle modifikationer. Dette skyldes at der var glemt nogle pull op modstande, samt at DesignSpark havde valgt at ligge stel sammen med forsyningen. 
+Diagrammet blev derfor tegnet om til følgende i figur \ref{photo:Diagram_jordfugt} 
 
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.2]{HardwareArkitektur/Sensore/Jordfugt_billeder/Diagram_jordfugt.png}
+	\caption{Diagram over jordfugtmåleren}
+	\label{photo:Diagram_jordfugt}
+\end{figure} 
 
-   
-
-
+Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket stik ud til at programmere PSoC'en. Ved at forbinde disse til vores Pioneer kit kan vi programmere PSoC'en igennem en PSoC 5 og på den måde undgå at skulle købe en programmeringsenhed. 
