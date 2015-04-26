@@ -13,28 +13,11 @@
 #include <stdlib.h>
 
 #include "..\..\Includes\avs_enums.h"
+#include "..\..\Includes\avs_structs.h"
 #include "..\..\Includes\avs_debug.h"
 #include "..\..\Includes\avs_debug.c"
 
-#define HIGH 0
-#define LOW 1
-
-typedef struct {
-    uint8 addr;
-    uint8 status;
-    uint8 type;
-    uint8 values[2];
-} Fieldsensor;
-
-typedef struct {
-    uint8 addr;
-    Fieldsensor* fieldsensors[10];
-    uint8 fieldsensor_connected;
-    uint8 status;
-    uint8 ventil;
-} Sensoroe;
-
-Sensoroe* oer[2];
+Sensoroe* oer[10];
 uint8 oer_connected = 0;
 uint8 state = 0;
 uint8 polling_nr = 0;
@@ -63,12 +46,14 @@ Fieldsensor* findFieldsensor(uint8 oe_addr, uint8 sensor_addr)
     return NULL;    
 }
 
-void addSensoroe(uint8 addr) {
+void addSensoroe(uint8 addr)
+{
     int i;
     oer[oer_connected] = malloc(sizeof(Sensoroe));
     oer[oer_connected]->addr = addr;
     oer[oer_connected]->status = 0;
     oer[oer_connected]->ventil = 0;
+    oer[oer_connected]->fieldsensor_connected = 0;
     for (i = 0; i < 10; ++i)
         oer[oer_connected]->fieldsensors[i] = 0;
     ++oer_connected;
@@ -104,8 +89,8 @@ void parseOEBUS()
                         
                         oer[i]->fieldsensors[j]->addr           = msg.args[j * 4 + 0];
                         oer[i]->fieldsensors[j]->status         = msg.args[j * 4 + 1];
-                        oer[i]->fieldsensors[j]->values[HIGH]   = msg.args[j * 4 + 2];
-                        oer[i]->fieldsensors[j]->values[LOW]    = msg.args[j * 4 + 3];
+                        oer[i]->fieldsensors[j]->values[FS_VALUE_HIGH]   = msg.args[j * 4 + 2];
+                        oer[i]->fieldsensors[j]->values[FS_VALUE_LOW]    = msg.args[j * 4 + 3];
                     }
                     break;
                 }
@@ -182,8 +167,8 @@ void parseKARBUS()
                 for (i = 0; i < oe->fieldsensor_connected; ++i) {
                     KARBUS_PutTxMessageArg(oe->fieldsensors[i]->addr);
                     KARBUS_PutTxMessageArg(oe->fieldsensors[i]->status);
-                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[HIGH]);
-                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[LOW]);
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[FS_VALUE_HIGH]);
+                    KARBUS_PutTxMessageArg(oe->fieldsensors[i]->values[FS_VALUE_LOW]);
                 }
             } else {
                 KARBUS_PutTxMessage(msg.transmitter,0,REQ_KAR_NONE);
@@ -202,17 +187,101 @@ void parseKARBUS()
         case REQ_KAR_SENSOR_DATA:
             KARBUS_PutTxMessage(msg.transmitter,0,REQ_KAR_NONE);
             break;
+        case REQ_KAR_OPRET:
+            addSensoroe(msg.args[0]);
+            KARBUS_PutTxMessage(msg.transmitter,0,RES_KAR_OPRET);
+            break;
         default:
             break;
     }
     KARBUS_ClearRxMessage();
 }
 
+#if defined(DEBUG_UART)
+
+void debugListFieldsensors(Sensoroe* oe)
+{
+    uint8 i;
+    for (i=0; i < oe->fieldsensor_connected; ++i)
+    {
+        printf("Addr:\t [ 0x%02X ]\t Status: [ 0x%02X ]\n\r", oe->fieldsensors[i]->addr, oe->fieldsensors[i]->status);
+    }
+}
+
+void debugSensorOe(Sensoroe* oe)
+{
+    printf("SensorOe config\n\r\n\r");
+    printf("Kar Addr:\t [ 0x%02X ]\n\r", oe->addr);
+    printf("Ventil State:\t [ 0x%02X ]\n\r", oe->ventil);
+    printf("Fieldsensors:\t [ 0x%02X ]\n\r", oe->fieldsensor_connected);
+    printf("====================================================\n\r");
+    debugListFieldsensors(oe);
+}
+
+void debugListSensorOes()
+{
+    uint8 i;
+    for (i=0; i < oer_connected; ++i)
+    {
+        printf("%d\t Addr:\t [ 0x%02X ]\t Status: [ 0x%02X ]\n\r", i, oer[i]->addr, oer[i]->status);
+    }
+}
+
+void debugConfig()
+{
+    printf("Kar config\n\r\n\r");
+    printf("Kar Addr:\t [ 0x%02X ]\n\r", KARBUS_GetAddress());
+    Indloeb_DebugState();
+    Afloeb_DebugState();
+    printf("SensorOes:\t [ 0x%02X ]\n\r", oer_connected);
+    printf("====================================================\n\r");
+    debugListSensorOes();
+}    
+    
+void DebugHandle(const char ch) {
+    Sensoroe* oe = NULL;
+    
+    switch(ch)
+    {
+        case 27:
+            printf("Kar");
+            break;
+        case '?':
+            printf("Commands\n\r\n\r");
+            printf("0-9\tShow SensorOe 0-9\n\r");
+            printf("a\tAdd SensorOe 0x04\n\r");
+            printf("l\tList SensorOes\n\r");
+            printf("p\tPrint config\n\r");
+            printf("\n\r");
+            break;
+        case 'a':
+            addSensoroe(0x04);
+            break;
+        case 'l':
+            debugListSensorOes();
+            break;
+        case 'p':
+            debugConfig();
+            break;
+        case '0'...'9':
+            oe = oer[ch - '0'];
+            if (oe != NULL)
+                debugSensorOe(oe);
+            break;
+        default:
+            printf("Not implemented\n\r");
+    }
+}
+
+
+#endif
+
 int main(void)
 {
     #if defined(DEBUG_UART)
         Clock_Start();
         Debug_Start();
+        Debug_AddComponent(DebugHandle);
         #if Pumpe_DEBUG_UART
             Debug_AddComponent(Pumpe_DebugHandle);
         #endif
@@ -229,8 +298,6 @@ int main(void)
             Debug_AddComponent(KARBUS_DebugHandle);
         #endif
     #endif
-    
-    addSensoroe(0x04);
     
     OEBUS_Start();
     KARBUS_Start();
