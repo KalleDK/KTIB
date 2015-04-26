@@ -13,16 +13,7 @@
 
 //Debug variables
 #if `$INSTANCE_NAME`_DEBUG_UART
-void (*`$INSTANCE_NAME`_DEBUG_PUTSTRING)(const char8 string[]);
-char8 `$INSTANCE_NAME`_debug_msg[50];
-
-#define \
-    `$INSTANCE_NAME`_DEBUG(...) \
-    ({ \
-        sprintf(`$INSTANCE_NAME`_debug_msg, __VA_ARGS__); \
-        `$INSTANCE_NAME`_DEBUG_PUTSTRING(`$INSTANCE_NAME`_debug_msg); \
-    })
-
+#include "..\..\Includes\avs_debug.h"
 #endif
 
 //Genreal Variables
@@ -40,9 +31,9 @@ void `$INSTANCE_NAME`_Start()
 {
     #if `$INSTANCE_NAME`_DEBUG_UART
     #if `$INSTANCE_NAME`_FIELDSENSOR
-        `$INSTANCE_NAME`_DEBUG("\r\n\r\nStarting Fieldsensor\r\n\r\n");
+        printf("\n\r\n\rStarting Fieldsensor\n\r\n\r");
     #else
-        `$INSTANCE_NAME`_DEBUG("\r\n\r\nStarting Sensor OE\r\n\r\n");
+        printf("\n\r\n\rStarting Sensor OE\n\r\n\r");
     #endif
     #endif
     
@@ -57,11 +48,10 @@ void `$INSTANCE_NAME`_Start()
     
     #if `$INSTANCE_NAME`_DEBUG_UART
     #if `$INSTANCE_NAME`_FIELDSENSOR
-        `$INSTANCE_NAME`_DEBUG("\r\nFieldsensor [ 0x%02X ] - Ready\r\n\r\n", `$INSTANCE_NAME`_GetAddress());
+        printf("\n\rFieldsensor [ 0x%02X ] - Ready\n\r\n\r", `$INSTANCE_NAME`_GetAddress());
     #else
-        `$INSTANCE_NAME`_DEBUG("\r\nSensoroe [ 0x%02X ] - Ready\r\n\r\n", `$INSTANCE_NAME`_GetAddress());
+        printf("\n\rSensoroe [ 0x%02X ] - Ready\n\r\n\r", `$INSTANCE_NAME`_GetAddress());
     #endif
-    `$INSTANCE_NAME`_DEBUG("Press h for help\r\n\r\n");
     #endif
 }
 
@@ -154,7 +144,7 @@ uint8 `$INSTANCE_NAME`_ParseWrite()
                 `$INSTANCE_NAME`_Write(`$INSTANCE_NAME`_MASTER_ID, &reply, 1, 1);
                 
                 #if `$INSTANCE_NAME`_DEBUG_UART
-                `$INSTANCE_NAME`_DEBUG("Replied master\t[ 0x01 ]\r\n");
+                printf("Replied master\t[ 0x01 ]\r\n");
                 #endif
             default:
                 break;
@@ -163,7 +153,26 @@ uint8 `$INSTANCE_NAME`_ParseWrite()
     }
     return 0;
 }
+
 #else
+    
+void  `$INSTANCE_NAME`_Scan()
+{
+    //0x09 - 0x78
+    uint8 scan_addr;
+    uint8 dummy;
+    printf("Scanning\n\r");
+    for (scan_addr = 0x08; scan_addr <= 0x78; ++scan_addr) {
+        if (scan_addr == `$INSTANCE_NAME`_GetAddress())
+            continue;
+        
+        if (`$INSTANCE_NAME`_Read(scan_addr, &dummy, 1, 0)) {
+            printf("Found Sensor:\t [ 0x%02X ]\n\r", scan_addr);
+        }
+    }
+    printf("Done\n\r");
+}
+    
 uint8 `$INSTANCE_NAME`_ParseWrite()
 {
     uint8 res = 0;
@@ -188,7 +197,7 @@ void `$INSTANCE_NAME`_ChangeAddress(uint8 addr)
     `$INSTANCE_NAME`_address = addr;
     `$INSTANCE_NAME`_I2C_I2CSlaveSetAddress(`$INSTANCE_NAME`_address);
     #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("Address changed\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_address);
+    printf("Address changed\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_address);
     #endif
 }
 
@@ -209,7 +218,7 @@ void `$INSTANCE_NAME`_ChangeMode(uint8 mode)
     }
     
     #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("\r\nChange mode\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_state);
+    printf("\r\nChange mode\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_state);
     #endif
     
     //Refresh the buffer if we changed
@@ -233,20 +242,10 @@ void `$INSTANCE_NAME`_RefreshData()
             break;
             
     }
-    /*
-    #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("Buffer reloaded\t[ 0x%02X ] [ 0x%02X ]\r\n", `$INSTANCE_NAME`_rdBuffer[0], `$INSTANCE_NAME`_rdBuffer[1]);
-    #endif
-    */
 }
 
 void `$INSTANCE_NAME`_LoadValue(uint8 high, uint8 low)
 {
-    /*
-    #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("Values loaded\t[ 0x%02X ] [ 0x%02X ]\r\n", high, low);
-    #endif
-    */
     `$INSTANCE_NAME`_value_high = high;
     `$INSTANCE_NAME`_value_low = low;
     `$INSTANCE_NAME`_RefreshData();
@@ -298,10 +297,6 @@ uint8  `$INSTANCE_NAME`_SensorPoll(uint8 addr, uint8 *values, uint8 *type)
 #endif
 
 #if `$INSTANCE_NAME`_DEBUG_UART
-void `$INSTANCE_NAME`_DebugInit(void (*UART_PutString)(const char8 string[]))
-{
-    `$INSTANCE_NAME`_DEBUG_PUTSTRING = UART_PutString;
-}
 
 void `$INSTANCE_NAME`_DebugRead(uint8 len)
 {
@@ -316,55 +311,59 @@ void `$INSTANCE_NAME`_DebugRead(uint8 len)
     #endif
     
     if (`$INSTANCE_NAME`_Read(addr, data, len, 0)) {
-        `$INSTANCE_NAME`_DEBUG("Read\t");
+        printf("Read\t");
         for (i = 0; i < len; ++i) {
-            `$INSTANCE_NAME`_DEBUG("[ 0x%02X ] ", data[i]);
+            printf("[ 0x%02X ] ", data[i]);
         }
-        `$INSTANCE_NAME`_DEBUG("\r\n\r\n");
+        printf("\n\r\n\r");
     } else {
-        `$INSTANCE_NAME`_DEBUG("Error reading\r\n\r\n");
+        printf("Error reading\n\r\n\r");
     }
 }
 
-void `$INSTANCE_NAME`_DebugChar(char8 ch)
+void  `$INSTANCE_NAME`_DebugHandle(const char ch)
 {
     uint8 dummy_data[3] = {0};
 
     if(ch != 0u) {
         switch(ch)
         {
-            case 'h':
-                `$INSTANCE_NAME`_DEBUG("\r\n\r\nHelp:\r\n\r\n");
-                `$INSTANCE_NAME`_DEBUG("T\tShow Type\r\n");
-                `$INSTANCE_NAME`_DEBUG("A\tShow Address\r\n");
-                `$INSTANCE_NAME`_DEBUG("b\tShow rdBuffer\r\n");
-                `$INSTANCE_NAME`_DEBUG("B\tShow wrBuffer\r\n");
-                `$INSTANCE_NAME`_DEBUG("1-3\tI2C Read\r\n");
-                `$INSTANCE_NAME`_DEBUG("4\tI2C Write\r\n");
+            case 27:
+                printf("`$INSTANCE_NAME`");
+                break;
+            case '?':
+                printf("\n\r\n\rHelp:\n\r\n\r");
+                printf("T\tShow Type\n\r");
+                printf("A\tShow Address\n\r");
+                printf("b\tShow wrBuffer\n\r");
+                printf("B\tShow rdBuffer\n\r");
+                printf("1-3\tI2C Read\n\r");
+                printf("4\tI2C Write\n\r");
                 
                 #if `$INSTANCE_NAME`_FIELDSENSOR
-                `$INSTANCE_NAME`_DEBUG("V\tShow Values\r\n");
-                `$INSTANCE_NAME`_DEBUG("v\tChange mode [VALUE]\r\n");
-                `$INSTANCE_NAME`_DEBUG("t\tChange mode [TYPE]\r\n");
+                    printf("V\tShow Values\n\r");
+                    printf("v\tChange mode [VALUE]\n\r");
+                    printf("t\tChange mode [TYPE]\n\r");
                 #else
-                `$INSTANCE_NAME`_DEBUG("v\tI2C REQ_VALUE\r\n");
-                `$INSTANCE_NAME`_DEBUG("t\tI2C REQ_TYPE\r\n");
-                `$INSTANCE_NAME`_DEBUG("p\tI2C POLL\r\n");    
+                    printf("s\tScan subnet\n\r");
+                    printf("v\tI2C REQ_VALUE\n\r");
+                    printf("t\tI2C REQ_TYPE\n\r");
+                    printf("p\tI2C POLL\n\r");    
                 #endif
                 
-                `$INSTANCE_NAME`_DEBUG("\r\n");
+                printf("\n\r");
                 break;
             case 'A':
-                `$INSTANCE_NAME`_DEBUG("Address is\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_GetAddress());
+                printf("Address is\t[ 0x%02X ]\n\r", `$INSTANCE_NAME`_GetAddress());
                 break;
             case 'T':
-                `$INSTANCE_NAME`_DEBUG("Type contains\t[ 0x%02X ]\r\n", `$INSTANCE_NAME`_TYPE );
+                printf("Type contains\t[ 0x%02X ]\n\r", `$INSTANCE_NAME`_TYPE );
                 break;
             case 'b':
-                `$INSTANCE_NAME`_DEBUG("wrBuffer contains\t[ 0x%02X ] [ 0x%02X ] [ 0x%02X ]\r\n", `$INSTANCE_NAME`_wrBuffer[0], `$INSTANCE_NAME`_wrBuffer[1], `$INSTANCE_NAME`_wrBuffer[2] );
+                printf("wrBuffer contains\t[ 0x%02X ] [ 0x%02X ] [ 0x%02X ]\n\r", `$INSTANCE_NAME`_wrBuffer[0], `$INSTANCE_NAME`_wrBuffer[1], `$INSTANCE_NAME`_wrBuffer[2] );
                 break;
             case 'B':
-                `$INSTANCE_NAME`_DEBUG("wrBuffer contains\t[ 0x%02X ] [ 0x%02X ] [ 0x%02X ]\r\n", `$INSTANCE_NAME`_rdBuffer[0], `$INSTANCE_NAME`_rdBuffer[1], `$INSTANCE_NAME`_rdBuffer[2] );
+                printf("rdBuffer contains\t[ 0x%02X ] [ 0x%02X ] [ 0x%02X ]\n\r", `$INSTANCE_NAME`_rdBuffer[0], `$INSTANCE_NAME`_rdBuffer[1], `$INSTANCE_NAME`_rdBuffer[2] );
                 break;
             case '1':
             case '2':
@@ -377,7 +376,7 @@ void `$INSTANCE_NAME`_DebugChar(char8 ch)
                 break;
             #if `$INSTANCE_NAME`_FIELDSENSOR
             case 'V':
-                `$INSTANCE_NAME`_DEBUG("Values contains\t[ 0x%02X ] [ 0x%02X ]\r\n",`$INSTANCE_NAME`_GetHigh(0), `$INSTANCE_NAME`_GetLow(0));
+                printf("Values contains\t[ 0x%02X ] [ 0x%02X ]\n\r",`$INSTANCE_NAME`_GetHigh(0), `$INSTANCE_NAME`_GetLow(0));
                break;
             case 'v':
                 `$INSTANCE_NAME`_ChangeMode(`$INSTANCE_NAME`_REQ_VALUE);
@@ -386,12 +385,15 @@ void `$INSTANCE_NAME`_DebugChar(char8 ch)
                 `$INSTANCE_NAME`_ChangeMode(`$INSTANCE_NAME`_REQ_TYPE);
                  break;
             #else
+            case 's':
+                `$INSTANCE_NAME`_Scan();
+                break;
             case 'p':
                 dummy_data[2] = `$INSTANCE_NAME`__UNKNOWN;
-                `$INSTANCE_NAME`_DEBUG("Polling\t[ 0x09 ]\r\n");
+                printf("Polling\t[ 0x09 ]\n\r");
                 `$INSTANCE_NAME`_SensorPoll(0x09, dummy_data, &dummy_data[2]);
-                `$INSTANCE_NAME`_DEBUG("Read\t[ 0x%02X ] [ 0x%02X ]\r\n", dummy_data[0], dummy_data[1]);
-                `$INSTANCE_NAME`_DEBUG("Read\t[ 0x%02X ]\r\n\r\n", dummy_data[2]);
+                printf("Read\t[ 0x%02X ] [ 0x%02X ]\n\r", dummy_data[0], dummy_data[1]);
+                printf("Read\t[ 0x%02X ]\n\r\n\r", dummy_data[2]);
                break;
             case 'v':
                 `$INSTANCE_NAME`_SensorChangeMode(0x09, `$INSTANCE_NAME`_REQ_VALUE);

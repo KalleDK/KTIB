@@ -16,16 +16,7 @@ uint8  `$INSTANCE_NAME`_address;
 
 //Debug variables
 #if `$INSTANCE_NAME`_DEBUG_UART
-void (*`$INSTANCE_NAME`_DEBUG_PUTSTRING)(const char8 string[]);
-char8 `$INSTANCE_NAME`_debug_msg[50];
-
-#define \
-    `$INSTANCE_NAME`_DEBUG(...) \
-    ({ \
-        sprintf(`$INSTANCE_NAME`_debug_msg, __VA_ARGS__); \
-        `$INSTANCE_NAME`_DEBUG_PUTSTRING(`$INSTANCE_NAME`_debug_msg); \
-    })
-
+#include "..\..\Includes\avs_debug.h"
 #endif
 
 //Rx Variables
@@ -75,23 +66,18 @@ CY_ISR(`$INSTANCE_NAME`_RX485)
 
 void `$INSTANCE_NAME`_Start()
 {
-    
-    
     `$INSTANCE_NAME`_UART_Start();
     `$INSTANCE_NAME`_UART_isr_StartEx(`$INSTANCE_NAME`_RX485);
     `$INSTANCE_NAME`_SetAddress(`$RS485_ADDRESS`);
     
-    #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("\r\n\r\n");
-    #endif
+
     
     `$INSTANCE_NAME`_reading_buffer = `$INSTANCE_NAME`_buffer_array;
     `$INSTANCE_NAME`_receiving_buffer = `$INSTANCE_NAME`_buffer_array;
     `$INSTANCE_NAME`_ClearRxMessage();
     
     #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("Initializing: Done\r\n\r\n");
-    `$INSTANCE_NAME`_DEBUG("\r\nPress 'h' for help\r\n");
+    printf("`$INSTANCE_NAME` up and running\n\r\n\r");
     #endif
         
 }
@@ -123,21 +109,19 @@ void `$INSTANCE_NAME`_ClearRxMessage()
     `$INSTANCE_NAME`_reading_buffer->missing_args = 0;
     `$INSTANCE_NAME`_reading_buffer->status = `$INSTANCE_NAME`_MSG_EMPTY;
     #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("Message Cleared\r\n\r\n");
+    printf("Message Cleared\n\r\n\r");
     #endif
 }
 
 void  `$INSTANCE_NAME`_PutTxMessage(uint8 receiver, uint8 len, uint8 cmd)
 {
-	//Set specialbit to mark receiver
-	//`$INSTANCE_NAME`_UART_SpiUartWriteTxData(receiver);
     `$INSTANCE_NAME`_UART_SpiUartWriteTxData(receiver | `$INSTANCE_NAME`_UART_UART_MP_MARK );
     `$INSTANCE_NAME`_UART_SpiUartWriteTxData(`$INSTANCE_NAME`_address);
 	`$INSTANCE_NAME`_UART_SpiUartWriteTxData(len);
 	`$INSTANCE_NAME`_UART_SpiUartWriteTxData(cmd);
     
     #if `$INSTANCE_NAME`_DEBUG_UART
-    `$INSTANCE_NAME`_DEBUG("TX: R 0x%02X, L %d, C 0x%02X\r\n", receiver, len, cmd);
+    printf("TX: R 0x%02X, L %d, C 0x%02X\n\r", receiver, len, cmd);
     #endif
     
 }
@@ -148,23 +132,34 @@ void  `$INSTANCE_NAME`_PutTxMessageArg(uint8 arg)
 }
 
 #if `$INSTANCE_NAME`_DEBUG_UART
-void `$INSTANCE_NAME`_DebugInit(void (*UART_PutString)(const char8 string[]))
-{
-    `$INSTANCE_NAME`_DEBUG_PUTSTRING = UART_PutString;
-}
+
+    void  `$INSTANCE_NAME`_DebugHandle(const char ch)
+    {
+        switch(ch)
+        {
+            case 27:
+                printf("`$INSTANCE_NAME`");
+                break;
+            case '?':
+                printf("\n\r`$INSTANCE_NAME`\n\r\n\r");
+                printf("Nothing Yet\n\r");
+                break;
+        }
+    }
+
 
 void `$INSTANCE_NAME`_DebugMsg(`$INSTANCE_NAME`_MSG_STRUCT *msg)
 {
     int i;
-    `$INSTANCE_NAME`_DEBUG("Receiver:\t0x%02X\r\n", msg->receiver);
-    `$INSTANCE_NAME`_DEBUG("Transmitter:\t0x%02X\r\n", msg->transmitter);
-    `$INSTANCE_NAME`_DEBUG("Length:\t\t%d\r\n", msg->len);
-    `$INSTANCE_NAME`_DEBUG("Command:\t0x%02X\r\n", msg->cmd);
-    `$INSTANCE_NAME`_DEBUG("Arguments:\t");
+    printf("Receiver:\t0x%02X\n\r", msg->receiver);
+    printf("Transmitter:\t0x%02X\n\r", msg->transmitter);
+    printf("Length:\t\t%d\n\r", msg->len);
+    printf("Command:\t0x%02X\n\r", msg->cmd);
+    printf("Arguments:\t");
     for(i = 0; i < msg->len; ++i) {
-        `$INSTANCE_NAME`_DEBUG("0x%02X ", msg->args[i]);
+        printf("0x%02X ", msg->args[i]);
     }
-    `$INSTANCE_NAME`_DEBUG("\r\n\r\n");
+    printf("\n\r\n\r");
 }
 #endif
 

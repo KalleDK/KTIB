@@ -11,6 +11,11 @@
 */
 #include <project.h>
 #include <stdlib.h>
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_debug.c"
+#include "..\..\Includes\avs_enums.h"
+
+
 
 #define HIGH 0
 #define LOW 1
@@ -30,14 +35,14 @@ uint8 ventil = 0;
 void changeVentil(uint8 state)
 {
     ventil = state;
-    Ventil_ChangeState(state);
+    Ventil_SetState(state);
 }
 
 void addFieldsensor(uint8 addr)
 {
     fieldsensors[fieldsensor_connected] = malloc(sizeof(Fieldsensor));
     fieldsensors[fieldsensor_connected]->addr = addr;
-    fieldsensors[fieldsensor_connected]->status = OEBUS_FS_OFFLINE;
+    fieldsensors[fieldsensor_connected]->status = FS_OFFLINE;
     fieldsensors[fieldsensor_connected]->type = SensorBus__UNKNOWN;
     fieldsensors[fieldsensor_connected]->values[HIGH] = 0;
     fieldsensors[fieldsensor_connected]->values[LOW] = 0;
@@ -48,13 +53,13 @@ void pollFieldsensor(Fieldsensor* fs)
 {
     if (SensorBus_SensorPoll(fs->addr, fs->values, &fs->type)) {
         #if OEBUS_DEBUG_UART
-        if (fs->status == OEBUS_FS_OFFLINE) {
-            Debug_PutString("Sensor Detected:\r\n");
+        if (fs->status == FS_OFFLINE) {
+            printf("Sensor Detected:\n\r");
         }
         #endif
-        fs->status = OEBUS_FS_ONLINE;
+        fs->status = FS_ONLINE;
     } else {
-        fs->status = OEBUS_FS_OFFLINE;
+        fs->status = FS_OFFLINE;
     }
 }
 
@@ -62,7 +67,7 @@ void sendFieldsensors(uint8 receiver)
 {
     uint8 i = 0;
     while(fieldsensors[i] != 0) {++i;}
-    OEBUS_PutTxMessage(receiver, i*4, OEBUS_OE_RES_FS_DATA);
+    OEBUS_PutTxMessage(receiver, i*4, RES_OE_FS_DATA);
     i = 0;
     while(fieldsensors[i] != 0) {
         OEBUS_PutTxMessageArg(fieldsensors[i]->addr);
@@ -82,12 +87,12 @@ void parseOEBUS()
     #endif
     
     switch(msg.cmd) {
-        case OEBUS_OE_REQ_FS_DATA:
+        case REQ_OE_FS_DATA:
             sendFieldsensors(msg.transmitter);
             break;
-        case OEBUS_OE_REQ_VENTIL:
+        case REQ_OE_VENTIL:
             changeVentil(msg.args[0]);
-            OEBUS_PutTxMessage(msg.transmitter, 1, OEBUS_OE_RES_VENTIL);
+            OEBUS_PutTxMessage(msg.transmitter, 1, RES_OE_VENTIL);
             OEBUS_PutTxMessageArg(ventil);
             break;
         default:
@@ -96,28 +101,29 @@ void parseOEBUS()
     OEBUS_ClearRxMessage();
 }
 
-#if SensorBus_DEBUG_UART || OEBUS_Debug_UART
-void debugUart() {
-    char ch;
-    char debug_msg[50];
-    ch = Debug_GetChar();
+#if defined(DEBUG_UART)
+void DebugHandle(const char ch) {
+   
     Fieldsensor* fs = 0;
     
     switch(ch)
     {
-        case 'h':
-            Debug_PutString("Commands\r\n\r\n");
-            Debug_PutString("0-5\tShow Fieldsensor 0-9\r\n");
-            Debug_PutString("f\tSend fieldsensors to 0x01\r\n");
-            Debug_PutString("o\tOpen ventil\r\n");
-            Debug_PutString("O\tClose ventil\r\n");
-            Debug_PutString("\r\n");
+        case 27:
+            printf("SensorOE");
+            break;
+        case '?':
+            printf("Commands\n\r\n\r");
+            printf("0-5\tShow Fieldsensor 0-9\n\r");
+            printf("f\tSend fieldsensors to 0x01\n\r");
+            printf("o\tOpen ventil\n\r");
+            printf("O\tClose ventil\n\r");
+            printf("\n\r");
             break;
         case 'o':
-            changeVentil(Ventil_OPEN);
+            changeVentil(VENTIL_OPEN);
             break;
         case 'O':
-            changeVentil(Ventil_CLOSE);
+            changeVentil(VENTIL_CLOSE);
             break;
         case 'f':
             sendFieldsensors(0x01);
@@ -130,39 +136,32 @@ void debugUart() {
         case '5':
             fs = fieldsensors[ch - '0'];
             if (fs != 0) {
-                Debug_PutString("Sensor\t\t0\r\n");
-                  
-                sprintf(debug_msg, "ID\t\t0x%02X\r\n", fs->addr);
-                Debug_PutString(debug_msg);
+                printf("Sensor\t\t0\n\r");
+                printf("ID\t\t0x%02X\n\r", fs->addr);
                      
-                sprintf(debug_msg, "Status:\t\t0x%02X (", fs->status);
-                Debug_PutString(debug_msg);
+                printf("Status:\t\t0x%02X (", fs->status);
+                
                 switch(fs->status)
                 {
-                    case OEBUS_FS_OFFLINE:
-                        Debug_PutString("OFFLINE");
+                    case FS_OFFLINE:
+                        printf("OFFLINE");
                         break;
-                    case OEBUS_FS_ONLINE:
-                        Debug_PutString("ONLINE");
+                    case FS_ONLINE:
+                        printf("ONLINE");
                         break;
                     default:
-                        Debug_PutString("UNKNOWN");
+                        printf("UNKNOWN");
                         break;
                 }
-                Debug_PutString(")\r\n");
+                printf(")\n\r");
                               
-                sprintf(debug_msg, "Type:\t\t0x%02X (", fs->type);
-                Debug_PutString(debug_msg);
-                Debug_PutString(")\r\n");
+                printf("Type:\t\t0x%02X \n\r", fs->type);
                        
-                sprintf(debug_msg, "Value High:\t%d\r\n", fs->values[HIGH]);
-                Debug_PutString(debug_msg);
-                sprintf(debug_msg, "Value Low:\t%d\r\n", fs->values[LOW]);
-                Debug_PutString(debug_msg);
-                sprintf(debug_msg, "Value Total:\t%d,%d\r\n\r\n", fs->values[HIGH], (fs->values[LOW]>>7)*5);
-                Debug_PutString(debug_msg);
+                printf("Value High:\t%d\n\r", fs->values[HIGH]);
+                printf("Value Low:\t%d\n\r", fs->values[LOW]);
+                printf("Value Total:\t%d,%d\n\r\n\r", fs->values[HIGH], (fs->values[LOW]>>7)*5);
             } else {
-                Debug_PutString("Sensor does not exists\r\n\r\n");
+                printf("Sensor does not exists\n\r\n\r");
             }
             break;
         default:
@@ -174,16 +173,19 @@ void debugUart() {
 
 int main()
 {
-    #if SensorBus_DEBUG_UART || OEBUS_Debug_UART
-    Debug_Start();
-    #endif
-    
-    #if SensorBus_DEBUG_UART
-    SensorBus_DebugInit(Debug_PutString);
-    #endif
-    
-    #if OEBUS_DEBUG_UART
-    OEBUS_DebugInit(Debug_PutString);
+    #if defined(DEBUG_UART)
+        Clock_Start();
+        Debug_Start();
+        Debug_AddComponent(DebugHandle);
+        #if Ventil_DEBUG_UART
+            Debug_AddComponent(Ventil_DebugHandle);
+        #endif
+        #if OEBUS_DEBUG_UART
+            Debug_AddComponent(OEBUS_DebugHandle);
+        #endif
+        #if SensorBus_DEBUG_UART
+            Debug_AddComponent(SensorBus_DebugHandle);
+        #endif
     #endif
 
     uint8 polling_nr = 0;
@@ -194,17 +196,17 @@ int main()
    
     //Initialise components
     
+    Ventil_Start();
     OEBUS_Start();
-
     SensorBus_Start();
     
     CyGlobalIntEnable;
     
     for(;;)
     {   
-        #if SensorBus_DEBUG_UART
-        debugUart();
-        #endif
+        #if defined(DEBUG_UART)
+        Debug_Communicate();
+        #endif 
         
         if (OEBUS_ReadRxStatus() == OEBUS_MSG_READY)
             parseOEBUS();

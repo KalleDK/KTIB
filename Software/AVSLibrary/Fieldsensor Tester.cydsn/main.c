@@ -11,13 +11,18 @@
 */
 #include <project.h>
 
+#include "..\..\Includes\avs_debug.h"
+#include "..\..\Includes\avs_debug.c"
+
 int main()
 {
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    Debug_Start();
-    
-    #if SB_DEBUG_UART
-    SB_DebugInit(Debug_PutString);
+    #if defined(DEBUG_UART)
+        Clock_Start();
+        Debug_Start();
+        #if SB_DEBUG_UART
+            Debug_AddComponent(SB_DebugHandle);
+        #endif
     #endif
     
     SB_Start();
@@ -26,8 +31,8 @@ int main()
     for(;;)
     {
         
-        #if SB_DEBUG_UART
-        SB_DebugChar(Debug_GetChar());
+        #if defined(DEBUG_UART)
+        Debug_Communicate();
         #endif
         
         SB_Communicate();
