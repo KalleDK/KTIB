@@ -73,6 +73,16 @@ class Kar
 		}
 		return $soeer;
     }
+	
+	public function getSensorData()
+	{
+		$result = $this->dbConn->query("SELECT * FROM SensorData WHERE id=".$this->id);
+		$sData = array();
+		while($row = $result->fetch_assoc()) {
+			$sData[] = $row;
+		}
+		return $sData; 
+	}
 }
 
 

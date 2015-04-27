@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
     <style type="text/css">
         body { margin: 0 15px; }
     </style>
@@ -22,11 +23,7 @@
 <!-- photo + data -->
 <div class="row">
     <div class="col-md-6 col-lg-6 text-center">
-        {if $MW}
-            <img id="image" src="medie/VHV.png" class="img-responsive center-block" alt="Vandhane"/>
-        {else}
-            <img id="image" src="medie/VH.png" class="img-responsive center-block" alt="Vandhane"/>
-        {/if}
+            <img id="image" src="" class="img-responsive center-block" alt="Vandhane"/>
 	</div> 
 	 
     <div class="col-md-6 col-lg-6">
@@ -47,21 +44,21 @@
 									</tr>
 									<tr>
                                         <td>pH-værdi (0-14)</td>
-                                        <td>6.5</td>
+                                        <td>---</td>
                                         <td>
                                                 <input name="ph" type="text" class="form-control" id="inputpH3" value="{$kar->ph}">
                                         </td>
 									</tr>
 									<tr>
                                         <td>Vandniveau (l)</td>
-                                        <td>4</td>
+                                        <td>---</td>
                                         <td>
                                                 <input name="volumen" type="text" class="form-control" id="inputVand33" value="{$kar->volumen}">
                                         </td>
 									</tr>
 									<tr>
                                         <td>Jordfugtighed (%)</td>
-                                        <td>80</td>
+                                        <td>---</td>
                                         <td>
                                                 <input name="humidity" type="text" class="form-control" id="inputJord33" value="{$kar->humidity}">
                                         </td>
@@ -92,7 +89,7 @@
 				<table class="table table-striped">
 					<tr>
 						<th>#</th>
-						<th>Jordfugtihed (%)</th>
+						<th>Jordfugtighed (%)</th>
 						<th></th>
 					</tr>
 						{foreach $soeer as $soe}
@@ -132,29 +129,12 @@
 				<form action="kar.php?id={$kar->id}" method="post">
 				<input type="hidden" name="id" value="{$kar->id}"/>
 					<div class="col-md-6">
-						<h4>Afløb<h4>
-						{if $ovalveopen}
-							<button type="submit" name="ClOSEOVALVE" value="1" class="btn btn-default btn-md" >
-								Luk afløbsventil
-							</button>
-							
-						{else}
-							<button type="submit" name="OPENOVALVE" value="1" class="btn btn-primary btn-md" >
-								Åben afløbsventil
-							</button>
-						{/if}
+						<h4>Afløb<h4>	
+						<button id="OVALVESTATUS" type="submit" name="" value="1" class="" ></button>
 					</div>
 					<div class="col-md-6">
-						<h4>Indløb<h4>
-						{if $ivalveopen}
-							<button type="submit" name="CLOSEIVALVE" value="1" class="btn btn-default btn-md">
-								Luk Indløbsventil
-							</button>
-						{else}
-							<button type="submit" name="OPENIVALVE" value="1" class="btn btn-primary btn-md">
-								Åben Indløbsventil
-							</button>
-						{/if}
+						<h4>Indløb<h4>	
+						<button id="IVALVESTATUS" type="submit" name="" value="1" class="" ></button>
 					</div>
 				</form>  
 			</div>
@@ -166,20 +146,14 @@
 				<h3 class="panel-title">Manuel vanding</h3>
 			</div>
 			<div class="panel-body text-center">
+				<h4> Manuel vandning status</h4>
 				<form action="kar.php?id={$kar->id}" method="post">
-					<h4>Manuel vanding er i gang<h4>
-					{if $MW}
-						<button type="submit" name="MWSTOP" value="1" class="btn btn-default btn-md">Stop manuel vandning</button>
-					{else}
-						<button type="submit" name="MWSTART" value="1" class="btn btn-primary btn-md">Start manuel vandning</button>
-					{/if}
+					<button id="MWSTATUS" type="submit" name="" value="1" class=""></button>
 				</form>
 			</div>
 		</div>
 	</div>
 </div> <!-- Row -->        
-
-
 
 <!-- Modal Opret Sensorø -->
 <div class="modal fade" id="SensorOe" tabindex="-1" role="dialog" aria-labelledby="mySensorOeLabel" aria-hidden="true">
@@ -209,14 +183,70 @@
 		</div>
     </div>
 </div>
+</body>
 
 <script>
-function delFunction(id) 
-{
-    if(confirm("Er du sikker på du vil slette denne sensorø?"))
-      document.location = 'deleteS.php?id=' + id;
-}
+	function refreshStatuses(){
+		$.ajax({
+			url: "auto_refresh.php",
+			method: "GET",
+			data: { id: {$kar->id} },
+			dataType: "json",
+			success: function( data ) {
+				if(data.mwstatus == 1){
+					$("#MWSTATUS" )
+					.html("Stop manuel vandning")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","MWSTOP");
+					$("#image").attr("src","medie/VHV.png");
+				}else{
+					$("#MWSTATUS" ).html( "Start manuel vandning")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","MWSTART");
+					$("#image").attr("src","medie/VH.png");
+				}
+				
+				if(data.ovalvestatus == 1){
+					$("#OVALVESTATUS" ).html("Luk afløbsventil")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","ClOSEOVALVE");
+				}else{
+					$("#OVALVESTATUS" ).html( "Åben afløbsventil")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","OPENOVALVE");
+				}
+				
+				if(data.ivalvestatus == 1){
+					$("#IVALVESTATUS" ).html("Luk indløbsventil")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","ClOSEIVALVE");
+				}else{
+					$("#IVALVESTATUS" ).html( "Åben indløbsventil")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","OPENIVALVE");
+				}
+			}
+		})
+	}
+
+
+	$(function() {								// call function when page is loaded
+		refreshStatuses();
+		setInterval(refreshStatuses, 1000); 	// refresh every second
+	});
+
+	function delFunction(id) 
+	{
+		if(confirm("Er du sikker på du vil slette denne sensorø?"))
+		  document.location = 'deleteS.php?id=' + id;
+	}
+
 </script>
 
-</body>
 </html>
