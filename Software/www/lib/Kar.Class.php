@@ -66,7 +66,7 @@ class Kar
     
     public function getSensorOer()
     {
-		$result = $this->dbConn->query("SELECT * FROM SensorOe WHERE karID=".$this->id);
+		$result = $this->dbConn->query("SELECT * FROM SensorOe WHERE KarID=".$this->id);
 		$soeer = array();
 		while($row = $result->fetch_assoc()) {
 			$soeer[] = $row;
@@ -76,7 +76,7 @@ class Kar
 	
 	public function getSensorData()
 	{
-		$result = $this->dbConn->query("SELECT * FROM SensorData WHERE id=".$this->id);
+		$result = $this->dbConn->query("SELECT * FROM SensorData WHERE KarID=".$this->id);
 		$sData = array();
 		while($row = $result->fetch_assoc()) {
 			$sData[] = $row;
