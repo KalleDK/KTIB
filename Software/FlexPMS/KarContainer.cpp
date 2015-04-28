@@ -51,6 +51,7 @@ void KarContainer::reload() {
     sql::ResultSet *res;
     Kar* kar;
     
+    /*
     stmt = db_conn_->createStatement();
     res = stmt->executeQuery("SELECT * FROM Kar;");
     
@@ -72,6 +73,7 @@ void KarContainer::reload() {
     
     delete res;
     delete stmt;
+    */
 }
 
 

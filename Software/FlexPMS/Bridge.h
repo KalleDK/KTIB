@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <cppconn/driver.h>
 #include "Thread.h"
 #include "MessageThread.h"
@@ -15,6 +16,7 @@ public:
     Bridge(sql::Connection* db_conn, MessageThread* kar_bus) :
         kar_list_(db_conn),
         kar_bus_(kar_bus),
+        last_session_id_(0),
         pinger_(this) {
             pinger_.start();
         };
@@ -33,6 +35,8 @@ private:
     MessageThread* kar_bus_;
     KarContainer kar_list_;
     KarPinger pinger_;
+    std::map<unsigned long, MessageThread*> sessions_;
+    unsigned long last_session_id_;
     
     // Methods
     void dispatch(unsigned long event_id, Message* msg);
@@ -49,6 +53,10 @@ private:
     void handle_oe_valve_state(MOeValveState* msg);
     void handle_oe_sensor_data(MOeSensorData* msg);
     void handle_oe_sensor_type(MOeSensorType* msg);
+    
+    // Eventhandlers for handling SocketClient sessions
+    void handle_hello(Message* msg);
+    void handle_bye(SessionMessage* msg);
     
     // Eventhandlers for messages from Gui
     void handle_start_watering(GuiMessage* msg);
