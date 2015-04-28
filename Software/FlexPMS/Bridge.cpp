@@ -56,6 +56,15 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             break;
         
         // -- EVENTS FROM Gui ---------------------------------------------- //
+            
+        case E_HELLO:
+            cout << "Bridge recieved: E_HELLO" << endl;
+            handle_hello(msg);
+            break;
+        case E_BYE:
+            cout << "Bridge recieved: E_BYE" << endl;
+            handle_bye(static_cast<SessionMessage*>(msg));
+            break;
         
         case E_START_WATERING:
             cout << "Bridge recieved: E_START_WATERING" << endl;
@@ -169,6 +178,22 @@ void Bridge::handle_oe_sensor_type(MOeSensorType* msg) {
 /* ------------------------------------------------------------------------- */
 /* -- EVENTS FROM Gui ------------------------------------------------------ */
 /* ------------------------------------------------------------------------- */
+
+
+void Bridge::handle_hello(Message* msg) {
+    while(sessions_.count(++last_session_id_));
+    sessions_[last_session_id_] = msg->sender;
+    
+    SessionMessage* response = new SessionMessage(this);
+    response->session_id = last_session_id_;
+    msg->sender->send(E_START_SESSION, response);
+}
+
+
+void Bridge::handle_bye(SessionMessage* msg) {
+    msg->sender->join();
+    sessions_.erase(msg->session_id);
+}
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {

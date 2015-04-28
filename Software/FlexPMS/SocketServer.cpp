@@ -53,9 +53,4 @@ void SocketServer::handle_connection() {
     // Spawn client thread
     client = new SocketClient(bridge_, client_sock_fd);
     client->start();
-    
-    // Add client to list of active (connected) clients
-    clients_[client_sock_fd] = client;
-    
-    // FIXME When does clients get removed?!
 }

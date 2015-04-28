@@ -24,6 +24,8 @@ typedef enum {
     /*
      * EVENTS FROM Gui
      */
+    E_HELLO,            // SocketClient requesting registration
+    E_BYE,              // SocketClient requesting termination
     E_START_WATERING,   // Start manual watering
     E_STOP_WATERING,    // Stop manual watering
     E_IVALVE_OPEN,      // Open intake valve
@@ -50,5 +52,7 @@ typedef enum {
 typedef enum {
     E_RECV_DATA,        // Recieved data from socket
     E_SEND_DATA,        // Send data to socket
-    E_KILL,             // Kill connection to client
+    E_KILL,             // Request client to kill itself
+    E_START_SESSION,    // Bridge sends session ID to SocketClient
+    E_STOP_SESSION,     // Bridge tells SocketClient to stop activities
 } GuiEvent;

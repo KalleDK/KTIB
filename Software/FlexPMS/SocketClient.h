@@ -16,9 +16,7 @@ public:
     SocketClient(MessageThread* b, int sock_fd) : 
         bridge_(b), 
         sock_fd_(sock_fd),
-        reader_(this) {
-            reader_.start();
-        };
+        reader_(this) {};
     
     int getSockFD() {
         return sock_fd_;
@@ -37,10 +35,13 @@ private:
     MessageThread* bridge_;
     int sock_fd_;
     std::string buffer_;
+    unsigned long session_id_;
     
-    void kill_client();
-    
+    void init();
+    void shutdown();
     void dispatch(unsigned long event_id, Message* msg);
+    void handle_start_session(SessionMessage* msg);
+    void handle_stop_session();
     void handle_kill();
     void handle_send_data(Message* msg);
     void handle_recieve_data(Message* msg);

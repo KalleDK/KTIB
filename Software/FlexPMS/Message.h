@@ -285,8 +285,16 @@ public:
 /* ------------------------------------------------------------------------- */
 
 
+class SessionMessage : public Message {
+public:
+    SessionMessage(MessageThread* s) : Message(s) {};
+    unsigned long session_id;
+};
+
+
 class GuiMessage : public Message {
 public:
-    GuiMessage(MessageThread* s, unsigned int id) : kar_id(id), Message(s) {};
+    GuiMessage(MessageThread* s) : Message(s) {};
     unsigned int kar_id;
+    unsigned long session_id;
 };
