@@ -151,6 +151,7 @@ public:
     typedef struct {
         unsigned char oe_id;
         unsigned char sensor_id;
+		unsigned char status;
         int value;
     } OeSensorData;
     

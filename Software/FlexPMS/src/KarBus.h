@@ -1,27 +1,29 @@
 #pragma once
 #include "MessageThread.h"
 #include "RS485.h"
+#include "Protocol.h"
 
 #define BUFFER_SIZE 50
 #define UART_FILE "/dev/ttyAMA0"
 #define UART_BAUD 19200
 
-
 class Message;
-
 
 class KarBus : public MessageThread {
 public:
     KarBus(char masterAddr = 0x1) : 
         masterAddr_(masterAddr), 
-        serialPort_(UART_FILE, UART_BAUD) {};
+        serialPort_(UART_FILE, UART_BAUD),
+		karComAVS_(&serialPort_, masterAddr_){};
 private:
     void dispatch(unsigned long event_id, Message* msg);
-	void constructMessage(const char* message, char karAddr, char len);
-	RS485 serialPort_;
+//	void constructMessage(const char* message, char karAddr, char len);
 	char masterAddr_;
-	char data_[BUFFER_SIZE];
+	RS485 serialPort_;
+	Protocol karComAVS_;
+//	char data_[BUFFER_SIZE];
 	
+	/*
 	// Return from PSOC
 	void busHandleKarRdy(KarBusMessage* msg);
 	void busHandleKarSensorData(KarBusMessage* msg);
@@ -31,7 +33,7 @@ private:
 	void busHandleSensorType(KarBusMessage* msg);
 	void busHandleKarValveState(KarBusMessage* msg);
 	void busHandleKarOeList(KarBusMessage* msg);
-
+	*/
 	
 	//Send to PSOC
 	void eHandleKarReady(MKarReady* msg);
