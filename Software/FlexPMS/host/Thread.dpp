@@ -1,2 +1,0 @@
-host/Thread.o: src/Thread.cpp src/Thread.h
-	${CXX} -c -o $@ $< ${CXXFLAGS}

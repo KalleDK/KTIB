@@ -1,3 +1,0 @@
-host/SensorOeContainer.o: src/SensorOeContainer.cpp \
- src/SensorOeContainer.h src/SensorOe.h src/DBContainer.h
-	${CXX} -c -o $@ $< ${CXXFLAGS}

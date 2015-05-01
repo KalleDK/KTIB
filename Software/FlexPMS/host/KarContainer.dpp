@@ -1,2 +1,0 @@
-host/KarContainer.o: src/KarContainer.cpp src/KarContainer.h src/Kar.h
-	${CXX} -c -o $@ $< ${CXXFLAGS}

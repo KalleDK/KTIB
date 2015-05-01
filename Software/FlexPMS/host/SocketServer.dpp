@@ -1,4 +1,0 @@
-host/SocketServer.o: src/SocketServer.cpp src/SocketServer.h src/Thread.h \
- src/MessageThread.h src/MessageQueue.h src/Message.h src/Kar.h \
- src/SocketClient.h
-	${CXX} -c -o $@ $< ${CXXFLAGS}
