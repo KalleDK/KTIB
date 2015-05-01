@@ -149,4 +149,27 @@ Diagrammet blev derfor tegnet om til følgende i figur \ref{photo:Diagram_jordfu
 	\label{photo:Diagram_jordfugt}
 \end{figure} 
 
-Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket stik ud til at programmere PSoC'en. Ved at forbinde disse til vores Pioneer kit kan vi programmere PSoC'en igennem en PSoC 5 og på den måde undgå at skulle købe en programmeringsenhed. 
+Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket stik ud til at programmere PSoC'en. Ved at forbinde disse til vores Pioneer kit kan vi programmere PSoC'en igennem en PSoC 5 og på den måde undgå at skulle købe en programmeringsenhed. Det viste sig dog at der var flere problemer da det nye print blev lavet. Vi kunne sagens kommunikere med PSoC'en igennem programmerings stikket. Men det var umuligt at få nogen funktionalitet ud af den. Der blev brugt dage på at finde ud af hvad der kunne være galt, uden resultat. Det blev derfor besluttet at lave et shield til pioneer kittet. 
+
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/print_ny_top.JPG}
+	\caption{Det nye print set fra oven}
+	\label{photo:print_ny_top}
+\end{figure} 
+
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/print_ny_bund.JPG}
+	\caption{Det nye print set fra bunden}
+	\label{photo:print_ny_bund}
+\end{figure} 
+
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/shield.JPG}
+	\caption{Shield. Potientiometeret emulerer proben under test}
+	\label{photo:shield}
+\end{figure} 
+
+Vi kørte en test med det nye shield og da dette virkede var designet af jordfugtsensoren færdig. 
