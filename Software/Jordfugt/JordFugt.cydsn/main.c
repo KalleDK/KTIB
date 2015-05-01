@@ -18,7 +18,7 @@
 #define SIZE 2
 #define CHANNEL 0
 #define RESISTOR 10000
-#define VDD 4.8
+#define VDD 5
 
 int8 humidity[SIZE];
 
@@ -30,6 +30,7 @@ float32 getHumidity(){
     int16 adcResult;
     
     MOSFET_Write(1);
+    CyDelay(10);
     ADC_SAR_Seq_1_Wakeup();
     ADC_SAR_Seq_1_IsEndConversion(ADC_SAR_Seq_1_WAIT_FOR_RESULT);
     adcResult = ADC_SAR_Seq_1_GetResult16(CHANNEL);
@@ -39,12 +40,12 @@ float32 getHumidity(){
     Rspd = -((Vout*RESISTOR)/(Vout-VDD));
     humidity = 113.47/pow(Rspd,0.26472);
     
-    //if( (humidity >=0) && (humidity <=25)){
+    if( (humidity >=0) && (humidity <=25)){
         return humidity;
-    //}
-    //else{
-    //    return 35.5;
-    //}
+    }
+    else{
+        return 35.5;
+    }
 }
 
 int main()
