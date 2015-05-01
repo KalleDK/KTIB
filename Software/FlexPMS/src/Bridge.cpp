@@ -274,7 +274,7 @@ void Bridge::handle_ivalve_open(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -291,7 +291,7 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -311,7 +311,7 @@ void Bridge::handle_ovalve_open(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -328,7 +328,7 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);

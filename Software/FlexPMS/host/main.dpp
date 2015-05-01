@@ -1,0 +1,6 @@
+host/main.o: src/main.cpp src/defines.h src/Bridge.h src/Thread.h \
+ src/MessageThread.h src/MessageQueue.h src/Message.h src/Kar.h \
+ src/KarContainer.h src/SensorOeContainer.h src/SensorOe.h \
+ src/DBContainer.h src/events.h src/KarBus.h src/RS485.h src/Protocol.h \
+ src/SocketServer.h
+	${CXX} -c -o $@ $< ${CXXFLAGS}

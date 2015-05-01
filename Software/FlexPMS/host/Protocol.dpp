@@ -1,0 +1,2 @@
+host/Protocol.o: src/Protocol.cpp src/Protocol.h src/RS485.h
+	${CXX} -c -o $@ $< ${CXXFLAGS}

@@ -1,0 +1,3 @@
+host/MessageQueue.o: src/MessageQueue.cpp src/MessageQueue.h \
+ src/Message.h src/Kar.h
+	${CXX} -c -o $@ $< ${CXXFLAGS}

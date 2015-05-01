@@ -6,262 +6,238 @@
 using namespace std;
 
 void KarBus::eHandleKarReady(MKarReady* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned char karState;
+	unsigned long response_id;
+	if(karComAVS_.getKarRdy(msg->kar->address, karState)) {
+		response_id = E_KAR_READY_STATE;
+		MKarReadyState* response = new MKarReadyState(this, msg->kar);
+		response->is_ready = karState;
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHandleKarGetSensorData(MKarGetSensorData* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned char len;
+	unsigned char data[50];
+	unsigned char tempSensorValue;
+	MKarSensorData::KarSensorData tempPusher;
+	unsigned long response_id;
+	if(karComAVS_.getKarSensorData(msg->kar->address, len, data)) {
+		response_id = E_KAR_SENSOR_DATA;
+		MKarSensorData* response = new MKarSensorData(this, msg->kar);
+		for(int i = 0; i < len; i = i +3) {
+			if(data[i+2] & 128){
+				tempSensorValue = data[i+1] + 0.5;
+			} else {
+				tempSensorValue = data[i+1];
+			}
+			tempPusher.sensor_id = data[i];
+			tempPusher.value = tempSensorValue;
+			response->sensor_data.push_back(tempPusher);
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHandleKarSetPumpState(MKarSetPumpState* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned char state;
+	unsigned long response_id;
+	switch(msg->state) {
+		case MKarSetPumpState::OFF :
+			state = 0;
+			break;
+		case MKarSetPumpState::SLOW :
+			state = 25;
+			break;
+		case MKarSetPumpState::MIDDLE :
+			state = 60;
+			break;
+		case MKarSetPumpState::FAST :
+			state = 90;
+			break;
+		default:
+			break;
+	}
+	if(karComAVS_.setPumpState(msg->kar->address, state)) {
+		response_id = E_KAR_PUMP_STATE;
+		MKarPumpState* response = new MKarPumpState(this, msg->kar);
+		if(state <= 0) {
+			response->state = MKarPumpState::OFF;
+		} else if(state <= 30) {
+			response->state = MKarPumpState::SLOW;
+		} else if(state <= 65) {
+			response->state = MKarPumpState::MIDDLE;	
+		} else if(state <= 100) {
+			response->state = MKarPumpState::FAST;
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHendleOeGetSensorData(MOeGetSensorData* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned long response_id;
+	unsigned char len;
+	unsigned char data[50];
+	unsigned char tempSensorValue;
+	MOeSensorData::OeSensorData tempPusher;
+	
+	if(karComAVS_.getOeSensorData(msg->kar->address, msg->oe_id, len, data)) {
+		response_id = E_OE_SENSOR_DATA;
+		MOeSensorData* response = new MOeSensorData(this, msg->kar);
+		for(int i = 0; i < len; i = i +4) {
+			if(data[i+3] & 128){
+				tempSensorValue = data[i+2] + 0.5;
+			} else {
+				tempSensorValue = data[i+2];
+			}
+			tempPusher.sensor_id = data[i];
+			tempPusher.status = data[i+1];
+			tempPusher.oe_id = msg->oe_id;
+			tempPusher.value = tempSensorValue;
+			response->sensor_data.push_back(tempPusher);
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 
 void KarBus::eHandleOeSetValve(MOeSetValveState* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	cout << "String to send: " << (int)message[0] << (int)message[1] << (int)message[2] << (int)message[3] << endl;
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned long response_id;
+	unsigned char state;
+	switch(msg->state) {
+		case MOeSetValveState::CLOSED :
+			state = 0;
+			break;
+		case MOeSetValveState::OPEN :
+			state = 1;
+			break;
+		default:
+			break;
+	}
+	
+	if(karComAVS_.setOeValve(msg->kar->address, msg->oe_id, state)) {
+		response_id = E_OE_VALVE_STATE;
+		MOeValveState* response = new MOeValveState(this, msg->kar);
+		if(state == 0) {
+			response->state = MOeValveState::CLOSED;
+		} else {
+			response->state = MOeValveState::OPEN;
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHandleOeGetSensorType(MOeGetSensorType* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned long response_id;
+	unsigned char type = msg->sensor_id;
+	
+	response_id = E_OE_SENSOR_TYPE;
+	if(karComAVS_.getOeSensorType(msg->kar->address, msg->oe_id, type)) {
+		MOeSensorType* response = new MOeSensorType(this, msg->kar);
+		response->oe_id = msg->oe_id;
+		response->sensor_id = msg->sensor_id;
+		response->sensor_type = type;
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHandleKarSetValve(MKarSetValveState* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-/*	data_[0] = 0x2;
-	data_[1] = 0x1;
-	data_[2] = 0x1;
-	data_[3] = 0xb;
-	data_[4] = 0x1;*/
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned long response_id;
+	unsigned char state;
+	unsigned char valve;
+	switch(msg->state) {
+		case MKarSetValveState::CLOSED :
+			state = 0;
+			break;
+		case MKarSetValveState::OPEN :
+			state = 1;
+			break;
+		default:
+			break;
+	}
+	switch(msg->valve) {
+		case MKarSetValveState::INTAKE :
+			state = 1;
+			break;
+		case MKarSetValveState::OUTTAKE :
+			state = 2;
+			break;
+		default:
+			break;
+	}
+	
+	if(karComAVS_.setKarValve(msg->kar->address, valve, state)) {
+		response_id = E_KAR_VALVE_STATE;
+		MKarValveState* response = new MKarValveState(this, msg->kar);
+		if(valve == 1) {
+			response->valve = MKarValveState::INTAKE;
+		} else if(valve == 2) {
+			response->valve = MKarValveState::OUTTAKE;
+		}
+		if(state == 0) {
+			response->state = MKarValveState::CLOSED;
+		} else if(state == 1) {
+			response->state = MKarValveState::OPEN;
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 void KarBus::eHandleKerGetOeList(MKarGetOeList* msg){
-	char address = 0x2;
-	unsigned int data_length;
-	const char* message;
-	message = msg->getData(data_length);
-	constructMessage(message, address, data_length);
-	cout << "String to send: " << (int)data_[0] << (int)data_[1] << (int)data_[2] << (int)data_[3] << endl;
-	serialPort_.sendPacket(this->data_, data_length + 2);
+	unsigned long response_id;
+	unsigned char len = 0;
+	unsigned char data[50];
+	
+	if(karComAVS_.getKarOelist(msg->kar->address, len, data)) {
+		response_id = E_KAR_OE_LIST;
+		MKarOeList* response = new MKarOeList(this, msg->kar);
+		for(int i = 0; i < len; ++i) {
+			response->oe_ids.push_back(data[i]);
+		}
+		msg->sender->send(response_id,response);
+	}
 }
 
 
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
 
-	KarBusMessage* kmsg = static_cast<KarBusMessage*>(msg);
-	KarBusMessage* response;
-	unsigned long response_id;
-	char address = 0x2;
-	unsigned int data_length;
-	char cmd;
-	
-	for(int j = 0; j < BUFFER_SIZE; ++j){
-		data_[j] = 0;
-	}
-	
-
-
 	switch (event_id)
 	{
 		case E_KAR_READY:
-			eHandleKarReady(static_cast<MKarReady*>(msg));
 			cout << "KarBus: E_KAR_READY" << endl;
+			eHandleKarReady(static_cast<MKarReady*>(msg));
 			break;
 		case E_KAR_GET_SENSOR_DATA:
-			eHandleKarGetSensorData(static_cast<MKarGetSensorData*>(msg));
 			cout << "KarBus: E_KAR_GET_SENSOR_DATA" << endl;
+			eHandleKarGetSensorData(static_cast<MKarGetSensorData*>(msg));
 			break;
 		case E_KAR_SET_PUMP_STATE:
-			eHandleKarSetPumpState(static_cast<MKarSetPumpState*>(msg));
 			cout << "KarBus: E_KAR_SET_PUMP_STATE" << endl;
+			eHandleKarSetPumpState(static_cast<MKarSetPumpState*>(msg));
 			break;
 		case E_OE_GET_SENSOR_DATA:
-			eHendleOeGetSensorData(static_cast<MOeGetSensorData*>(msg));
 			cout << "KarBus: E_OE_GET_SENSOR_DATA" << endl;
+			eHendleOeGetSensorData(static_cast<MOeGetSensorData*>(msg));
 			break;
 		case E_OE_SET_VALVE_STATE:
-			eHandleOeSetValve(static_cast<MOeSetValveState*>(msg));
 			cout << "KarBus: E_OE_SET_VALVE_STATE" << endl;
+			eHandleOeSetValve(static_cast<MOeSetValveState*>(msg));
 			break;
 		case E_OE_GET_SENSOR_TYPE:
-			eHandleOeGetSensorType(static_cast<MOeGetSensorType*>(msg));
 			cout << "KarBus: E_OE_GET_SENSOR_TYPE" << endl;
+			eHandleOeGetSensorType(static_cast<MOeGetSensorType*>(msg));
 			break;
 		case E_KAR_SET_VALVE_STATE:
-			eHandleKarSetValve(static_cast<MKarSetValveState*>(msg));
 			cout << "KarBus: E_KAR_SET_VALVE_STATE" << endl;
+			eHandleKarSetValve(static_cast<MKarSetValveState*>(msg));
 			break;
 		case E_KAR_GET_OE_LIST:
-			eHandleKerGetOeList(static_cast<MKarGetOeList*>(msg));
 			cout << "KarBus: E_KAR_GET_OE_LIST" << endl;
+			eHandleKerGetOeList(static_cast<MKarGetOeList*>(msg));
 			break;
 		default:
 			break;
 	}
-	
-	for(int j = 0; j < BUFFER_SIZE; ++j){
-		data_[j] = 0;
-	}
-
-
-	for(int i = 0; !serialPort_.getMessage(data_) && i < 10; i++) {
-	//	cout << "getting packet " << i << endl;
-		serialPort_.getPacket();
-		msleep(1);
-		if(i == 9)
-			cout << "Msg timedout\n";
-	}
-	
-	
-	
-	switch ((int)data_[3])
-	{
-		case 16:
-			busHandleKarRdy(kmsg);
-			cout << "KarBus: 0" << endl;
-			break;
-		case 2:
-			busHandleKarSensorData(kmsg);
-			cout << "KarBus: 2" << endl;
-			break;
-		case 4:
-			busHandlePumpState(kmsg);
-			cout << "KarBus: 4" << endl;
-			break;
-		case 6:
-			busHandleOeSensor(kmsg);
-			cout << "KarBus: 6" << endl;
-			break;
-		case 8:
-			busHandleOeValveState(kmsg);
-			cout << "KarBus: 8" << endl;
-			break;
-		case 10:
-			busHandleSensorType(kmsg);
-			cout << "KarBus: 10" << endl;
-			break;
-		case 12:
-			busHandleKarValveState(kmsg);
-			cout << "KarBus: 12" << endl;
-			break;
-		case 14:
-			busHandleKarOeList(kmsg);
-			cout << "KarBus: 14" << endl;
-			break;
-		default:
-			cout << "Wrong message back " << (int)data_[3] << endl;
-			break;
-	}
 
 }
-
-void KarBus::busHandleKarRdy(KarBusMessage* msg){
-	unsigned long response_id;
-	response_id = E_KAR_READY_STATE;
-	MKarReadyState* response = new MKarReadyState(this, msg->kar);
-	response->is_ready = true;
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleKarSensorData(KarBusMessage* msg){
-	unsigned long response_id = E_KAR_SENSOR_DATA;
-	MKarSensorData* response = new MKarSensorData(this, msg->kar);
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandlePumpState(KarBusMessage* msg){
-	unsigned long response_id = E_KAR_PUMP_STATE;
-	MKarPumpState* response = new MKarPumpState(this, msg->kar);
-	response->state = MKarPumpState::OFF;
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleOeSensor(KarBusMessage* msg){
-	unsigned long response_id = E_OE_SENSOR_DATA;
-	MOeSensorData* response = new MOeSensorData(this, msg->kar);
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleOeValveState(KarBusMessage* msg){
-	unsigned long response_id = E_OE_VALVE_STATE;
-	MOeValveState* response = new MOeValveState(this, msg->kar);
-	response->state = MOeValveState::CLOSED;
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleSensorType(KarBusMessage* msg){
-	unsigned long response_id = E_OE_SENSOR_TYPE;
-	MOeSensorType* response = new MOeSensorType(this, msg->kar);
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleKarValveState(KarBusMessage* msg){
-	unsigned long response_id = E_KAR_VALVE_STATE;
-	MKarValveState* response = new MKarValveState(this, msg->kar);
-	response->valve = MKarValveState::INTAKE;
-	response->state = MKarValveState::CLOSED;
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::busHandleKarOeList(KarBusMessage* msg){
-	unsigned long response_id = E_KAR_OE_LIST;
-	MKarOeList* response = new MKarOeList(this, msg->kar);
-	msg->sender->send(response_id,response);
-}
-
-void KarBus::constructMessage(const char* message, char address, char len){
-	data_[0] = address;
-	data_[1] = masterAddr_;
-	for(int i = 0; i < len; ++i){
-		data_[i+2] = message[i];
-	}
-}
-

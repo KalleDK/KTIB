@@ -121,7 +121,7 @@ bool RS485::parityCheck(char &ch, bool parity) {
 			parity = (parity ? false : true);
 		}
 	}
-	cout << "Char: \t" << (int)ch << " Parity: " << parity << endl; 
+//	cout << "Char: \t" << (int)ch << " Parity: " << parity << endl; 
 	return parity;
 }
 
@@ -129,7 +129,7 @@ int RS485::getChar(char &ch, bool &address) {
 	int readRetur;
 	bool parity = true;
 	address = parityWatcher_;
-	cout << "Reveicer in parity: " << (int)(tio_.c_cflag & PARODD) << "  ";
+//	cout << "Reveicer in parity: " << (int)(tio_.c_cflag & PARODD) << "  ";
 	readRetur = read(tty_fd_, &ch, 1);
 	if(ch == 0xFF){
 		readRetur = read(tty_fd_, &ch, 1);
@@ -279,7 +279,7 @@ void RS485::initBuffer() {
 }
 
 void RS485::RS485send(Bus_Message* txMessage) {
-	cout << "RS485: I am preparing the message" << endl;
+//	cout << "RS485: I am preparing the message" << endl;
 	rxBuffer_[0] = txMessage->rxAddr;
 	rxBuffer_[1] = txMessage->txAddr;
 	rxBuffer_[2] = txMessage->len;
@@ -287,14 +287,14 @@ void RS485::RS485send(Bus_Message* txMessage) {
 	for(int i = 0; i < rxBuffer_[2]; ++i) {
 		rxBuffer_[i + 4] = txMessage->args[i];
 	}
-	cout << "RS485: I am sending" << endl;
+//	cout << "RS485: I am sending" << endl;
 	sendPacket(rxBuffer_, 4 + rxBuffer_[2]);
 }
 
 bool RS485::RS485read(Bus_Message* rxMessage) {
 	for(int i = 0; !getMessage(rxBuffer_) && i < 10; i++) {
 		getPacket();
-		usleep(1000);
+		usleep(10);
 		if(i == 9)
 			return false;
 	} 

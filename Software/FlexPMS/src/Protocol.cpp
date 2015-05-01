@@ -13,8 +13,6 @@ enum {
 	RES_KAR_PUMPE,
 	REQ_KAR_OPRET,
 	RES_KAR_OPRET,
-	REQ_KAR_READY,
-	RES_KAR_READY,
 	REQ_KAR_OE_LIST,
 	RES_KAR_OE_LIST,
 	REQ_KAR_OE_SENSOR_DATA,
@@ -23,6 +21,8 @@ enum {
 	RES_KAR_OE_VENTIL,
 	REQ_KAR_OE_SENSOR_TYPE,
 	RES_KAR_OE_SENSOR_TYPE,
+	REQ_KAR_READY,
+	RES_KAR_READY,
 };
 
 Protocol::Protocol(RS485* comPort, unsigned char masterAddr) : comPortPtr_(comPort), masterAddr_(masterAddr) {

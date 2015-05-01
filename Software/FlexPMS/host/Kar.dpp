@@ -1,0 +1,2 @@
+host/Kar.o: src/Kar.cpp src/Kar.h
+	${CXX} -c -o $@ $< ${CXXFLAGS}
