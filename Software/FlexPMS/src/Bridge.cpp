@@ -175,7 +175,17 @@ void Bridge::handle_oe_valve_state(MOeValveState* msg) {
 
 
 void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
+    SensorOe* oe;
+    std::vector<MOeSensorData::OeSensorData>::iterator it;
     
+    for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
+        oe = oe_list_.get(it->oe_id);
+        if(oe != NULL) {
+            oe->add_sensor_data(it->sensor_id, it->value);
+        } else {
+            cout << "Bridge: handle_oe_sensor_data() got unknown OE ID: " << it->oe_id << endl;
+        }
+    }
 }
 
 
@@ -344,7 +354,7 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
 
 void Bridge::KarPinger::run() {
     while(1) {
-        bridge_->send(E_PING);
+        //bridge_->send(E_PING);
         ssleep(PING_TIME_SEC);
     }
 }
