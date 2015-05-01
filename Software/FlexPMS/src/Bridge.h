@@ -4,6 +4,7 @@
 #include "Thread.h"
 #include "MessageThread.h"
 #include "KarContainer.h"
+#include "SensorOeContainer.h"
 #include "Message.h"
 #include "events.h"
 
@@ -15,10 +16,13 @@ class Bridge : public MessageThread {
 public:
     Bridge(sql::Connection* db_conn, MessageThread* kar_bus) :
         kar_list_(db_conn),
+        oe_list_(db_conn),
         kar_bus_(kar_bus),
         last_session_id_(0),
         pinger_(this) {
             pinger_.start();
+            kar_list_.reload();
+            oe_list_.reload();
         };
 
 private:
@@ -34,6 +38,7 @@ private:
     // Members
     MessageThread* kar_bus_;
     KarContainer kar_list_;
+    SensorOeContainer oe_list_;
     KarPinger pinger_;
     std::map<unsigned long, MessageThread*> sessions_;
     unsigned long last_session_id_;

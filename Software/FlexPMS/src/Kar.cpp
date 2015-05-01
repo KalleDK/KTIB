@@ -1,7 +1,7 @@
 #include <string>
-#include <sstream>
 #include <cppconn/prepared_statement.h>
 #include "Kar.h"
+
 
 using namespace std;
 

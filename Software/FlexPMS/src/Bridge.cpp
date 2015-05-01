@@ -15,7 +15,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
         // -- EVENTS FROM KarPinger ---------------------------------------- //
         
         case E_PING:
-            //cout << "Bridge recieved: E_PING" << endl;
+            cout << "Bridge recieved: E_PING" << endl;
             handle_ping();
             break;
         
@@ -109,22 +109,20 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
 
 void Bridge::handle_ping() {
     Kar* kar;
-    KarBusMessage* msg;
-    time_t now = time(NULL);
+    SensorOe* oe;
     
     kar_list_.iter();
-    
     while(kar = kar_list_.next()) {
-        // Send PING command
-        msg = new KarBusMessage(this, kar);
-        msg->setData(to_string(0xA));
-        //kar_bus_->send(E_PING_REQ, msg);
+        MKarGetSensorData* msg1 = new MKarGetSensorData(this, kar);
+        kar_bus_->send(E_KAR_GET_SENSOR_DATA, msg1);
         
-        // Register PING on Kar and handle unanswered PINGs
-        kar->last_ping_sent = now;
-        kar->unanswered_pings++;
-        if(kar->unanswered_pings > PING_COUNT_TIMEOUT) {
-            kar->status = OFFLINE;
+        oe_list_.iter();
+        while(oe = oe_list_.next()) {
+            if(oe->kar_id == kar->id) {
+                MOeGetSensorData* msg2 = new MOeGetSensorData(this, kar);
+                msg2->oe_id = oe->id;
+                kar_bus_->send(E_OE_GET_SENSOR_DATA, msg2);
+            }
         }
     }
 }
@@ -146,12 +144,23 @@ void Bridge::handle_kar_oe_list(MKarOeList* msg) {
 
 
 void Bridge::handle_kar_sensor_data(MKarSensorData* msg) {
+    std::vector<MKarSensorData::KarSensorData>::iterator it;
     
+    for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
+        it->sensor_id;
+        it->value;
+    }
 }
 
 
 void Bridge::handle_kar_valve_state(MKarValveState* msg) {
+    Kar* kar = msg->kar;
+    bool status = (msg->state == MKarValveState::OPEN);
     
+    if(msg->valve == MKarValveState::INTAKE)
+        msg->kar->set_ivalvestatus(status);
+    else if(msg->valve == MKarValveState::OUTTAKE)
+        msg->kar->set_ovalvestatus(status);
 }
 
 
@@ -198,6 +207,7 @@ void Bridge::handle_bye(SessionMessage* msg) {
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    SensorOe* oe;
     
     if(kar == NULL) {
         cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -205,10 +215,15 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     }
     
     // FOR EACH OE - SET VALVE STATE (open)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-    vmsg->oe_id = 4;
-    vmsg->state = MOeSetValveState::OPEN;
-    kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+    oe_list_.iter();
+    while(oe = oe_list_.next()) {
+        if(oe->kar_id == kar->id) {
+            MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
+            vmsg->oe_id = oe->id;
+            vmsg->state = MOeSetValveState::OPEN;
+            kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+        }
+    }
     
     // SET PUMP STATE ON KAR
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
@@ -221,6 +236,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    SensorOe* oe;
     
     if(kar == NULL) {
         cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -228,10 +244,15 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
     }
     
     // FOR EACH OE - SET VALVE STATE (closed)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-    vmsg->oe_id = 4;
-    vmsg->state = MOeSetValveState::CLOSED;
-    kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+    oe_list_.iter();
+    while(oe = oe_list_.next()) {
+        if(oe->kar_id == kar->id) {
+            MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
+            vmsg->oe_id = oe->id;
+            vmsg->state = MOeSetValveState::CLOSED;
+            kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+        }
+    }
     
     // SET PUMP STATE ON KAR
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
