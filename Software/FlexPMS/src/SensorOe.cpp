@@ -19,3 +19,18 @@ void SensorOe::set_valvestatus(bool s) {
     
     delete pstmt;
 }
+
+
+void SensorOe::add_sensor_data(int type, double value) {
+    sql::PreparedStatement *pstmt;
+    std::string query;
+    
+    query = "UPDATE OeSensorData SET type = ?, measure = ? WHERE oeid = ?";
+    pstmt = db_conn_->prepareStatement(query);
+    pstmt->setInt(1, type);
+    pstmt->setDouble(2, value);
+    pstmt->setInt(3, id);
+    pstmt->executeUpdate();
+    
+    delete pstmt;
+}
