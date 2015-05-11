@@ -39,5 +39,80 @@ Nedenfor ses koden til pH-proben. Koden er klar til at blive implementeret i kar
 
 \lstinputlisting[language=c]{HardwareArkitektur/Sensore/kode/pH_kode.txt} 
 
+\subsection{Støj}
+
+For at få en præcis måling vælger vi at analysere proben for dens støj. Dette gøres ved at lave et nyt PSoC projekt. I Mixed Signal Electronic's har vi arbejdet med dette og vi kopierer derfor et kredsløb derfra. Det skal dog siges at projektet er til PSoC5 og her i Projektet bruger vi en PSoC4. PSoC5 har den fordel at den har en DeltaSigma ADC som er bedre til at sample lavfrekvente signaler. I PSoC4 er den eneste mulig hed en SAR converter. På figur \ref{photo:Topdesign_stoj} ses topdesignet i PSoC creator. 
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{HardwareArkitektur/Sensore/pH_probe_billeder/Topdesign_stoj.png}
+	\caption{Topdesign i PSoC creator over kredsløbet til støjmåling}
+	\label{photo:Topdesign_stoj}
+\end{figure} 
+
+For at kunne beregne støjen fra proben skal vi måle dens indre modstang og derefter bruge Johnson Nyquist formel for termisk støj. 
+$$ V_n = \sqrt{4*K*T*R*\Delta f} $$
+
+For at måle den indre modstand i proben kobler vi den med en buffer i PSoC4. Vi prøvede at måle selve indgangsimpedansen i bufferen da den ikke var opgivet i databladet. Dette var desværre ikke muligt da støj på indgangen fik den til at klippe på udgangen. Vi antager derfor at indgangsimpedansen er uendelig og kan for at måle udgangsspændingen ubelastet, vi opstiller kredsløbet i figur \ref{photo:Non_inv_buf}. 
+
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=1]{HardwareArkitektur/Sensore/pH_probe_billeder/Non_inverting_buffer.png}
+	\caption{Non-inverting buffer}
+	\label{photo:Non_inv_buf}
+\end{figure} 
+
+Der måltes 178mV på udgangen af bufferen med proben sat ned i en buffervæske med en pH-værdi på 4. Derefter blev proben sat direkte i oscilloskopet som har en indgangsimpedans på 1M\ohm . Nedenstående kredsløb opstilles for denne måling figur \ref{photo:Kredslob_RI}. 
+
+
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=1]{HardwareArkitektur/Sensore/pH_probe_billeder/Kredslob_RI.png}
+	\caption{Diagram over den indre modstand}
+	\label{photo:Kredslob_RI}
+\end{figure} 
+
+Vi udregner med ohms lov den indre modstand til at være 9.5M\ohm . Vi kan derfor udregne støjbidraget til at være
+$$ V_n = \sqrt{4*1.3806488*10^{-23}*297*9.5*10^{6}*100} = 3.9uV $$
+Selve bufferen har også et støjstrøms bidrag som vil resultere i en støjspænding over modstanden i proben. Vi har i MSE øvelse 5 arbejdet med disse støjstrømme og kan pga. viden derfra antage at bufferen bidrager med $5pA$ i støjstrøm. I PSoC bruger vi et digitalt filter på 100Hz. Vi ville gerne have kørt det ned til 1Hz, men det mindste vi kunne implementere var 100Hz.
+$$ V_n = I_{rms}*R_i*\sqrt{\Delta f} = 5pA*9.5M\ohm *\sqrt{100} = 475uV $$
+Støj fra bufferen:
+$$ V_n = 1.3uV * \sqrt{100} = 13uV $$
+Støj fra ADC'en:
+$$ V_n = 10uV * \sqrt{100} = 100uV $$
+For at addere støjbidragene adderer vi dem kvadratisk da vores værdier er RMS støj:
+$$ V_{ntot} = \sqrt{3.9uV^2 + 475uV^2 + 13uV^2 + 100uV^2} = 485uV $$
+Det ses at det største og mest betydende støjbidrag er støjstrømmen fra bufferen. 
+
+\subsubsection{Måling af støj}
+
+For at måle støjen åbner vi teraterm og udlæser værdien. I projektet er der lavet funktioner til at skrive støjværdierne ud. For at måle den samlede støj sættes proben ned i en buffervæske med pH-værdi = 4. På figur \ref{photo:stoj_teraterm} ses en måling af den samlede støj på ca 4.8mV.
+
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=1]{HardwareArkitektur/Sensore/pH_probe_billeder/stoj_teraterm.png}
+	\caption{Udlæsning på teraterm}
+	\label{photo:stoj_teraterm}
+\end{figure} 
+
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.9]{HardwareArkitektur/Sensore/pH_probe_billeder/stoj_oscilloscope.png}
+	\caption{Måling fra DAC'en på scopet}
+	\label{photo:stoj_scope}
+\end{figure} 
+
+\subsubsection{Responstid}
+For at måle responstiden, sættes proben i en buffer 7 og derefter direkte over i en buffer 4. Da H+ ionerne stadig vil sidde på proben når den trækkes op af buffer 7, sker der først en reaktion når den kommer ned i buffer 4.  Denne respons ses på figur \ref{photo:respons} . Her aflæses responstiden til 1.4 sekunder.
+
+ \begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{HardwareArkitektur/Sensore/pH_probe_billeder/respons.png}
+	\caption{Responstiden fra proben}
+	\label{photo:respons}
+\end{figure} 
+
+\subsubsection{Konklusion}
+Vi så i denne del at vores beregnede støj var ca en faktor 10 større ved realiseringen end beregningerne. Dette kan skyldes at der er støj i tilledningerne da vi arbejder med ekstremt høje impedanser. Vi kan hermed konkludere at ved meget høje impedanser bliver ens udstyr meget støjfølsomt og det er derfor vigtigt at tage det med i beregningerne når der udlægges print, samt ved beslutning om hvilken terminering der skal benyttes. 
+
 
 
