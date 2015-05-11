@@ -29,6 +29,11 @@ while 1:
     print '3. Close I valve'
     print '4. Open O valve'
     print '5. Close O valve'
+    print '6. OE Sensor Read'
+    print '7. KAR sensor Read'
+    print '8. RDY Read'
+    print '9. OE list Read'
+    print '10. Sensor type Read'
     var = raw_input('choice: ')
     
     if var == '1':
@@ -41,3 +46,13 @@ while 1:
         send('OVALVEOPEN %d' % kar_id)
     elif var == '5':
         send('OVALVECLOSE %d' % kar_id)
+    elif var == '6':
+        send('OEREAD %d' % kar_id)
+    elif var == '7':
+        send('KARREAD %d' % kar_id)
+    elif var == '8':
+        send('RDYREAD %d' % kar_id)
+    elif var == '9':
+        send('OELIST %d' % kar_id)
+    elif var == '10':
+        send('SENSORTYPE %d' % kar_id)

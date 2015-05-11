@@ -5,6 +5,8 @@ using namespace std;
 
 enum {
 	REQ_KAR_NONE = 0,
+	REQ_KAR_READY,
+	RES_KAR_READY,
 	REQ_KAR_SENSOR_DATA,
 	RES_KAR_SENSOR_DATA,
 	REQ_KAR_VENTIL,
@@ -21,8 +23,6 @@ enum {
 	RES_KAR_OE_VENTIL,
 	REQ_KAR_OE_SENSOR_TYPE,
 	RES_KAR_OE_SENSOR_TYPE,
-	REQ_KAR_READY,
-	RES_KAR_READY,
 };
 
 Protocol::Protocol(RS485* comPort, unsigned char masterAddr) : comPortPtr_(comPort), masterAddr_(masterAddr) {

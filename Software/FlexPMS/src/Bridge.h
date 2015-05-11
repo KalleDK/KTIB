@@ -70,4 +70,11 @@ private:
     void handle_ovalve_close(GuiMessage* msg);
     void handle_ivalve_open(GuiMessage* msg);
     void handle_ivalve_close(GuiMessage* msg);
+    void handle_oe_read(GuiMessage* msg);
+    void handle_kar_read(GuiMessage* msg);
+    void handle_ready_read(GuiMessage* msg);
+    void handle_oe_list_read(GuiMessage* msg);	
+	void handle_sensor_type_read(GuiMessage* msg);	
+
 };
+

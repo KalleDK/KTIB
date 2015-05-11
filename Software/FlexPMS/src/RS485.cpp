@@ -217,6 +217,8 @@ void RS485::getPacket() {
 			cout << "|TX addr \t" << "0x" << (int)buffer_array[0].data[1] << "\t |\n";
 			cout << "|Length  \t" << "0x" << (int)buffer_array[0].data[2] << "\t |\n";
 			cout << "|Command \t" << "0x" << (int)buffer_array[0].data[3] << "\t |\n";
+			for(int i = 0; i < (int)buffer_array[0].data[2]; ++i)
+				cout << "|Args" << i << "     \t" << "0x" << (int)buffer_array[0].data[4+i] << "\t |\n";
 			cout << "--------------------------\n";
 			cout << dec;
 			#endif
@@ -239,10 +241,8 @@ void RS485::sendPacket(char *packet, unsigned int len) {
 	cout << "|TX addr \t" << "0x" << (int)packet[1] << "\t |\n";
 	cout << "|Length  \t" << "0x" << (int)packet[2] << "\t |\n";
 	cout << "|Command \t" << "0x" << (int)packet[3] << "\t |\n";
-	cout << "|Arg1    \t" << "0x" << (int)packet[4] << "\t |\n";
-	cout << "|Arg2    \t" << "0x" << (int)packet[5] << "\t |\n";
-	cout << "|Arg3    \t" << "0x" << (int)packet[6] << "\t |\n";
-	cout << "|Real Len\t" << "0x" << (int)packet[6] << "\t |\n";
+	for(int i = 0; i < (int)packet[2]; ++i)
+		cout << "|Args" << i << "    \t" << "0x" << (int)packet[4+i] << "\t |\n";
 	cout << "--------------------------\n";
 	cout << dec;
 	#endif

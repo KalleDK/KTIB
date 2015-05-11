@@ -47,13 +47,13 @@ void KarBus::eHandleKarSetPumpState(MKarSetPumpState* msg){
 			state = 0;
 			break;
 		case MKarSetPumpState::SLOW :
-			state = 25;
+			state = 1;
 			break;
 		case MKarSetPumpState::MIDDLE :
-			state = 60;
+			state = 2;
 			break;
 		case MKarSetPumpState::FAST :
-			state = 90;
+			state = 3;
 			break;
 		default:
 			break;
@@ -157,10 +157,10 @@ void KarBus::eHandleKarSetValve(MKarSetValveState* msg){
 	}
 	switch(msg->valve) {
 		case MKarSetValveState::INTAKE :
-			state = 1;
+			valve = 1;
 			break;
 		case MKarSetValveState::OUTTAKE :
-			state = 2;
+			valve = 2;
 			break;
 		default:
 			break;

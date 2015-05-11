@@ -92,6 +92,28 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             cout << "Bridge recieved: E_IVALVE_CLOSE" << endl;
             handle_ivalve_close(static_cast<GuiMessage*>(msg));
             break;
+			
+        case E_OE_SENSOR:
+            cout << "Bridge recieved: E_OE_SENSOR" << endl;
+            handle_oe_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_KAR_SENSOR:
+            cout << "Bridge recieved: E_KAR_SENSOR" << endl;
+            handle_kar_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_RDY_REQ:
+            cout << "Bridge recieved: E_RDY_REQ" << endl;
+            handle_ready_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_OE_LIST:
+            cout << "Bridge recieved: E_OE_LIST" << endl;
+            handle_oe_list_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_SENSOR_TYPE:
+            cout << "Bridge recieved: E_SENSOR_TYPE" << endl;
+            handle_sensor_type_read(static_cast<GuiMessage*>(msg));
+            break;
+			
         
         // -- OTHER EVENTS ------------------------------------------------- //
         
@@ -346,6 +368,76 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
     kar->set_ovalvestatus(false);
 }
 
+
+/* -- SESNOR READ -------------------------------------------------------- */
+
+void Bridge::handle_oe_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MOeGetSensorData* kmsg = new MOeGetSensorData(this, kar);
+    kmsg->oe_id = 0x4; 
+    kar_bus_->send(E_OE_GET_SENSOR_DATA, kmsg);
+
+}
+
+void Bridge::handle_kar_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarSensorData* kmsg = new MKarSensorData(this, kar);
+    kar_bus_->send(E_KAR_GET_SENSOR_DATA, kmsg);
+    
+}
+
+void Bridge::handle_ready_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarReady* kmsg = new MKarReady(this, kar);
+    kar_bus_->send(E_KAR_READY, kmsg);
+    
+}
+
+void Bridge::handle_oe_list_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarGetOeList* kmsg = new MKarGetOeList(this, kar);
+    kar_bus_->send(E_KAR_GET_OE_LIST, kmsg);
+    
+}
+
+void Bridge::handle_sensor_type_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MOeGetSensorType* kmsg = new MOeGetSensorType(this, kar);
+	kmsg->oe_id = 0x4;
+	kmsg->sensor_id = 0x1;
+    kar_bus_->send(E_OE_GET_SENSOR_TYPE, kmsg);
+    
+}
 
 /* ------------------------------------------------------------------------- */
 /* -- KAR PINGER ----------------------------------------------------------- */

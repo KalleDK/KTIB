@@ -32,6 +32,11 @@ typedef enum {
     E_IVALVE_CLOSE,     // Close intake valve
     E_OVALVE_OPEN,      // Open outtake valve
     E_OVALVE_CLOSE,     // Close outtake valve
+	E_KAR_SENSOR,
+	E_OE_SENSOR,
+	E_RDY_REQ,
+	E_OE_LIST,
+	E_SENSOR_TYPE,
 } BridgeEvent;
 
 
