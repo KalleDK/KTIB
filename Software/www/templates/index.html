@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
     <style type="text/css">
         body { margin: 0 15px; }
     </style>
@@ -39,11 +40,12 @@
 							{foreach $kars as $kar}
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3">
+										
+										<div class="col-xs-4">
 											<a href="kar.php?id={$kar.id}">{$kar.name}</a>
 										</div>
 										
-										<div class="col-md-6" style="text-align: center;">
+										<div class="col-xs-4" style="text-align: center;">
 											{if $kar.OVALVESTATUS}
 												<span class="label label-warning">Tømmer kar</span>
 											{/if}
@@ -57,14 +59,14 @@
 											{/if}
 										</div>
 										
-										<div class="col-md-3">
+										<div class="col-xs-4">
 											<button onclick="delFunction({$kar.id})" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-											<span class="glyphicon glyphicon-trash"> </span>
-										</button>
+												<span class="glyphicon glyphicon-trash"> </span>
+											</button>
 					  
-										<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm{$kar.id}" style="float: right;" data-toggle="tooltip" data-placement="top" title="Edit name"> 
-											<span class="glyphicon glyphicon-edit"> </span>
-										</button>
+											<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm{$kar.id}" style="float: right;" data-toggle="tooltip" data-placement="top" title="Edit name"> 
+												<span class="glyphicon glyphicon-edit"> </span>
+											</button>
 										</div>
 										
 										
