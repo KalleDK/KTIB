@@ -19,7 +19,7 @@ void KarBus::eHandleKarReady(MKarReady* msg){
 void KarBus::eHandleKarGetSensorData(MKarGetSensorData* msg){
 	unsigned char len;
 	unsigned char data[50];
-	unsigned char tempSensorValue;
+	double tempSensorValue;
 	MKarSensorData::KarSensorData tempPusher;
 	unsigned long response_id;
 	if(karComAVS_.getKarSensorData(msg->kar->address, len, data)) {
@@ -183,7 +183,7 @@ void KarBus::eHandleKarSetValve(MKarSetValveState* msg){
 	}
 }
 
-void KarBus::eHandleKerGetOeList(MKarGetOeList* msg){
+void KarBus::eHandleKerGetOeList(MKarGetOeList* msg) {
 	unsigned long response_id;
 	unsigned char len = 0;
 	unsigned char data[50];
@@ -198,6 +198,17 @@ void KarBus::eHandleKerGetOeList(MKarGetOeList* msg){
 	}
 }
 
+void KarBus::eHandleKarOpretOe(MKarSetOpretOe* msg) {
+	unsigned char oe_id;
+	unsigned long response_id;
+	oe_id = msg->oe_id;
+	if(karComAVS_.opretOeKar(msg->kar->address, oe_id)) {
+		response_id = E_KAR_OPRET_STATE;
+		MKarOpretState* response = new MKarOpretState(this, msg->kar);
+		response->succes = true;
+		msg->sender->send(response_id,response);
+	}
+}
 
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
@@ -235,6 +246,10 @@ void KarBus::dispatch(unsigned long event_id, Message* msg) {
 		case E_KAR_GET_OE_LIST:
 			cout << "KarBus: E_KAR_GET_OE_LIST" << endl;
 			eHandleKerGetOeList(static_cast<MKarGetOeList*>(msg));
+			break;
+		case E_KAR_OPRET_OE:
+			cout << "KarBus: E_KAR_OE_OPRET" << endl;
+			eHandleKarOpretOe(static_cast<MKarSetOpretOe*>(msg));
 			break;
 		default:
 			break;

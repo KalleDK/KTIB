@@ -134,12 +134,12 @@ void Bridge::handle_ping() {
     SensorOe* oe;
     
     kar_list_.iter();
-    while(kar = kar_list_.next()) {
+    while((kar = kar_list_.next())) {
         MKarGetSensorData* msg1 = new MKarGetSensorData(this, kar);
         kar_bus_->send(E_KAR_GET_SENSOR_DATA, msg1);
         
         oe_list_.iter();
-        while(oe = oe_list_.next()) {
+        while((oe = oe_list_.next())) {
             if(oe->kar_id == kar->id) {
                 MOeGetSensorData* msg2 = new MOeGetSensorData(this, kar);
                 msg2->oe_id = oe->id;
@@ -166,11 +166,11 @@ void Bridge::handle_kar_oe_list(MKarOeList* msg) {
 
 
 void Bridge::handle_kar_sensor_data(MKarSensorData* msg) {
+    Kar* kar = msg->kar;
     std::vector<MKarSensorData::KarSensorData>::iterator it;
     
     for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
-        it->sensor_id;
-        it->value;
+		kar->add_sensor_data(it->sensor_id, it->value);
     }
 }
 
@@ -248,7 +248,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     
     // FOR EACH OE - SET VALVE STATE (open)
     oe_list_.iter();
-    while(oe = oe_list_.next()) {
+    while((oe = oe_list_.next())) {
         if(oe->kar_id == kar->id) {
             MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
             vmsg->oe_id = oe->id;
@@ -277,7 +277,7 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
     
     // FOR EACH OE - SET VALVE STATE (closed)
     oe_list_.iter();
-    while(oe = oe_list_.next()) {
+    while((oe = oe_list_.next())) {
         if(oe->kar_id == kar->id) {
             MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
             vmsg->oe_id = oe->id;

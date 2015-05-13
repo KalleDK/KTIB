@@ -14,7 +14,7 @@ public:
     ~DBContainer() {
         T* item;
         iter();
-        while(item = next())
+        while((item = next()))
             delete item;
     };
     

@@ -248,7 +248,7 @@ void RS485::sendPacket(char *packet, unsigned int len) {
 	#endif
 	txEnable(true);
 	sendChar(packet[0], true);
-	for (int i=1; i<len; i++) {
+	for (unsigned int i=1; i<len; i++) {
 		sendChar(packet[i]);
 	}
 	#ifdef RS485DEBUG

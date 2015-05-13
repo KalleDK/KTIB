@@ -56,7 +56,8 @@ bool Protocol::getKarSensorData(unsigned char karID, unsigned char& len, unsigne
 	if(sendAndReceive()){
 		if(rxMessage_->cmd == RES_KAR_SENSOR_DATA) {
 			len = rxMessage_->len;
-			data = rxMessage_->args;
+			for(int i = 0; i < len; ++i)
+				data[i] = rxMessage_->args[i];
 			return true;
 		}
 	}
@@ -85,7 +86,8 @@ bool Protocol::getOeSensorData(unsigned char karID, unsigned char oeID, unsigned
 	if(sendAndReceive()){
 		if(rxMessage_->cmd == RES_KAR_OE_SENSOR_DATA) {
 			len = rxMessage_->len;
-			data = rxMessage_->args;
+			for(int i = 0; i < len; ++i)
+				data[i] = rxMessage_->args[i];
 			return true;
 		}
 	}
@@ -131,7 +133,8 @@ bool Protocol::getKarOelist(unsigned char karID, unsigned char& len, unsigned ch
 	if(sendAndReceive()){
 		if(rxMessage_->cmd == RES_KAR_OE_LIST) {
 			len = rxMessage_->len;
-			data = rxMessage_->args;
+			for(int i = 0; i < len; ++i)
+				data[i] = rxMessage_->args[i];
 			return true;
 		}
 	}
@@ -148,6 +151,21 @@ bool Protocol::getOeSensorType(unsigned char karID, unsigned char oeID, unsigned
 	if(sendAndReceive()){
 		if(rxMessage_->cmd == RES_KAR_OE_SENSOR_TYPE) {
 			fsID = rxMessage_->args[0];
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Protocol::opretOeKar(unsigned char karID, unsigned char& oeID) {
+	txMessage_->rxAddr = karID;
+	txMessage_->txAddr = masterAddr_;
+	txMessage_->len = 1;
+	txMessage_->cmd = REQ_KAR_OPRET;
+	txMessage_->args[0] = oeID;
+	if(sendAndReceive()){
+		if(rxMessage_->cmd == RES_KAR_OPRET) {
+			oeID = rxMessage_->args[0];
 			return true;
 		}
 	}

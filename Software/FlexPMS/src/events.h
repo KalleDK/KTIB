@@ -16,6 +16,7 @@ typedef enum {
     E_KAR_SENSOR_DATA,  // Sends sensor data for a Kar
     E_KAR_VALVE_STATE,  // Sends state of a valve from a Kar (open or closed)
     E_KAR_PUMP_STATE,   // Sends pump state from a Kar (off/on-speed)
+	E_KAR_OPRET_STATE,
     
     E_OE_VALVE_STATE,   // Sends valve state of OE from a Kar (open or closed)
     E_OE_SENSOR_DATA,   // Sends sensor data of OE from a Kar
@@ -47,10 +48,12 @@ typedef enum {
     E_KAR_GET_SENSOR_DATA,  // Get data from sensor connected to Kar
     E_KAR_SET_VALVE_STATE,  // Set state of valve connected to Kar
     E_KAR_SET_PUMP_STATE,   // Set state of pump connected to Kar
+	E_KAR_OPRET_OE,			// Set a new sensor Oe address
     
     E_OE_SET_VALVE_STATE,   // Set state of valve connected to OE
     E_OE_GET_SENSOR_DATA,   // Get data from sensor connected to OE
     E_OE_GET_SENSOR_TYPE,   // Get type of sensor connected to OE
+
 } KarBusEvent;
 
 

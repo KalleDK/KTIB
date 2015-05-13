@@ -25,6 +25,7 @@ class Protocol {
 		bool setKarValve(unsigned char karID, unsigned char& ventilID, unsigned char& state);
 		bool getKarOelist(unsigned char karID, unsigned char& len, unsigned char* data);
 		bool getOeSensorType(unsigned char karID, unsigned char oeID, unsigned char& fsID);
+		bool opretOeKar(unsigned char karID, unsigned char& oeID);
 	private:
 		RS485* comPortPtr_;
 		unsigned char masterAddr_;

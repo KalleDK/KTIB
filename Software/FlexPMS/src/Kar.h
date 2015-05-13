@@ -27,15 +27,15 @@ public:
     KarStatus status;
     
     Kar(sql::Connection* db_conn) : 
-        db_conn_(db_conn),
         unanswered_pings(0),
         last_ping_sent(0), 
-        status(OFFLINE) {};
+        status(OFFLINE),
+		db_conn_(db_conn) {};
     
     void set_mwstatus(bool s);
     void set_ivalvestatus(bool s);
     void set_ovalvestatus(bool s);
-    //void add_sensor_data();
+	void add_sensor_data(int type, double value);
 private:
     sql::Connection* db_conn_;
 };

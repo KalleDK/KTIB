@@ -10,7 +10,7 @@ KarContainer::KarContainer(sql::Connection* db_conn) {
 KarContainer::~KarContainer() {
     Kar* kar;
     iter();
-    while(kar = next())
+    while((kar = next()))
         delete kar;
 }
 

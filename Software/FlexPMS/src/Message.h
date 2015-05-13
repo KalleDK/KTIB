@@ -34,7 +34,7 @@ private:
 
 class KarBusMessage : public Message {
 public:
-    KarBusMessage(MessageThread* s, Kar* k) : kar(k), Message(s) {};
+    KarBusMessage(MessageThread* s, Kar* k) : Message(s), kar(k) {};
     Kar* kar;
 protected:
     char* data_;
@@ -88,7 +88,7 @@ public:
     
     typedef struct {
         unsigned char sensor_id;
-        int value;
+        double value;
     } KarSensorData;
     
     std::vector<KarSensorData> sensor_data;
@@ -278,6 +278,22 @@ public:
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveType valve;
     ValveState state;
+};
+
+// ------------------------------------------------------------------------- //
+
+
+class MKarSetOpretOe : public KarBusMessage {
+public:
+    MKarSetOpretOe(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
+	unsigned char oe_id;
+};
+
+
+class MKarOpretState : public KarBusMessage {
+public:
+    MKarOpretState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
+	bool succes;
 };
 
 

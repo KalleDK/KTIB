@@ -44,4 +44,5 @@ private:
 	void eHandleOeGetSensorType(MOeGetSensorType* msg);
 	void eHandleKarSetValve(MKarSetValveState* msg);
 	void eHandleKerGetOeList(MKarGetOeList* msg);
+	void eHandleKarOpretOe(MKarSetOpretOe* msg);
 };

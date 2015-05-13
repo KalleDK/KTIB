@@ -31,9 +31,10 @@ private:
         SocketClient* client_;
     };
     
-    SocketReader reader_;
+
     MessageThread* bridge_;
     int sock_fd_;
+    SocketReader reader_;
     std::string buffer_;
     unsigned long session_id_;
     

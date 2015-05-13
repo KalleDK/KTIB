@@ -49,3 +49,19 @@ void Kar::set_ovalvestatus(bool s) {
     
     delete pstmt;
 }
+
+
+void Kar::add_sensor_data(int type, double value) {
+    sql::PreparedStatement *pstmt;
+    std::string query;
+    
+    query = "INSERT INTO KarSensorData (KarID, type, measure) VALUES (?, ?, ?)";
+    pstmt = db_conn_->prepareStatement(query);
+    pstmt->setInt(1, id);
+    pstmt->setInt(2, type);
+    pstmt->setDouble(3, value);
+    pstmt->executeUpdate();
+    
+    delete pstmt;
+}
+
