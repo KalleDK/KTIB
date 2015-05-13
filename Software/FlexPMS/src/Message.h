@@ -34,7 +34,7 @@ private:
 
 class KarBusMessage : public Message {
 public:
-    KarBusMessage(MessageThread* s, Kar* k) : kar(k), Message(s) {};
+    KarBusMessage(MessageThread* s, Kar* k) : Message(s), kar(k) {};
     Kar* kar;
 protected:
     char* data_;
@@ -88,7 +88,7 @@ public:
     
     typedef struct {
         unsigned char sensor_id;
-        int value;
+        double value;
     } KarSensorData;
     
     std::vector<KarSensorData> sensor_data;
@@ -151,6 +151,7 @@ public:
     typedef struct {
         unsigned char oe_id;
         unsigned char sensor_id;
+		unsigned char status;
         int value;
     } OeSensorData;
     
@@ -279,14 +280,38 @@ public:
     ValveState state;
 };
 
+// ------------------------------------------------------------------------- //
+
+
+class MKarSetOpretOe : public KarBusMessage {
+public:
+    MKarSetOpretOe(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
+	unsigned char oe_id;
+};
+
+
+class MKarOpretState : public KarBusMessage {
+public:
+    MKarOpretState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
+	bool succes;
+};
+
 
 /* ------------------------------------------------------------------------- */
 /* -- Gui MESSAGES --------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
 
 
+class SessionMessage : public Message {
+public:
+    SessionMessage(MessageThread* s) : Message(s) {};
+    unsigned long session_id;
+};
+
+
 class GuiMessage : public Message {
 public:
-    GuiMessage(MessageThread* s, unsigned int id) : kar_id(id), Message(s) {};
+    GuiMessage(MessageThread* s) : Message(s) {};
     unsigned int kar_id;
+    unsigned long session_id;
 };

@@ -1,5 +1,4 @@
 #pragma once
-#include <map>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +26,6 @@ public:
     void remove_client(int client_sock_fd);
 private:
     MessageThread* bridge_;
-    std::map<int, SocketClient*> clients_;
     int sock_fd_;
     
     void init();

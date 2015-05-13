@@ -7,8 +7,13 @@ enum {
 };
 
 enum {
-	FS_OFFLINE = 0,
-	FS_ONLINE,
+	FS_VALUE_HIGH = 0,
+	FS_VALUE_LOW,
+};
+
+enum {
+	FS_STATUS_OFFLINE = 0,
+	FS_STATUS_ONLINE,
 };
 
 enum {

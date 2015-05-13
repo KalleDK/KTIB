@@ -16,6 +16,7 @@ typedef enum {
     E_KAR_SENSOR_DATA,  // Sends sensor data for a Kar
     E_KAR_VALVE_STATE,  // Sends state of a valve from a Kar (open or closed)
     E_KAR_PUMP_STATE,   // Sends pump state from a Kar (off/on-speed)
+	E_KAR_OPRET_STATE,
     
     E_OE_VALVE_STATE,   // Sends valve state of OE from a Kar (open or closed)
     E_OE_SENSOR_DATA,   // Sends sensor data of OE from a Kar
@@ -24,12 +25,19 @@ typedef enum {
     /*
      * EVENTS FROM Gui
      */
+    E_HELLO,            // SocketClient requesting registration
+    E_BYE,              // SocketClient requesting termination
     E_START_WATERING,   // Start manual watering
     E_STOP_WATERING,    // Stop manual watering
     E_IVALVE_OPEN,      // Open intake valve
     E_IVALVE_CLOSE,     // Close intake valve
     E_OVALVE_OPEN,      // Open outtake valve
     E_OVALVE_CLOSE,     // Close outtake valve
+	E_KAR_SENSOR,
+	E_OE_SENSOR,
+	E_RDY_REQ,
+	E_OE_LIST,
+	E_SENSOR_TYPE,
 } BridgeEvent;
 
 
@@ -40,15 +48,19 @@ typedef enum {
     E_KAR_GET_SENSOR_DATA,  // Get data from sensor connected to Kar
     E_KAR_SET_VALVE_STATE,  // Set state of valve connected to Kar
     E_KAR_SET_PUMP_STATE,   // Set state of pump connected to Kar
+	E_KAR_OPRET_OE,			// Set a new sensor Oe address
     
     E_OE_SET_VALVE_STATE,   // Set state of valve connected to OE
     E_OE_GET_SENSOR_DATA,   // Get data from sensor connected to OE
     E_OE_GET_SENSOR_TYPE,   // Get type of sensor connected to OE
+
 } KarBusEvent;
 
 
 typedef enum {
     E_RECV_DATA,        // Recieved data from socket
     E_SEND_DATA,        // Send data to socket
-    E_KILL,             // Kill connection to client
+    E_KILL,             // Request client to kill itself
+    E_START_SESSION,    // Bridge sends session ID to SocketClient
+    E_STOP_SESSION,     // Bridge tells SocketClient to stop activities
 } GuiEvent;

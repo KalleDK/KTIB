@@ -88,6 +88,11 @@ void  `$INSTANCE_NAME`_SetAddress(uint8 addr)
     `$INSTANCE_NAME`_UART_UartSetRxAddress(addr);
 }
 
+uint8  `$INSTANCE_NAME`_GetAddress()
+{
+    return `$INSTANCE_NAME`_address;
+}
+
 uint8 `$INSTANCE_NAME`_ReadRxStatus()
 {    
     return `$INSTANCE_NAME`_reading_buffer->status;

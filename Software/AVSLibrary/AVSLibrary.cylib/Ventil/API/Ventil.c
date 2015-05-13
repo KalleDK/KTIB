@@ -60,7 +60,7 @@ uint8 `$INSTANCE_NAME`_GetState(void)
     
     void  `$INSTANCE_NAME`_DebugState()
     {
-        printf("`$INSTANCE_NAME` State: 0x%02X\n\r\n\r", `$INSTANCE_NAME`_PIN_Read());
+        printf("`$INSTANCE_NAME` State:\t [ 0x%02X ]\n\r", `$INSTANCE_NAME`_PIN_Read());
     }
 #endif
 /* [] END OF FILE */

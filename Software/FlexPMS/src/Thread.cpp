@@ -10,6 +10,7 @@ void Thread::start() {
 void* Thread::run_thread(void* arg) {
     Thread* obj = (Thread*) arg;
     obj->run();
+	return NULL;
 }
 
 

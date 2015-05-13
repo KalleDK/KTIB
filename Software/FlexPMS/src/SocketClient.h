@@ -16,9 +16,7 @@ public:
     SocketClient(MessageThread* b, int sock_fd) : 
         bridge_(b), 
         sock_fd_(sock_fd),
-        reader_(this) {
-            reader_.start();
-        };
+        reader_(this) {};
     
     int getSockFD() {
         return sock_fd_;
@@ -33,14 +31,18 @@ private:
         SocketClient* client_;
     };
     
-    SocketReader reader_;
+
     MessageThread* bridge_;
     int sock_fd_;
+    SocketReader reader_;
     std::string buffer_;
+    unsigned long session_id_;
     
-    void kill_client();
-    
+    void init();
+    void shutdown();
     void dispatch(unsigned long event_id, Message* msg);
+    void handle_start_session(SessionMessage* msg);
+    void handle_stop_session();
     void handle_kill();
     void handle_send_data(Message* msg);
     void handle_recieve_data(Message* msg);
@@ -61,4 +63,11 @@ private:
     void handle_ivalve_open(std::string args);
     void handle_ivalve_close(std::string args);
     void handle_ivalve_status(std::string args);
+	
+	void handle_oe_sensor_read(std::string args);
+    void handle_kar_sensor_read(std::string args);
+	void handle_kar_ready_read(std::string args);
+	void handle_oe_list_read(std::string args);
+	void handle_sensor_type_read(std::string args);
+
 };

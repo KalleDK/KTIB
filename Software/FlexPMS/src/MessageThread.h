@@ -13,6 +13,7 @@ public:
 protected:
     bool running_;
 private:
+    virtual void init() {};
     virtual void dispatch(unsigned long event_id, Message* msg) = 0;
     MessageQueue queue_;
 };

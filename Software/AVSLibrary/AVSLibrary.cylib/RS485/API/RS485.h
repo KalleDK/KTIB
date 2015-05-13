@@ -68,6 +68,7 @@ typedef struct {
 void  `$INSTANCE_NAME`_Start();
 
 void  `$INSTANCE_NAME`_SetAddress(uint8 addr);
+uint8  `$INSTANCE_NAME`_GetAddress();
 
 uint8 `$INSTANCE_NAME`_ReadRxStatus();
 void  `$INSTANCE_NAME`_GetRxMessage(`$INSTANCE_NAME`_MSG_STRUCT *msg);
