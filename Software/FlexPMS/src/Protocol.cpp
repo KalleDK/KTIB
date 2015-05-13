@@ -109,14 +109,12 @@ bool Protocol::setOeValve(unsigned char karID, unsigned char oeID, unsigned char
 	return false;
 }
 bool Protocol::setKarValve(unsigned char karID, unsigned char &ventilID, unsigned char& state) {
-	cout << "Protocol: Taking parameters to message" << endl;
 	txMessage_->rxAddr = karID;
 	txMessage_->txAddr = masterAddr_;
 	txMessage_->len = 2;
 	txMessage_->cmd = REQ_KAR_VENTIL;
 	txMessage_->args[0] = ventilID;
 	txMessage_->args[1] = state;
-	cout << "Protocol: Done making message sending to RS485" << endl;
 	if(sendAndReceive()){
 		if(rxMessage_->cmd == RES_KAR_VENTIL) {
 			state = rxMessage_->args[0];
