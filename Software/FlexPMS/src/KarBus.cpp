@@ -81,7 +81,7 @@ void KarBus::eHendleOeGetSensorData(MOeGetSensorData* msg){
 	unsigned char tempSensorValue;
 	MOeSensorData::OeSensorData tempPusher;
 	
-	if(karComAVS_.getOeSensorData(msg->kar->address, msg->oe_id, len, data)) {
+	if(karComAVS_.getOeSensorData(msg->kar->address, msg->address, len, data)) {
 		response_id = E_OE_SENSOR_DATA;
 		MOeSensorData* response = new MOeSensorData(this, msg->kar);
 		for(int i = 0; i < len; i = i +4) {
@@ -92,7 +92,7 @@ void KarBus::eHendleOeGetSensorData(MOeGetSensorData* msg){
 			}
 			tempPusher.sensor_id = data[i];
 			tempPusher.status = data[i+1];
-			tempPusher.oe_id = msg->oe_id;
+			tempPusher.address = msg->address;
 			tempPusher.value = tempSensorValue;
 			response->sensor_data.push_back(tempPusher);
 		}
@@ -115,7 +115,7 @@ void KarBus::eHandleOeSetValve(MOeSetValveState* msg){
 			break;
 	}
 	
-	if(karComAVS_.setOeValve(msg->kar->address, msg->oe_id, state)) {
+	if(karComAVS_.setOeValve(msg->kar->address, msg->address, state)) {
 		response_id = E_OE_VALVE_STATE;
 		MOeValveState* response = new MOeValveState(this, msg->kar);
 		if(state == 0) {
@@ -132,9 +132,9 @@ void KarBus::eHandleOeGetSensorType(MOeGetSensorType* msg){
 	unsigned char type = msg->sensor_id;
 	
 	response_id = E_OE_SENSOR_TYPE;
-	if(karComAVS_.getOeSensorType(msg->kar->address, msg->oe_id, type)) {
+	if(karComAVS_.getOeSensorType(msg->kar->address, msg->address, type)) {
 		MOeSensorType* response = new MOeSensorType(this, msg->kar);
-		response->oe_id = msg->oe_id;
+		response->address = msg->address;
 		response->sensor_id = msg->sensor_id;
 		response->sensor_type = type;
 		msg->sender->send(response_id,response);
@@ -192,17 +192,17 @@ void KarBus::eHandleKerGetOeList(MKarGetOeList* msg) {
 		response_id = E_KAR_OE_LIST;
 		MKarOeList* response = new MKarOeList(this, msg->kar);
 		for(int i = 0; i < len; ++i) {
-			response->oe_ids.push_back(data[i]);
+			response->addresses.push_back(data[i]);
 		}
 		msg->sender->send(response_id,response);
 	}
 }
 
 void KarBus::eHandleKarOpretOe(MKarSetOpretOe* msg) {
-	unsigned char oe_id;
+	unsigned char address;
 	unsigned long response_id;
-	oe_id = msg->oe_id;
-	if(karComAVS_.opretOeKar(msg->kar->address, oe_id)) {
+	address = msg->address;
+	if(karComAVS_.opretOeKar(msg->kar->address, address)) {
 		response_id = E_KAR_OPRET_STATE;
 		MKarOpretState* response = new MKarOpretState(this, msg->kar);
 		response->succes = true;

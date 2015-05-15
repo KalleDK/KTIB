@@ -16,7 +16,7 @@ void SensorOeContainer::reload() {
         oe->address = res->getInt("address");
         oe->valvestatus = res->getBoolean("valvestatus");
         
-        map_[oe->id] = oe;
+        map_[oe->address] = oe;
     }
     
     delete res;

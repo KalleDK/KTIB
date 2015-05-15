@@ -47,14 +47,6 @@ protected:
 class MKarReady : public KarBusMessage {
 public:
     MKarReady(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-
-    const char* getData(unsigned int& length) {
-        data_ = new char[2];
-        data_[0] = 0;
-        data_[1] = 0x1; // FIXME Forkert kommando indsat her
-        length = 2;
-        return data_;
-    }
 };
 
 
@@ -71,14 +63,6 @@ public:
 class MKarGetSensorData : public KarBusMessage {
 public:
     MKarGetSensorData(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[2];
-        data_[0] = 0;
-        data_[1] = 0x1;
-        length = 2;
-        return data_;
-    }
 };
 
 
@@ -103,15 +87,6 @@ public:
     MKarSetPumpState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum PumpState { OFF = 0, SLOW = 1, MIDDLE = 2, FAST = 3 };
     PumpState state;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[3];
-        data_[0] = 1;
-        data_[1] = 0x3;
-        data_[2] = state;
-        length = 3;
-        return data_;
-    }
 };
 
 
@@ -129,18 +104,8 @@ public:
 class MOeGetSensorData : public KarBusMessage {
 public:
     MOeGetSensorData(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[4];
-        data_[0] = 1;
-        data_[1] = 0x5;
-        data_[2] = oe_id;
-        data_[3] = sensor_id;
-        length = 4;
-        return data_;
-    }
 };
 
 
@@ -149,7 +114,7 @@ public:
     MOeSensorData(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     
     typedef struct {
-        unsigned char oe_id;
+        unsigned char address;
         unsigned char sensor_id;
 		unsigned char status;
         int value;
@@ -167,17 +132,7 @@ public:
     MOeSetValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
-    unsigned char oe_id;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[4];
-        data_[0] = 1;
-        data_[1] = 0x7;
-        data_[2] = oe_id;
-        data_[3] = state;
-        length = 4;
-        return data_;
-    }
+    unsigned char address;
 };
 
 
@@ -196,25 +151,15 @@ public:
 class MOeGetSensorType : public KarBusMessage {
 public:
     MOeGetSensorType(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[4];
-        data_[0] = 1;
-        data_[1] = 0x9;
-        data_[2] = oe_id;
-        data_[3] = sensor_id;
-        length = 4;
-        return data_;
-    }
 };
 
 
 class MOeSensorType : public KarBusMessage {
 public:
     MOeSensorType(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
     unsigned char sensor_type;
 };
@@ -228,15 +173,6 @@ public:
     MKarGetOeList(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[3];
-        data_[0] = 1;
-        data_[1] = 0xD;
-        data_[3] = state;
-        length = 3;
-        return data_;
-    }
 };
 
 
@@ -244,7 +180,7 @@ class MKarOeList : public KarBusMessage {
 public:
     MKarOeList(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     
-    std::vector<unsigned char> oe_ids;
+    std::vector<unsigned char> addresses;
 };
 
 
@@ -258,16 +194,6 @@ public:
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveType valve;
     ValveState state;
-    
-    const char* getData(unsigned int& length) {
-        data_ = new char[4];
-        data_[0] = 2;
-        data_[1] = 0xB;
-        data_[2] = valve;
-        data_[3] = state;
-        length = 4;
-        return data_;
-    }
 };
 
 
@@ -286,7 +212,7 @@ public:
 class MKarSetOpretOe : public KarBusMessage {
 public:
     MKarSetOpretOe(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-	unsigned char oe_id;
+	unsigned char address;
 };
 
 
@@ -313,5 +239,6 @@ class GuiMessage : public Message {
 public:
     GuiMessage(MessageThread* s) : Message(s) {};
     unsigned int kar_id;
+    unsigned int oe_id;
     unsigned long session_id;
 };

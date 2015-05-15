@@ -63,6 +63,8 @@ private:
     void handle_ivalve_open(std::string args);
     void handle_ivalve_close(std::string args);
     void handle_ivalve_status(std::string args);
+    
+    void handle_add_sensor_oe(std::string args);
 	
 	void handle_oe_sensor_read(std::string args);
     void handle_kar_sensor_read(std::string args);
