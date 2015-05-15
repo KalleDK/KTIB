@@ -239,5 +239,6 @@ class GuiMessage : public Message {
 public:
     GuiMessage(MessageThread* s) : Message(s) {};
     unsigned int kar_id;
+    unsigned int oe_id;
     unsigned long session_id;
 };

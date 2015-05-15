@@ -248,6 +248,46 @@ void SocketClient::handle_ovalve_close(string args) {
     }
 }
 
+
+/* -- ADD/REMOVE SENSOR OE ------------------------------------------------- */
+
+
+void SocketClient::handle_add_sensor_oe(string args) {
+    size_t space = args.find(' ');
+    
+    if(space < 1) {
+        SessionMessage* msg = new SessionMessage(this);
+        msg->session_id = session_id_;
+        
+        cout << "SocketClient ignoring ADDSENSOROE. Invalid arguments: " << args << endl;
+        bridge_->send(E_BYE, msg);
+        shutdown();
+        return;
+    }
+        
+    string kar_id_str = args.substr(0, space);
+    string oe_id_str = args.substr(space+1);
+    
+    int kar_id = atoi(kar_id_str.c_str());
+    int oe_id = atoi(oe_id_str.c_str());
+    
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->oe_id = oe_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_OVALVE_OPEN, msg);
+    } else {
+        cout << "SocketClient ignoring OVALVEOPEN. Invalid KarID given: " << args << endl;
+    }
+}
+
+
+
+
+
+
+
 /* -- Sensor read out -------------------------------------------------------- */
 
 void SocketClient::handle_oe_sensor_read(string args) {
