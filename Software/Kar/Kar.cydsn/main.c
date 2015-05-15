@@ -304,6 +304,7 @@ int main(void)
     Pumpe_Start();
     Indloeb_Start();
     Afloeb_Start();
+    pHProbe_Start();
     
     CyGlobalIntEnable;
     

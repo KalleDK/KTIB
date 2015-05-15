@@ -3,7 +3,7 @@
 <!--This file is machine generated and read. It is not intended to be edited by hand.-->
 <!--Due to this, there is no schema for this file.-->
 <CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspc" version="5" xml_contents_version="3" name="AVSLibrary" persistent="" platform="NOT_USED">
-<current_project name=".\SensorBus Dummy.cydsn\SensorBus Dummy.cyprj" />
+<current_project name=".\pHProbe dummy.cydsn\pHProbe dummy.cyprj" />
 <wrkspc_folders />
 <files />
 <projects>
@@ -14,6 +14,7 @@
 <v>.\Debug Tester.cydsn\Debug Tester.cyprj</v>
 <v>.\SensorBus Dummy.cydsn\SensorBus Dummy.cyprj</v>
 <v>.\RS485 Dummy.cydsn\RS485 Dummy.cyprj</v>
+<v>.\pHProbe dummy.cydsn\pHProbe dummy.cyprj</v>
 </projects>
 <workspace_id v="f0186140-c9b4-4cf5-87d3-4f416eee95ca" />
 <WriteAppVersionLastSavedWith v="3.1.0.2177" />
