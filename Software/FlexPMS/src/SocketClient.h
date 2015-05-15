@@ -31,9 +31,10 @@ private:
         SocketClient* client_;
     };
     
-    SocketReader reader_;
+
     MessageThread* bridge_;
     int sock_fd_;
+    SocketReader reader_;
     std::string buffer_;
     unsigned long session_id_;
     
@@ -62,4 +63,11 @@ private:
     void handle_ivalve_open(std::string args);
     void handle_ivalve_close(std::string args);
     void handle_ivalve_status(std::string args);
+	
+	void handle_oe_sensor_read(std::string args);
+    void handle_kar_sensor_read(std::string args);
+	void handle_kar_ready_read(std::string args);
+	void handle_oe_list_read(std::string args);
+	void handle_sensor_type_read(std::string args);
+
 };

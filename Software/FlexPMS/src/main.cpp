@@ -8,6 +8,7 @@
 #include <cppconn/statement.h>
 
 // Project includes
+#include "defines.h"
 #include "Bridge.h"
 #include "KarBus.h"
 #include "SocketServer.h"

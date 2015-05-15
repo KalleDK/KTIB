@@ -146,6 +146,16 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
         handle_ovalve_open(args);
     } else if(cmd == "OVALVECLOSE") {
         handle_ovalve_close(args);
+    } else if(cmd == "OEREAD") {
+        handle_oe_sensor_read(args);
+    } else if(cmd == "KARREAD") {
+        handle_kar_sensor_read(args);
+    } else if(cmd == "RDYREAD") {
+        handle_kar_ready_read(args);
+    } else if(cmd == "OELIST") {
+        handle_oe_list_read(args);
+    } else if(cmd == "SENSORTYPE") {
+        handle_sensor_type_read(args);
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }
@@ -237,6 +247,70 @@ void SocketClient::handle_ovalve_close(string args) {
         cout << "SocketClient ignoring OVALVECLOSE. Invalid KarID given: " << args << endl;
     }
 }
+
+/* -- Sensor read out -------------------------------------------------------- */
+
+void SocketClient::handle_oe_sensor_read(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_OE_SENSOR, msg);
+    } else {
+        cout << "SocketClient ignoring OEREAD. Invalid KarID given: " << args << endl;
+    }
+}
+
+
+void SocketClient::handle_kar_sensor_read(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_KAR_SENSOR, msg);
+    } else {
+        cout << "SocketClient ignoring KARREAD. Invalid KarID given: " << args << endl;
+    }
+}
+
+void SocketClient::handle_kar_ready_read(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_RDY_REQ, msg);
+    } else {
+        cout << "SocketClient ignoring READYREAD. Invalid KarID given: " << args << endl;
+    }
+}
+
+void SocketClient::handle_oe_list_read(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_OE_LIST, msg);
+    } else {
+        cout << "SocketClient ignoring OELIST. Invalid KarID given: " << args << endl;
+    }
+}
+
+void SocketClient::handle_sensor_type_read(string args) {
+    int kar_id = atoi(args.c_str());
+    if(kar_id != 0) {
+        GuiMessage* msg = new GuiMessage(this);
+        msg->kar_id = kar_id;
+        msg->session_id = session_id_;
+        bridge_->send(E_SENSOR_TYPE, msg);
+    } else {
+        cout << "SocketClient ignoring SENSORTYPE. Invalid KarID given: " << args << endl;
+    }
+}
+
 
 
 /* ------------------------------------------------------------------------- */

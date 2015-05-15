@@ -15,7 +15,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
         // -- EVENTS FROM KarPinger ---------------------------------------- //
         
         case E_PING:
-            //cout << "Bridge recieved: E_PING" << endl;
+            cout << "Bridge recieved: E_PING" << endl;
             handle_ping();
             break;
         
@@ -92,6 +92,28 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             cout << "Bridge recieved: E_IVALVE_CLOSE" << endl;
             handle_ivalve_close(static_cast<GuiMessage*>(msg));
             break;
+			
+        case E_OE_SENSOR:
+            cout << "Bridge recieved: E_OE_SENSOR" << endl;
+            handle_oe_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_KAR_SENSOR:
+            cout << "Bridge recieved: E_KAR_SENSOR" << endl;
+            handle_kar_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_RDY_REQ:
+            cout << "Bridge recieved: E_RDY_REQ" << endl;
+            handle_ready_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_OE_LIST:
+            cout << "Bridge recieved: E_OE_LIST" << endl;
+            handle_oe_list_read(static_cast<GuiMessage*>(msg));
+            break;
+        case E_SENSOR_TYPE:
+            cout << "Bridge recieved: E_SENSOR_TYPE" << endl;
+            handle_sensor_type_read(static_cast<GuiMessage*>(msg));
+            break;
+			
         
         // -- OTHER EVENTS ------------------------------------------------- //
         
@@ -109,22 +131,20 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
 
 void Bridge::handle_ping() {
     Kar* kar;
-    KarBusMessage* msg;
-    time_t now = time(NULL);
+    SensorOe* oe;
     
     kar_list_.iter();
-    
-    while(kar = kar_list_.next()) {
-        // Send PING command
-        msg = new KarBusMessage(this, kar);
-        msg->setData(to_string(0xA));
-        //kar_bus_->send(E_PING_REQ, msg);
+    while((kar = kar_list_.next())) {
+        MKarGetSensorData* msg1 = new MKarGetSensorData(this, kar);
+        kar_bus_->send(E_KAR_GET_SENSOR_DATA, msg1);
         
-        // Register PING on Kar and handle unanswered PINGs
-        kar->last_ping_sent = now;
-        kar->unanswered_pings++;
-        if(kar->unanswered_pings > PING_COUNT_TIMEOUT) {
-            kar->status = OFFLINE;
+        oe_list_.iter();
+        while((oe = oe_list_.next())) {
+            if(oe->kar_id == kar->id) {
+                MOeGetSensorData* msg2 = new MOeGetSensorData(this, kar);
+                msg2->oe_id = oe->id;
+                kar_bus_->send(E_OE_GET_SENSOR_DATA, msg2);
+            }
         }
     }
 }
@@ -146,12 +166,23 @@ void Bridge::handle_kar_oe_list(MKarOeList* msg) {
 
 
 void Bridge::handle_kar_sensor_data(MKarSensorData* msg) {
+    Kar* kar = msg->kar;
+    std::vector<MKarSensorData::KarSensorData>::iterator it;
     
+    for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
+		kar->add_sensor_data(it->sensor_id, it->value);
+    }
 }
 
 
 void Bridge::handle_kar_valve_state(MKarValveState* msg) {
+    Kar* kar = msg->kar;
+    bool status = (msg->state == MKarValveState::OPEN);
     
+    if(msg->valve == MKarValveState::INTAKE)
+        msg->kar->set_ivalvestatus(status);
+    else if(msg->valve == MKarValveState::OUTTAKE)
+        msg->kar->set_ovalvestatus(status);
 }
 
 
@@ -166,7 +197,17 @@ void Bridge::handle_oe_valve_state(MOeValveState* msg) {
 
 
 void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
+    SensorOe* oe;
+    std::vector<MOeSensorData::OeSensorData>::iterator it;
     
+    for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
+        oe = oe_list_.get(it->oe_id);
+        if(oe != NULL) {
+            oe->add_sensor_data(it->sensor_id, it->value);
+        } else {
+            cout << "Bridge: handle_oe_sensor_data() got unknown OE ID: " << it->oe_id << endl;
+        }
+    }
 }
 
 
@@ -198,6 +239,7 @@ void Bridge::handle_bye(SessionMessage* msg) {
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    SensorOe* oe;
     
     if(kar == NULL) {
         cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -205,10 +247,15 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     }
     
     // FOR EACH OE - SET VALVE STATE (open)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-    vmsg->oe_id = 4;
-    vmsg->state = MOeSetValveState::OPEN;
-    kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+    oe_list_.iter();
+    while((oe = oe_list_.next())) {
+        if(oe->kar_id == kar->id) {
+            MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
+            vmsg->oe_id = oe->id;
+            vmsg->state = MOeSetValveState::OPEN;
+            kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+        }
+    }
     
     // SET PUMP STATE ON KAR
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
@@ -221,6 +268,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    SensorOe* oe;
     
     if(kar == NULL) {
         cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -228,10 +276,15 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
     }
     
     // FOR EACH OE - SET VALVE STATE (closed)
-    MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-    vmsg->oe_id = 4;
-    vmsg->state = MOeSetValveState::CLOSED;
-    kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+    oe_list_.iter();
+    while((oe = oe_list_.next())) {
+        if(oe->kar_id == kar->id) {
+            MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
+            vmsg->oe_id = oe->id;
+            vmsg->state = MOeSetValveState::CLOSED;
+            kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+        }
+    }
     
     // SET PUMP STATE ON KAR
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
@@ -253,7 +306,7 @@ void Bridge::handle_ivalve_open(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -270,7 +323,7 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::INTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -290,7 +343,7 @@ void Bridge::handle_ovalve_open(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::OPEN;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -307,7 +360,7 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
         return;
     }
     
-    MKarSetValveState* kmsg = new MKarSetValveState(this, NULL);
+    MKarSetValveState* kmsg = new MKarSetValveState(this, kar);
     kmsg->valve = MKarSetValveState::OUTTAKE;
     kmsg->state = MKarSetValveState::CLOSED;
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
@@ -316,6 +369,76 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
 }
 
 
+/* -- SESNOR READ -------------------------------------------------------- */
+
+void Bridge::handle_oe_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MOeGetSensorData* kmsg = new MOeGetSensorData(this, kar);
+    kmsg->oe_id = 0x4; 
+    kar_bus_->send(E_OE_GET_SENSOR_DATA, kmsg);
+
+}
+
+void Bridge::handle_kar_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarSensorData* kmsg = new MKarSensorData(this, kar);
+    kar_bus_->send(E_KAR_GET_SENSOR_DATA, kmsg);
+    
+}
+
+void Bridge::handle_ready_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarReady* kmsg = new MKarReady(this, kar);
+    kar_bus_->send(E_KAR_READY, kmsg);
+    
+}
+
+void Bridge::handle_oe_list_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MKarGetOeList* kmsg = new MKarGetOeList(this, kar);
+    kar_bus_->send(E_KAR_GET_OE_LIST, kmsg);
+    
+}
+
+void Bridge::handle_sensor_type_read(GuiMessage* msg) {
+    Kar* kar = kar_list_.get(msg->kar_id);
+    
+    if(kar == NULL) {
+        cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        return;
+    }
+    
+    MOeGetSensorType* kmsg = new MOeGetSensorType(this, kar);
+	kmsg->oe_id = 0x4;
+	kmsg->sensor_id = 0x1;
+    kar_bus_->send(E_OE_GET_SENSOR_TYPE, kmsg);
+    
+}
+
 /* ------------------------------------------------------------------------- */
 /* -- KAR PINGER ----------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
@@ -323,7 +446,7 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
 
 void Bridge::KarPinger::run() {
     while(1) {
-        bridge_->send(E_PING);
+        //bridge_->send(E_PING);
         ssleep(PING_TIME_SEC);
     }
 }
