@@ -251,7 +251,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     while((oe = oe_list_.next())) {
         if(oe->kar_id == kar->id) {
             MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-            vmsg->address = oe->id;
+            vmsg->address = oe->address;
             vmsg->state = MOeSetValveState::OPEN;
             kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
         }
