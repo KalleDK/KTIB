@@ -12,6 +12,10 @@ $s->karID = $_POST['id'];
 
 $s->save();
 
+// New client
+$client = new Client('localhost', 5555);        //PORT 5555
+$client->AddSonsorOe($id, $s->id);
+
 header("Location: kar.php?id=".$id);
 ?>
 

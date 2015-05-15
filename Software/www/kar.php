@@ -22,14 +22,14 @@ if(!$kar->loadFromDB($id))
 // Render page
 $soeer = $kar->getSensorOer();
 
-// Til test!!!!!!!!!!!!!!!!!!!!!
-$sdata = $kar->getSensorData();
-echo $sdata->ph;
-// Til test!!!!!!!!!!!!!!!!!!!!!
 
 $smarty = new Smarty;
 $smarty->assign('soeer', $soeer);
 $smarty->assign('kar', $kar);
+
+
+/********************* ***********************************/
+
 
 /******************** Manual wattering *************************/
 if(array_key_exists('MWSTART',$_POST)){

@@ -44,21 +44,21 @@
 									</tr>
 									<tr>
                                         <td>pH-værdi (0-14)</td>
-                                        <td>---</td>
+                                        <td class="text-center" id="phData"></td>
                                         <td>
                                                 <input name="ph" type="text" class="form-control" id="inputpH3" value="{$kar->ph}">
                                         </td>
 									</tr>
 									<tr>
                                         <td>Vandniveau (l)</td>
-                                        <td>---</td>
+                                        <td class="text-center" id="volumenData"></td>
                                         <td>
                                                 <input name="volumen" type="text" class="form-control" id="inputVand33" value="{$kar->volumen}">
                                         </td>
 									</tr>
 									<tr>
                                         <td>Jordfugtighed (%)</td>
-                                        <td>---</td>
+                                        <td class="text-center" id="humidityData"></td>
                                         <td>
                                                 <input name="humidity" type="text" class="form-control" id="inputJord33" value="{$kar->humidity}">
                                         </td>
@@ -94,10 +94,10 @@
 					</tr>
 						{foreach $soeer as $soe}
 							<tr>
-								<td>{$soe.address}</td>
-								<td>----</td>
+								<td>{$soe->address}</td>
+								<td class="asd" data-oe_id="{$soe->id}"></td>
 								<td> 
-									<button onclick="delFunction({$soe.id})" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
+									<button onclick="delFunction({$soe->id})" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
 										<span class="glyphicon glyphicon-trash"> </span>
 									</button>
 								</td>
@@ -188,7 +188,7 @@
 <script>
 	function refreshStatuses(){
 		$.ajax({
-			url: "auto_refresh.php",
+			url: "auto_refresh_kar.php",
 			method: "GET",
 			data: { id: {$kar->id} },
 			dataType: "json",
@@ -234,11 +234,31 @@
 			}
 		})
 	}
+	
+	function refreshKarSensorData(){
+		$.ajax({
+			url: "auto_refresh_kar.php",
+			method: "GET",
+			data: { id: {$kar->id} },
+			dataType: "json",
+			success: function( data ) {
+				$("#humidityData").html(data.humidity);
+				$("#volumenData").html(data.volumen);
+				$("#phData").html(data.ph);
+				
+				$(data.sensorOeData).each(function(i, e) {
+					var td = $('td.asd[data-oe_id="' + e.oe_id + '"]');
+					td.html(e.measure);
+				});
+			}
+		})
+	}
 
-
-	$(function() {								// call function when page is loaded
+	$(function() {									// call function when page is loaded
 		refreshStatuses();
-		setInterval(refreshStatuses, 1000); 	// refresh every second
+		refreshKarSensorData();
+		setInterval(refreshStatuses, 1000); 		// refresh every second
+		setInterval(refreshKarSensorData, 5000);	
 	});
 
 	function delFunction(id) 
@@ -246,7 +266,8 @@
 		if(confirm("Er du sikker på du vil slette denne sensorø?"))
 		  document.location = 'deleteS.php?id=' + id;
 	}
-
+	
+	
 </script>
 
 </html>

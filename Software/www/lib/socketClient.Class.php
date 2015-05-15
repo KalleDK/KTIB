@@ -55,23 +55,6 @@ class Client
 		socket_write($this->socket, $message) 
 			or die("Could not send data to server<br>");	
 	}
-	
-	public function MWStatus($karID){
-		$message = "MWSTATUS ".$karID."\r\n";
-		
-		//send status to server
-		socket_write($this->socket, $message) 
-			or die("Could not send data to server<br>");
-		
-		// get server response
-		$data = socket_read ($this->socket, 1024) 
-			or die("Could not read server response<br>");
-		
-		echo "Reply From Server  :".$data."<br>";
-		
-		// Return true if data = MWSTATUS 1
-		return ($data == "MWSTATUS 1\r\n");
-	}
         
 	/*******************Ventil status Indløb*********************/
 	public function IValveOpen($karID){
@@ -89,31 +72,15 @@ class Client
 		socket_write($this->socket, $message)
 			or die("Could not send data to server<br>");
 	}
-	
-	public function IValveStatus($karID){
-		$message = "IVALVESTATUS ".$karID."\r\n";
-		
-		//send status to server
-		socket_write($this->socket, $message) 
-				or die("Could not send data to server<br>");
-		
-		// get server response
-		$data = socket_read ($this->socket, 1024) 
-				or die("Could not read server response<br>");
-		
-		echo "Reply From Server  :".$data."<br>";
-		
-		// Return true if data = IVALVESTATUS 1
-		return ($data == "IVALVESTATUS 1\r\n");
-	}
+
         
 	/*******************Ventil status afløb*********************/
 	public function OValveOpen($karID){
-			$message = "OVALVEOPEN ".$karID."\r\n";
+		$message = "OVALVEOPEN ".$karID."\r\n";
 			
-			//send status to server
-			socket_write($this->socket, $message)
-				or die("Could not send data to server<br>");
+		//send status to server
+		socket_write($this->socket, $message)
+			or die("Could not send data to server<br>");
 	}
 	
 	public function OValveClose($karID){
@@ -122,23 +89,23 @@ class Client
 		//send status to server
 		socket_write($this->socket, $message) 
 			or die("Could not send data to server<br>");
-	}
+	}	
 	
-	public function OValveStatus($karID){
-		$message = "OVALVESTATUS ".$karID."\r\n";
+	/**************************SensorØe opret og slet***********************************/
+	public function AddSonsorOe($karID, $SOeID){
+		$message  = "ADDSENSOROE ".$karID." ".$SOeID."\r\n";
 		
 		//send status to server
 		socket_write($this->socket, $message) 
-				or die("Could not send data to server<br>");
+			or die("Could not send data to server<br>");
+	}
+	
+		public function DeleteSonsorOe($karID, $SOeID){
+		$message  = "DELETESENSOROE ".$karID." ".$SOeID."\r\n";
 		
-		// get server response
-		$data = socket_read ($this->socket, 1024) 
-				or die("Could not read server response<br>");
-		
-		echo "Reply From Server  :".$data."<br>";
-		
-		// Return true if data = OVALVESTATUS 1
-		return ($data == "OVALVESTATUS 1\r\n");
+		//send status to server
+		socket_write($this->socket, $message) 
+			or die("Could not send data to server<br>");	
 	}
 	
 	 /*************************Just a test**********************************************/
@@ -168,6 +135,60 @@ class Client
 		socket_close($this->socket);
 	}
 	
+	
+	/*tidliger brug status*/
+	
+	public function MWStatus($karID){
+		$message = "MWSTATUS ".$karID."\r\n";
+		
+		//send status to server
+		socket_write($this->socket, $message) 
+			or die("Could not send data to server<br>");
+		
+		// get server response
+		$data = socket_read ($this->socket, 1024) 
+			or die("Could not read server response<br>");
+		
+		echo "Reply From Server  :".$data."<br>";
+		
+		// Return true if data = MWSTATUS 1
+		return ($data == "MWSTATUS 1\r\n");
+	}
+	
+		
+	public function IValveStatus($karID){
+		$message = "IVALVESTATUS ".$karID."\r\n";
+		
+		//send status to server
+		socket_write($this->socket, $message) 
+				or die("Could not send data to server<br>");
+		
+		// get server response
+		$data = socket_read ($this->socket, 1024) 
+				or die("Could not read server response<br>");
+		
+		echo "Reply From Server  :".$data."<br>";
+		
+		// Return true if data = IVALVESTATUS 1
+		return ($data == "IVALVESTATUS 1\r\n");
+	}
+	
+	public function OValveStatus($karID){
+		$message = "OVALVESTATUS ".$karID."\r\n";
+		
+		//send status to server
+		socket_write($this->socket, $message) 
+				or die("Could not send data to server<br>");
+		
+		// get server response
+		$data = socket_read ($this->socket, 1024) 
+				or die("Could not read server response<br>");
+		
+		echo "Reply From Server  :".$data."<br>";
+		
+		// Return true if data = OVALVESTATUS 1
+		return ($data == "OVALVESTATUS 1\r\n");
+	}
 	
 	/*************************Just a test**********************************************/
 	public function test(){

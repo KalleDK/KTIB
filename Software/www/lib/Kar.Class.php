@@ -1,4 +1,5 @@
 <?php
+include "lib/SensorOe.Class.php";
 
 class Kar
 {
@@ -69,20 +70,34 @@ class Kar
 		$result = $this->dbConn->query("SELECT * FROM SensorOe WHERE KarID=".$this->id);
 		$soeer = array();
 		while($row = $result->fetch_assoc()) {
-			$soeer[] = $row;
+			$obj = new SensorOe($this->dbConn);
+			$obj->id = $row['id'];
+			$obj->address = $row['address'];
+			$obj->karID = $row['karID'];
+			
+			$obj->created = true;
+  
+			$soeer[] = $obj;
 		}
+		
 		return $soeer;
     }
 	
-	public function getSensorData()
+	public function getKarSensorData()
 	{
-		$result = $this->dbConn->query("SELECT * FROM SensorData WHERE KarID=".$this->id);
-		$sData = array();
+		$result = $this->dbConn->query("
+			SELECT t1.* FROM KarSensorData t1
+			JOIN (SELECT type, MAX(time) time FROM KarSensorData WHERE KarID=".$this->id." GROUP BY type) t2
+			ON t1.type = t2.type AND t1.time = t2.time ORDER BY type;
+		");
+	
+		$ksData = array();
 		while($row = $result->fetch_assoc()) {
-			$sData[] = $row;
+			$ksData[] = $row;
 		}
-		return $sData; 
+		return $ksData; 
 	}
+	
 }
 
 

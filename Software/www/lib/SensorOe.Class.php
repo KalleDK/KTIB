@@ -3,7 +3,7 @@
 class SensorOE
 {
     private $dbConn;
-    private $created = false;
+    public $created = false;
     
     public $id;
     public $address;
@@ -36,6 +36,7 @@ class SensorOE
 		} else {
 			$sql = "INSERT INTO SensorOe(address, karID) VALUES ('".$this->address."', '".$this->karID."')";
 			$this->created = TRUE;
+			$this->id = $dbConn->insert_id;
 			echo $sql;
 		}
 		$this->dbConn->query($sql);
@@ -51,5 +52,20 @@ class SensorOE
 			$this->dbConn->error;
 		}
     }
+	
+	public function getData()
+	{
+		$result = $this->dbConn->query("
+			SELECT t1.* FROM OeSensorData t1
+			JOIN (SELECT type, MAX(time) time FROM OeSensorData WHERE OeID=".$this->id." GROUP BY type) t2
+			ON t1.type = t2.type AND t1.time = t2.time ORDER BY type;
+		");
+	
+		$osData = array();
+		while($row = $result->fetch_assoc()) {
+			$osData[] = $row;
+		}
+		return $osData; 
+	}
 } 
 ?>
