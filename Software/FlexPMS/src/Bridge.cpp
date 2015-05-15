@@ -142,7 +142,7 @@ void Bridge::handle_ping() {
         while((oe = oe_list_.next())) {
             if(oe->kar_id == kar->id) {
                 MOeGetSensorData* msg2 = new MOeGetSensorData(this, kar);
-                msg2->oe_id = oe->id;
+                msg2->address = oe->address;
                 kar_bus_->send(E_OE_GET_SENSOR_DATA, msg2);
             }
         }
@@ -201,11 +201,11 @@ void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
     std::vector<MOeSensorData::OeSensorData>::iterator it;
     
     for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
-        oe = oe_list_.get(it->oe_id);
+        oe = oe_list_.get(it->address);
         if(oe != NULL) {
             oe->add_sensor_data(it->sensor_id, it->value);
         } else {
-            cout << "Bridge: handle_oe_sensor_data() got unknown OE ID: " << it->oe_id << endl;
+            cout << "Bridge: handle_oe_sensor_data() got unknown OE address: " << it->address << endl;
         }
     }
 }
@@ -251,7 +251,7 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     while((oe = oe_list_.next())) {
         if(oe->kar_id == kar->id) {
             MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-            vmsg->oe_id = oe->id;
+            vmsg->address = oe->id;
             vmsg->state = MOeSetValveState::OPEN;
             kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
         }
@@ -280,7 +280,7 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
     while((oe = oe_list_.next())) {
         if(oe->kar_id == kar->id) {
             MOeSetValveState* vmsg = new MOeSetValveState(this, kar);
-            vmsg->oe_id = oe->id;
+            vmsg->address = oe->address;
             vmsg->state = MOeSetValveState::CLOSED;
             kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
         }
@@ -380,7 +380,7 @@ void Bridge::handle_oe_read(GuiMessage* msg) {
     }
     
     MOeGetSensorData* kmsg = new MOeGetSensorData(this, kar);
-    kmsg->oe_id = 0x4; 
+    kmsg->address = 0x4; 
     kar_bus_->send(E_OE_GET_SENSOR_DATA, kmsg);
 
 }
@@ -433,7 +433,7 @@ void Bridge::handle_sensor_type_read(GuiMessage* msg) {
     }
     
     MOeGetSensorType* kmsg = new MOeGetSensorType(this, kar);
-	kmsg->oe_id = 0x4;
+	kmsg->address = 0x4;
 	kmsg->sensor_id = 0x1;
     kar_bus_->send(E_OE_GET_SENSOR_TYPE, kmsg);
     

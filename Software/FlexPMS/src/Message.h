@@ -104,7 +104,7 @@ public:
 class MOeGetSensorData : public KarBusMessage {
 public:
     MOeGetSensorData(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
 };
 
@@ -114,7 +114,7 @@ public:
     MOeSensorData(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     
     typedef struct {
-        unsigned char oe_id;
+        unsigned char address;
         unsigned char sensor_id;
 		unsigned char status;
         int value;
@@ -132,7 +132,7 @@ public:
     MOeSetValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
-    unsigned char oe_id;
+    unsigned char address;
 };
 
 
@@ -151,7 +151,7 @@ public:
 class MOeGetSensorType : public KarBusMessage {
 public:
     MOeGetSensorType(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
 };
 
@@ -159,7 +159,7 @@ public:
 class MOeSensorType : public KarBusMessage {
 public:
     MOeSensorType(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    unsigned char oe_id;
+    unsigned char address;
     unsigned char sensor_id;
     unsigned char sensor_type;
 };
@@ -180,7 +180,7 @@ class MKarOeList : public KarBusMessage {
 public:
     MKarOeList(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
     
-    std::vector<unsigned char> oe_ids;
+    std::vector<unsigned char> addresses;
 };
 
 
@@ -212,7 +212,7 @@ public:
 class MKarSetOpretOe : public KarBusMessage {
 public:
     MKarSetOpretOe(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-	unsigned char oe_id;
+	unsigned char address;
 };
 
 
