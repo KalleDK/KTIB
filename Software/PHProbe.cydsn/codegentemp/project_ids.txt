@@ -1,0 +1,5 @@
+C:\Users\Karsten\Desktop\IHA\3. Semester\Projekt\PHProbe\PHProbe.cydsn\PHProbe.cyprj|30ceb6ff-01af-4bc3-98c5-11ef755a7529
+C:\Program Files (x86)\Cypress\PSoC Creator\3.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|a8c37acb-0ff3-4fcc-ac28-0c23e3e09e98
+C:\Program Files (x86)\Cypress\PSoC Creator\3.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|b13b6b75-f7d4-435a-bc55-964757514070
+C:\Program Files (x86)\Cypress\PSoC Creator\3.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|7ebda0bd-0fd2-4d2d-ac04-479672d5a232
+C:\Program Files (x86)\Cypress\PSoC Creator\3.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|db712de4-f6cf-4535-a993-39790f8bc3a1
