@@ -14,28 +14,20 @@
 		die("Ikke fundet!");
 	}
 	
-	
-	$soer = $kar->getSensorOer();
-	$data = array();
-	
-	foreach($soer as $soe) {
-		$soData[] = array(
-			'oe_id' => $soe->id,
-			'measure' => $soe->getData()[0]['measure']
-		);
-	}
-	
-	//print_r($data);
-	//die;
-	
-	
 	//KarSensorData
-	$ksData=$kar->getKarSensorData();
+	$ksData = $kar->getKarSensorData();
+	
+	//Default if we can't read 
+	$ph = -1;							
+	$volumen = -1;
+	$humidity = -1;
+	
 
 	foreach ($ksData as $data) {
 		if($data['type']==1){
 			$ph = $data['measure'];
 		}
+		
 		if($data['type']==2){
 			$volumen = $data['measure'];
 		}
@@ -44,7 +36,22 @@
 		}
 	}
 	
-	//Status for ventil vandning + sensor
+	//OeSensorData
+	$soer = $kar->getSensorOer();
+	$data = array();
+	
+	foreach($soer as $soe) {
+			$soData[] = array(
+				'oe_id' => $soe->id,
+				'measure' => @$soe->getData()[0]['measure']
+			);
+		
+	}
+	
+	//print_r($data);
+	//die;
+	
+	//Status for ventil + vandning + sensor
 	$statusses = array(
 		'mwstatus' => (int) $kar->MWSTATUS,
 		'ivalvestatus' => (int) $kar->IVALVESTATUS,
