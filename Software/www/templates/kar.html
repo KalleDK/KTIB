@@ -95,10 +95,10 @@
 						{foreach $soeer as $soe}
 							<tr>
 								<td>{$soe->address}</td>
-								<td class="asd" data-oe_id="{$soe->id}"></td>
+								<td class="asd" data-oe_id="{$soe->id}"><font size='1' color='red'>
 								<td> 
 									<button onclick="delFunction({$soe->id})" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-										<span class="glyphicon glyphicon-trash"> </span>
+										<span class="glyphicon glyphicon-trash">  </span>
 									</button>
 								</td>
 							</tr>
@@ -242,14 +242,30 @@
 			data: { id: {$kar->id} },
 			dataType: "json",
 			success: function( data ) {
-				$("#humidityData").html(data.humidity);
-				$("#volumenData").html(data.volumen);
-				$("#phData").html(data.ph);
+				if(data.ph >= 0 ){
+					$("#phData").html(data.ph);
+				} else {
+					$("#phData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
+			
+				if(data.volumen >= 0 ){
+					$("#volumenData").html(data.volumen);
+				} else {
+					$("#volumenData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
+			
+				if(data.humidity >= 0 ){
+					$("#humidityData").html(data.humidity);
+				} else {
+					$("#humidityData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
 				
+		
 				$(data.sensorOeData).each(function(i, e) {
 					var td = $('td.asd[data-oe_id="' + e.oe_id + '"]');
 					td.html(e.measure);
 				});
+				
 			}
 		})
 	}
