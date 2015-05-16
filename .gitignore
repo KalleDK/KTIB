@@ -9,6 +9,8 @@ Thumbs.db
 *.lo
 *.o
 *.obj
+*.d
+*.dpp
 
 # Precompiled Headers
 *.gch

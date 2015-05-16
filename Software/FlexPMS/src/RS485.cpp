@@ -295,8 +295,11 @@ bool RS485::RS485read(Bus_Message* rxMessage) {
 	for(int i = 0; !getMessage(rxBuffer_) && i < 10; i++) {
 		getPacket();
 		usleep(10);
-		if(i == 9)
+		if(i == 9) {
+			cout << "|----- Could not recieve -----|" << endl;
+			initBuffer();
 			return false;
+		}
 	} 
 	rxMessage->rxAddr = readInBuf->data[0];
 	rxMessage->txAddr = readInBuf->data[1];

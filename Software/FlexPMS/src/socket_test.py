@@ -10,7 +10,7 @@ except (IndexError, ValueError):
 try:
     kar_id = int(sys.argv[2])
 except (IndexError, ValueError):
-    kar_id = 1
+    kar_id = 2
 
 print 'Binding on port %d' % port
 
