@@ -1,5 +1,7 @@
 #include <iostream>
+#include <sstream>
 #include "Bridge.h"
+#include "Log.h"
 
 
 #define PING_TIME_SEC 10
@@ -10,107 +12,108 @@ using namespace std;
 
 
 void Bridge::dispatch(unsigned long event_id, Message* msg) {
+    
     switch(event_id) {
         
         // -- EVENTS FROM KarPinger ---------------------------------------- //
         
         case E_PING:
-            cout << "Bridge recieved: E_PING" << endl;
+            cout << "Bridge: recieved event E_PING" << endl;
             handle_ping();
             break;
         
         // -- EVENTS FROM KarBus ------------------------------------------- //
         
         case E_KAR_READY_STATE:
-            cout << "Bridge recieved: E_KAR_READY_STATE" << endl;
+            cout << "Bridge: recieved event E_KAR_READY_STATE" << endl;
             handle_kar_ready_state(static_cast<MKarReadyState*>(msg));
             break;
         case E_KAR_OE_LIST:
-            cout << "Bridge recieved: E_KAR_OE_LIST" << endl;
+            cout << "Bridge: recieved event E_KAR_OE_LIST" << endl;
             handle_kar_oe_list(static_cast<MKarOeList*>(msg));
             break;
         case E_KAR_SENSOR_DATA:
-            cout << "Bridge recieved: E_KAR_SENSOR_DATA" << endl;
+            cout << "Bridge: recieved event E_KAR_SENSOR_DATA" << endl;
             handle_kar_sensor_data(static_cast<MKarSensorData*>(msg));
             break;
         case E_KAR_VALVE_STATE:
-            cout << "Bridge recieved: E_KAR_VALVE_STATE" << endl;
+            cout << "Bridge: recieved event E_KAR_VALVE_STATE" << endl;
             handle_kar_valve_state(static_cast<MKarValveState*>(msg));
             break;
         case E_KAR_PUMP_STATE:
-            cout << "Bridge recieved: E_KAR_PUMP_STATE" << endl;
+            cout << "Bridge: recieved event E_KAR_PUMP_STATE" << endl;
             handle_kar_pump_state(static_cast<MKarPumpState*>(msg));
             break;
             
         case E_OE_VALVE_STATE:
-            cout << "Bridge recieved: E_OE_VALVE_STATE" << endl;
+            cout << "Bridge: recieved event E_OE_VALVE_STATE" << endl;
             handle_oe_valve_state(static_cast<MOeValveState*>(msg));
             break;
         case E_OE_SENSOR_DATA:
-            cout << "Bridge recieved: E_OE_SENSOR_DATA" << endl;
+            cout << "Bridge: recieved event E_OE_SENSOR_DATA" << endl;
             handle_oe_sensor_data(static_cast<MOeSensorData*>(msg));
             break;
         case E_OE_SENSOR_TYPE:
-            cout << "Bridge recieved: E_OE_SENSOR_TYPE" << endl;
+            cout << "Bridge: recieved event E_OE_SENSOR_TYPE" << endl;
             handle_oe_sensor_type(static_cast<MOeSensorType*>(msg));
             break;
         
         // -- EVENTS FROM Gui ---------------------------------------------- //
-            
+        
         case E_HELLO:
-            cout << "Bridge recieved: E_HELLO" << endl;
+            cout << "Bridge: recieved event E_HELLO" << endl;
             handle_hello(msg);
             break;
         case E_BYE:
-            cout << "Bridge recieved: E_BYE" << endl;
+            cout << "Bridge: recieved event E_BYE" << endl;
             handle_bye(static_cast<SessionMessage*>(msg));
             break;
         
         case E_START_WATERING:
-            cout << "Bridge recieved: E_START_WATERING" << endl;
+            cout << "Bridge: recieved event E_START_WATERING" << endl;
             handle_start_watering(static_cast<GuiMessage*>(msg));
             break;
         case E_STOP_WATERING:
-            cout << "Bridge recieved: E_STOP_WATERING" << endl;
+            cout << "Bridge: recieved event E_STOP_WATERING" << endl;
             handle_stop_watering(static_cast<GuiMessage*>(msg));
             break;
         
         case E_OVALVE_OPEN:
-            cout << "Bridge recieved: E_OVALVE_OPEN" << endl;
+            cout << "Bridge: recieved event E_OVALVE_OPEN" << endl;
             handle_ovalve_open(static_cast<GuiMessage*>(msg));
             break;
         case E_OVALVE_CLOSE:
-            cout << "Bridge recieved: E_OVALVE_CLOSE" << endl;
+            cout << "Bridge: recieved event E_OVALVE_CLOSE" << endl;
             handle_ovalve_close(static_cast<GuiMessage*>(msg));
             break;
         
         case E_IVALVE_OPEN:
-            cout << "Bridge recieved: E_IVALVE_OPEN" << endl;
+            cout << "Bridge: recieved event E_IVALVE_OPEN" << endl;
             handle_ivalve_open(static_cast<GuiMessage*>(msg));
             break;
         case E_IVALVE_CLOSE:
-            cout << "Bridge recieved: E_IVALVE_CLOSE" << endl;
+            cout << "Bridge: recieved event E_IVALVE_CLOSE" << endl;
             handle_ivalve_close(static_cast<GuiMessage*>(msg));
             break;
 			
         case E_OE_SENSOR:
-            cout << "Bridge recieved: E_OE_SENSOR" << endl;
+            cout << "Bridge: recieved event E_OE_SENSOR" << endl;
             handle_oe_read(static_cast<GuiMessage*>(msg));
             break;
         case E_KAR_SENSOR:
-            cout << "Bridge recieved: E_KAR_SENSOR" << endl;
+            cout << "Bridge: recieved event E_KAR_SENSOR" << endl;
             handle_kar_read(static_cast<GuiMessage*>(msg));
             break;
         case E_RDY_REQ:
-            cout << "Bridge recieved: E_RDY_REQ" << endl;
+            cout << "Bridge: recieved event E_RDY_REQ" << endl;
             handle_ready_read(static_cast<GuiMessage*>(msg));
             break;
         case E_OE_LIST:
-            cout << "Bridge recieved: E_OE_LIST" << endl;
+            cout << "Bridge: recieved event E_OE_LIST" << endl;
             handle_oe_list_read(static_cast<GuiMessage*>(msg));
             break;
         case E_SENSOR_TYPE:
-            cout << "Bridge recieved: E_SENSOR_TYPE" << endl;
+            cout << "Bridge: recieved event E_SENSOR_TYPE" << endl;
             handle_sensor_type_read(static_cast<GuiMessage*>(msg));
             break;
 			
@@ -118,7 +121,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
         // -- OTHER EVENTS ------------------------------------------------- //
         
         default:
-            cout << "Bridge recieved: unknown command: " << event_id << endl;
+            cout << "Bridge: recieved unknown event: " << event_id << endl;
             break;
     }
 }
@@ -156,47 +159,95 @@ void Bridge::handle_ping() {
 
 
 void Bridge::handle_kar_ready_state(MKarReadyState* msg) {
-    
+    Log* log = Log::getInstance();
+    log->write("");
 }
 
 
 void Bridge::handle_kar_oe_list(MKarOeList* msg) {
-    
+    Log* log = Log::getInstance();
+    log->write("");
 }
 
 
 void Bridge::handle_kar_sensor_data(MKarSensorData* msg) {
+    Log* log = Log::getInstance();
+    stringstream ss;
     Kar* kar = msg->kar;
     std::vector<MKarSensorData::KarSensorData>::iterator it;
     
     for(it = msg->sensor_data.begin(); it != msg->sensor_data.end(); ++it) {
 		kar->add_sensor_data(it->sensor_id, it->value);
+        
+        // Write to log
+        ss << "Kar data [KarID: " << kar->id << ", SensorID: " << it->sensor_id << "] Measured value: " << it->value;
+        log->write(ss.str());
     }
 }
 
 
 void Bridge::handle_kar_valve_state(MKarValveState* msg) {
+    Log* log = Log::getInstance();
+    stringstream ss;
     Kar* kar = msg->kar;
     bool status = (msg->state == MKarValveState::OPEN);
+    string status_str = (status) ? "Open" : "Closed";
     
-    if(msg->valve == MKarValveState::INTAKE)
+    if(msg->valve == MKarValveState::INTAKE) {
         msg->kar->set_ivalvestatus(status);
-    else if(msg->valve == MKarValveState::OUTTAKE)
+        ss << "Confirmed Kar Intake valve state [KarID: " << kar->id << "] State: " << status_str;
+        log->write(ss.str());
+    } else if(msg->valve == MKarValveState::OUTTAKE) {
         msg->kar->set_ovalvestatus(status);
+        ss << "Confirmed Kar Outtake valve state [KarID: " << kar->id << "] State: " << status_str;
+        log->write(ss.str());
+    }
 }
 
 
 void Bridge::handle_kar_pump_state(MKarPumpState* msg) {
+    Kar* kar = msg->kar;
+    Log* log = Log::getInstance();
+    stringstream ss;
+    string pump_state_str;
     
+    switch(msg->state) {
+        case MKarPumpState::OFF:
+            pump_state_str = "Off";
+            break;
+        case MKarPumpState::SLOW:
+            pump_state_str = "Slow";
+            break;
+        case MKarPumpState::MIDDLE:
+            pump_state_str = "Middle";
+            break;
+        case MKarPumpState::FAST:
+            pump_state_str = "Fast";
+            break;
+        default:
+            pump_state_str = "Unknown";
+    }
+    
+    ss << "Confirmed Kar Pump state [KarID: " << kar->id << "] State: " << pump_state_str;
+    log->write(ss.str());
 }
 
 
 void Bridge::handle_oe_valve_state(MOeValveState* msg) {
+    Log* log = Log::getInstance();
+    stringstream ss;
+    SensorOe* oe = oe_list_.get(msg->address);
+    bool status = (msg->state == MOeValveState::OPEN);
+    string status_str = (status) ? "Open" : "Closed";
     
+    ss << "Confirmed OE valve state [KarID: " << oe->kar_id << ", OeID: " << oe->id << "] State: " << status_str;
+    log->write(ss.str());
 }
 
 
 void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
+    Log* log = Log::getInstance();
+    stringstream ss;
     SensorOe* oe;
     std::vector<MOeSensorData::OeSensorData>::iterator it;
     
@@ -204,6 +255,9 @@ void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
         oe = oe_list_.get(it->address);
         if(oe != NULL) {
             oe->add_sensor_data(it->sensor_id, it->value);
+            // Write to log
+            ss << "SensorOE data [KarID: " << oe->kar_id << ", OeID: " << oe->id << ", SensorID: " << it->sensor_id << "] Measured value: " << it->value;
+            log->write(ss.str());
         } else {
             cout << "Bridge: handle_oe_sensor_data() got unknown OE address: " << it->address << endl;
         }
@@ -228,18 +282,24 @@ void Bridge::handle_hello(Message* msg) {
     SessionMessage* response = new SessionMessage(this);
     response->session_id = last_session_id_;
     msg->sender->send(E_START_SESSION, response);
+    
+    cout << "Created client session (id: " << last_session_id_ << ")" << endl;
 }
 
 
 void Bridge::handle_bye(SessionMessage* msg) {
     msg->sender->join();
     sessions_.erase(msg->session_id);
+    
+    cout << "Closed client session (id: " << msg->session_id << ")";
 }
 
 
 void Bridge::handle_start_watering(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
     SensorOe* oe;
+    stringstream ss;
+    Log* log = Log::getInstance();
     
     if(kar == NULL) {
         cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -254,6 +314,10 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
             vmsg->address = oe->address;
             vmsg->state = MOeSetValveState::OPEN;
             kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+            
+            ss.str("");
+            ss << "Open valve for OE address: " << oe->address;
+            log->write(ss.str());
         }
     }
     
@@ -261,17 +325,23 @@ void Bridge::handle_start_watering(GuiMessage* msg) {
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
     pmsg->state = MKarSetPumpState::MIDDLE;
     kar_bus_->send(E_KAR_SET_PUMP_STATE, pmsg);
-    
     kar->set_mwstatus(true);
+    
+    // Write to log
+    ss.str("");
+    ss << "Start pump for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
 void Bridge::handle_stop_watering(GuiMessage* msg) {
+    stringstream ss;
+    Log* log = Log::getInstance();
     Kar* kar = kar_list_.get(msg->kar_id);
     SensorOe* oe;
     
     if(kar == NULL) {
-        cout << "Bridge: handle_start_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
+        cout << "Bridge: handle_stop_watering() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
         return;
     }
     
@@ -283,6 +353,10 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
             vmsg->address = oe->address;
             vmsg->state = MOeSetValveState::CLOSED;
             kar_bus_->send(E_OE_SET_VALVE_STATE, vmsg);
+            
+            ss.str("");
+            ss << "Close valve for OE address: " << oe->address;
+            log->write(ss.str());
         }
     }
     
@@ -290,8 +364,12 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
     MKarSetPumpState* pmsg = new MKarSetPumpState(this, kar);
     pmsg->state = MKarSetPumpState::OFF;
     kar_bus_->send(E_KAR_SET_PUMP_STATE, pmsg);
-    
     kar->set_mwstatus(false);
+    
+    // Write to log
+    ss.str("");
+    ss << "Stop pump for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
@@ -300,6 +378,8 @@ void Bridge::handle_stop_watering(GuiMessage* msg) {
 
 void Bridge::handle_ivalve_open(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    stringstream ss;
+    Log* log = Log::getInstance();
     
     if(kar == NULL) {
         cout << "Bridge: handle_ivalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -312,11 +392,18 @@ void Bridge::handle_ivalve_open(GuiMessage* msg) {
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
     
     kar->set_ivalvestatus(true);
+    
+    // Write to log
+    ss.str("");
+    ss << "Opening intake valve for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
 void Bridge::handle_ivalve_close(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    stringstream ss;
+    Log* log = Log::getInstance();
     
     if(kar == NULL) {
         cout << "Bridge: handle_ivalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -329,6 +416,11 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
     
     kar->set_ivalvestatus(false);
+    
+    // Write to log
+    ss.str("");
+    ss << "Closing intake valve for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
@@ -337,6 +429,8 @@ void Bridge::handle_ivalve_close(GuiMessage* msg) {
 
 void Bridge::handle_ovalve_open(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    stringstream ss;
+    Log* log = Log::getInstance();
     
     if(kar == NULL) {
         cout << "Bridge: handle_ovalve_open() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -349,11 +443,18 @@ void Bridge::handle_ovalve_open(GuiMessage* msg) {
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
     
     kar->set_ovalvestatus(true);
+    
+    // Write to log
+    ss.str("");
+    ss << "Opening outtake valve for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
 void Bridge::handle_ovalve_close(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
+    stringstream ss;
+    Log* log = Log::getInstance();
     
     if(kar == NULL) {
         cout << "Bridge: handle_ovalve_close() got an unknown KarID: " << msg->kar_id << ", quitting!" << endl;
@@ -366,6 +467,11 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
     kar_bus_->send(E_KAR_SET_VALVE_STATE, kmsg);
     
     kar->set_ovalvestatus(false);
+    
+    // Write to log
+    ss.str("");
+    ss << "Closing outtake valve for Kar: " << kar->id;
+    log->write(ss.str());
 }
 
 
