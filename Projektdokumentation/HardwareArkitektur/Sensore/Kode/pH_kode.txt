@@ -1,18 +1,17 @@
 #include <project.h>
 
-#define ph7Default -11
-#define ph4Default 84
+#define ph7Default -29
+#define ph4Default 149
 float ph7;
 float ph4;
 float phVal;
 int16 adcResult;
 int16 adcResultmV;
 
-// Omregner til pH-vaerdi. ph4 og ph7 er parametrene som bruges til at kalibrere proben
+// Omregner til pH-vardi. ph4 og ph7 er parametrene som bruges til at kalibrere proben
 float mvToPh(float mv, float ph4, float ph7){     
     return ((ph7-mv)/((ph4-ph7)/3)+7);
 }
-
 float getPhVal(){
     while(ADC_IsEndConversion(ADC_WAIT_FOR_RESULT)== 0){};
     
@@ -25,13 +24,14 @@ float getPhVal(){
 CY_ISR(CALIBRATE)
 {
     int8 status;
-    if(CALI_Read() ==  0){ // vent paa at knappen har vaeret nede i 3 sekunder
+    while(CALI_Read() ==  1){ // vent pa at knappen har varet nede i 3 sekunder
     CyDelay(3000);
-    if(CALI_Read() == 0)
     status = 1;
+    break;
     }
     if(status == 1){
-    ph7 = getPhVal();
+    getPhVal();
+    ph7 = adcResultmV;
     ph4 = ph4Default + (ph7 - ph7Default); // ph4Default + korrektion 
     RED_LED_Write(0);
     GREEN_LED_Write(1);
@@ -40,8 +40,8 @@ CY_ISR(CALIBRATE)
 
 int main()
 {
-    ph7 = ph7Default; // Default vaerdi
-    ph4 = ph4Default; // Default vaerdi 
+    ph7 = ph7Default; // Default vardi
+    ph4 = ph4Default; // Default vardi 
     Opamp_1_Start();
     ADC_Start();
     ADC_StartConvert();
@@ -51,7 +51,7 @@ int main()
     GREEN_LED_Write(0);
      
    while(1){
-    getPhVal();
+   phVal = getPhVal();
 }
     return 0;
 }
