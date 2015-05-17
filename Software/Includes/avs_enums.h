@@ -7,6 +7,11 @@ enum {
 };
 
 enum {
+	VENTIL_INDLOEB = 1,
+	VENTIL_AFLOEB,
+};
+
+enum {
 	FS_VALUE_HIGH = 0,
 	FS_VALUE_LOW,
 };
@@ -27,6 +32,14 @@ enum {
 };
 
 enum {
+	SENSOR_UNKNOWN = 0,
+	SENSOR_PHPROBE,
+	SENSOR_FLOWMAALER,
+	SENSOR_JORDFUGT,
+	SENSOR_TEMPERATUR,	
+};
+
+enum {
 	REQ_OE_NONE = 0,
 	REQ_OE_FS_DATA,
 	RES_OE_FS_DATA,
@@ -36,6 +49,8 @@ enum {
 
 enum {
 	REQ_KAR_NONE = 0,
+	REQ_KAR_READY,
+	RES_KAR_READY,
 	REQ_KAR_SENSOR_DATA,
 	RES_KAR_SENSOR_DATA,
 	REQ_KAR_VENTIL,
