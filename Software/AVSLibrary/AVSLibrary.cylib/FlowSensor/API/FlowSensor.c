@@ -21,7 +21,9 @@ uint16 `$INSTANCE_NAME`_flowTickResolution;
 uint16 `$INSTANCE_NAME`_flowLiters;
 
 CY_ISR(`$INSTANCE_NAME`_FLOW) {
+    `$INSTANCE_NAME`_Pin_Reset_Counter_Write(0);
     `$INSTANCE_NAME`_flowTicks += 1;
+    `$INSTANCE_NAME`_Pin_Reset_Counter_Write(1);
 }
 
 void  `$INSTANCE_NAME`_Start() {
@@ -29,7 +31,6 @@ void  `$INSTANCE_NAME`_Start() {
     `$INSTANCE_NAME`_flowLiters = 0;
     `$INSTANCE_NAME`_flowTickResolution = 36;
     `$INSTANCE_NAME`_Flow_StartEx(`$INSTANCE_NAME`_FLOW);
-
 }
 
 uint16 `$INSTANCE_NAME`_getFlowTicks() {
@@ -37,10 +38,11 @@ uint16 `$INSTANCE_NAME`_getFlowTicks() {
 }
 
 uint16 `$INSTANCE_NAME`_getFlowLiters() {
+    `$INSTANCE_NAME`_calcFlowLiters();
     return `$INSTANCE_NAME`_flowLiters;
 }
 
-uint16 `$INSTANCE_NAME`_calcFlowLiters() {
+void `$INSTANCE_NAME`_calcFlowLiters() {
     uint8 whole, half;
     whole = `$INSTANCE_NAME`_flowTicks / `$INSTANCE_NAME`_flowTickResolution;
     half = `$INSTANCE_NAME`_flowTicks % `$INSTANCE_NAME`_flowTickResolution;

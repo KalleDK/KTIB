@@ -9,18 +9,17 @@
  *
  * ========================================
 */
+#include <project.h>
 
-#if !defined(`$INSTANCE_NAME`_H_)
-#define `$INSTANCE_NAME`_H_
-    
-#include <cytypes.h>
-#include "..\..\Includes\avs_debug.h"
+int main()
+{
+    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
 
-void  `$INSTANCE_NAME`_Start();
-uint16 `$INSTANCE_NAME`_getFlowTicks(void);
-uint16 `$INSTANCE_NAME`_getFlowLiters(void);
-void `$INSTANCE_NAME`_calcFlowLiters(void);
-    
-#endif
+    /* CyGlobalIntEnable; */ /* Uncomment this line to enable global interrupts. */
+    for(;;)
+    {
+        /* Place your application code here. */
+    }
+}
 
 /* [] END OF FILE */
