@@ -1,30 +1,28 @@
-\subsection{Use case 1}
-Når bruger ønsker at aflæse målingerne, skal data aflæses via \glslink{gui}{gui'en}. Denne use case kan kun gennemføres af en person. 
-
-
+\subsection*{Use case 7}
+Når Bruger ønsker at aflæse målingerne, kan personen tilgå de forskellige kar og aflæses data via \glslink{gui}{gui'en}.
 
 \begin{usecase}
 
-\addtitle{Use Case 1}{Aflæs målinger} 
+\addtitle{Use Case 7}{Aflæs målinger} 
 
 \addfield{Mål:}{Bruger aflæser ønskede målinger}
 
 \addfield{Initieret af:}{Bruger}
 
-\addfield{Aktør:}{Bruger}
+\additemizedfield{Aktører:}{\item Primær: Bruger}
 
-\addfield{Samtidige forekomster:}{1 (inklusiv denne)}
+\addfield{Samtidige forekomster:}{1 }
 
 %Preconditions: What must be true on start and worth telling the reader?
 \addfield{Prækondition:}{Et fungerende system}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkondition:}{Målinger er aflæst af bruger}
+\addfield{Postkondition:}{Målinger er aflæst af Bruger}
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
 \addscenario{Hovedscenario:}{
-	\item Bruger trykker på det ønskede kar i \gls{gui}
-	\item Systemet viser et skærmbillede med oversigt over 	kar data.
+	\item Bruger trykker på det ønskede kar i \glslink{gui}{gui'en}
+	\item Systemet viser et skærmbillede med oversigt over kar data.
 	\item Bruger aflæser de ønskede målinger.
 }
 

@@ -1,11 +1,11 @@
-\subsection{Use case 3}
-I denne use case ønsker bruger at ændre på pH-værdien i karret. 
+\subsection*{Use case 6}
+I denne use case indtaster Brugeren en volumen, så den ønskede værdi kan ses. 
 \begin{usecase}
 
-\addtitle{Use Case }{Indtast pH-værdi} 
+\addtitle{Use Case 6}{Indtast volumen} 
 
-\additemizedfield{Mål:}{
-\item At ændre pH-værdien på blandingen i karret 
+\addfield{Mål:}{
+At indtaste og visualisere den ønskede volumen
 }
 
 \addfield{Initieret af:}{
@@ -20,16 +20,16 @@ I denne use case ønsker bruger at ændre på pH-værdien i karret.
 \addfield{Prækondition:}{Et kar er oprettet og systemet er funktionelt}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkondition:}{Systemet er opdateret med pH-værdi }
+\addfield{Postkondition:}{Systemet opdaterer og visualisere den ønskede volumen}
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
 \addscenario{Hovedscenarie:}{
-	\item Bruger trykker på det ønskede kar i \gls{gui}
-	\item Systemet viser et skærmbillede hvor det er muligt at indtaste en pH-værdi 	
-	\item Bruger trykker på feltet uden for "pH-Værdi" hvor der er en angivet værdi
-	\item Bruger retter værdien til en ønskede pH-værdi
-	\item Bruger trykker på "Gem data" 
-	\item Systemet gemmer pH-værdien
+	\item Bruger trykker på det ønskede kar i  \glslink{gui}{gui'en}
+	\item Systemet viser et skærmbillede hvor det er muligt at indtaste en volumen
+	\item Bruger trykker på feltet uden for \textit{volumen}, hvor der er en angivet værdi.
+	\item Bruger retter værdien til en ønskede volumen i liter
+	\item Bruger trykker på \textit{Gem data}
+	\item Systemet gemmer volumen
 }
 
 %Extensions: Alternate scenarios of success or failure.

@@ -1,11 +1,11 @@
-\subsection{Use case 6}
+\subsection*{Use case 10}
 I denne use case sletter Tekniker et kar.
 \begin{usecase}
 
-\addtitle{Use Case 6}{Slet kar} 
+\addtitle{Use Case 10}{Slet kar} 
 
-\additemizedfield{Mål:}{
-\item At slette et kar i systemet
+\addfield{Mål:}{
+At slette et kar i systemet
 }
 
 \addfield{Initieret af:}{
@@ -17,17 +17,17 @@ I denne use case sletter Tekniker et kar.
 \addfield{Samtidige forekomster:}{1}
 
 %Preconditions: What must be true on start and worth telling the reader?
-\addfield{Prækondition:}{Der er oprettet et kar i systemet}
+\addfield{Prækondition:}{Der er oprettet mindst et kar i systemet}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
-\addfield{Postkondition:}{Der er slettet et kar }
+\addfield{Postkondition:}{Karet er slettet fra systemmet}
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
 \addscenario{Hovedscenarie:}{
 	\item Systemet viser en liste over oprettede kar, med en slet knap uden for hvert kar.
 	\item Tekniker trykker på slet ud for det kar han ønsker at slette
 	\item Systemet spørger om Teknikeren er sikker i en dialog
-	\item Tekniker trykker "Ok"
+	\item Tekniker trykker \textit{ok}
 	\item Systemet sletter karet
 	\item Systemet returnerer Tekniker til listen over oprettede kar
 }
