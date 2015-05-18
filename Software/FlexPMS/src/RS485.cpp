@@ -50,7 +50,8 @@ void RS485::initGPIO() {
 		cout << "Could not set gpio direction" << endl;
 	}
 	write(gpio_fd_, "out", 3);
-	gpio_fd_ = open("/sys/class/gpio/gpio18/value", O_WRONLY);
+	close(gpio_fd_);
+	gpio_fd_ = open("/sys/class/gpio/gpio18/value", O_WRONLY | O_SYNC);
 	if(gpio_fd_ < 0)
 	{
 		cout << "could not open gpio for changing state" << endl;

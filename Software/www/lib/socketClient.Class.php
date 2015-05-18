@@ -65,7 +65,7 @@ class Client
 			or die("Could not send data to server<br>");
 	}
 	
-	public function IvalveClose($karID){
+	public function IValveClose($karID){
 		$message = "IVALVECLOSE ".$karID."\r\n";
 		
 		//send status to server

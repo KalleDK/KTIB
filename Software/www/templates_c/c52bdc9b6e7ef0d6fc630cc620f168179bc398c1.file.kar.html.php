@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.21-dev, created on 2015-05-03 12:07:43
+<?php /* Smarty version Smarty-3.1.21-dev, created on 2015-05-16 11:36:54
          compiled from "templates/kar.html" */ ?>
 <?php /*%%SmartyHeaderCode:918358552553239eca38922-20514724%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c52bdc9b6e7ef0d6fc630cc620f168179bc398c1' => 
     array (
       0 => 'templates/kar.html',
-      1 => 1429602222,
+      1 => 1431541533,
       2 => 'file',
     ),
   ),
@@ -20,11 +20,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'variables' => 
   array (
     'kar' => 0,
-    'MW' => 0,
     'soeer' => 0,
     'soe' => 0,
-    'ovalveopen' => 0,
-    'ivalveopen' => 0,
   ),
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
@@ -38,6 +35,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 >
     <?php echo '<script'; ?>
  type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"><?php echo '</script'; ?>
 >
     <style type="text/css">
         body { margin: 0 15px; }
@@ -58,11 +58,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <!-- photo + data -->
 <div class="row">
     <div class="col-md-6 col-lg-6 text-center">
-        <?php if ($_smarty_tpl->tpl_vars['MW']->value) {?>
-            <img id="image" src="medie/VHV.png" class="img-responsive center-block" alt="Vandhane"/>
-        <?php } else { ?>
-            <img id="image" src="medie/VH.png" class="img-responsive center-block" alt="Vandhane"/>
-        <?php }?>
+            <img id="image" src="" class="img-responsive center-block" alt="Vandhane"/>
 	</div> 
 	 
     <div class="col-md-6 col-lg-6">
@@ -84,7 +80,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 									</tr>
 									<tr>
                                         <td>pH-værdi (0-14)</td>
-                                        <td>6.5</td>
+                                        <td class="text-center" id="phData"></td>
                                         <td>
                                                 <input name="ph" type="text" class="form-control" id="inputpH3" value="<?php echo $_smarty_tpl->tpl_vars['kar']->value->ph;?>
 ">
@@ -92,7 +88,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 									</tr>
 									<tr>
                                         <td>Vandniveau (l)</td>
-                                        <td>4</td>
+                                        <td class="text-center" id="volumenData"></td>
                                         <td>
                                                 <input name="volumen" type="text" class="form-control" id="inputVand33" value="<?php echo $_smarty_tpl->tpl_vars['kar']->value->volumen;?>
 ">
@@ -100,7 +96,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 									</tr>
 									<tr>
                                         <td>Jordfugtighed (%)</td>
-                                        <td>80</td>
+                                        <td class="text-center" id="humidityData"></td>
                                         <td>
                                                 <input name="humidity" type="text" class="form-control" id="inputJord33" value="<?php echo $_smarty_tpl->tpl_vars['kar']->value->humidity;?>
 ">
@@ -132,7 +128,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 				<table class="table table-striped">
 					<tr>
 						<th>#</th>
-						<th>Jordfugtihed (%)</th>
+						<th>Jordfugtighed (%)</th>
 						<th></th>
 					</tr>
 						<?php  $_smarty_tpl->tpl_vars['soe'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['soe']->_loop = false;
@@ -141,13 +137,14 @@ foreach ($_from as $_smarty_tpl->tpl_vars['soe']->key => $_smarty_tpl->tpl_vars[
 $_smarty_tpl->tpl_vars['soe']->_loop = true;
 ?>
 							<tr>
-								<td><?php echo $_smarty_tpl->tpl_vars['soe']->value['address'];?>
+								<td><?php echo $_smarty_tpl->tpl_vars['soe']->value->address;?>
 </td>
-								<td>----</td>
+								<td class="asd" data-oe_id="<?php echo $_smarty_tpl->tpl_vars['soe']->value->id;?>
+"><font size='1' color='red'>
 								<td> 
-									<button onclick="delFunction(<?php echo $_smarty_tpl->tpl_vars['soe']->value['id'];?>
+									<button onclick="delFunction(<?php echo $_smarty_tpl->tpl_vars['soe']->value->id;?>
 )" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-										<span class="glyphicon glyphicon-trash"> </span>
+										<span class="glyphicon glyphicon-trash">  </span>
 									</button>
 								</td>
 							</tr>
@@ -180,29 +177,12 @@ $_smarty_tpl->tpl_vars['soe']->_loop = true;
 				<input type="hidden" name="id" value="<?php echo $_smarty_tpl->tpl_vars['kar']->value->id;?>
 "/>
 					<div class="col-md-6">
-						<h4>Afløb<h4>
-						<?php if ($_smarty_tpl->tpl_vars['ovalveopen']->value) {?>
-							<button type="submit" name="ClOSEOVALVE" value="1" class="btn btn-default btn-md" >
-								Luk afløbsventil
-							</button>
-							
-						<?php } else { ?>
-							<button type="submit" name="OPENOVALVE" value="1" class="btn btn-primary btn-md" >
-								Åben afløbsventil
-							</button>
-						<?php }?>
+						<h4>Afløb<h4>	
+						<button id="OVALVESTATUS" type="submit" name="" value="1" class="" ></button>
 					</div>
 					<div class="col-md-6">
-						<h4>Indløb<h4>
-						<?php if ($_smarty_tpl->tpl_vars['ivalveopen']->value) {?>
-							<button type="submit" name="CLOSEIVALVE" value="1" class="btn btn-default btn-md">
-								Luk Indløbsventil
-							</button>
-						<?php } else { ?>
-							<button type="submit" name="OPENIVALVE" value="1" class="btn btn-primary btn-md">
-								Åben Indløbsventil
-							</button>
-						<?php }?>
+						<h4>Indløb<h4>	
+						<button id="IVALVESTATUS" type="submit" name="" value="1" class="" ></button>
 					</div>
 				</form>  
 			</div>
@@ -214,21 +194,15 @@ $_smarty_tpl->tpl_vars['soe']->_loop = true;
 				<h3 class="panel-title">Manuel vanding</h3>
 			</div>
 			<div class="panel-body text-center">
+				<h4> Manuel vandning status</h4>
 				<form action="kar.php?id=<?php echo $_smarty_tpl->tpl_vars['kar']->value->id;?>
 " method="post">
-					<h4>Manuel vanding er i gang<h4>
-					<?php if ($_smarty_tpl->tpl_vars['MW']->value) {?>
-						<button type="submit" name="MWSTOP" value="1" class="btn btn-default btn-md">Stop manuel vandning</button>
-					<?php } else { ?>
-						<button type="submit" name="MWSTART" value="1" class="btn btn-primary btn-md">Start manuel vandning</button>
-					<?php }?>
+					<button id="MWSTATUS" type="submit" name="" value="1" class=""></button>
 				</form>
 			</div>
 		</div>
 	</div>
 </div> <!-- Row -->        
-
-
 
 <!-- Modal Opret Sensorø -->
 <div class="modal fade" id="SensorOe" tabindex="-1" role="dialog" aria-labelledby="mySensorOeLabel" aria-hidden="true">
@@ -259,16 +233,111 @@ $_smarty_tpl->tpl_vars['soe']->_loop = true;
 		</div>
     </div>
 </div>
+</body>
 
 <?php echo '<script'; ?>
 >
-function delFunction(id) 
-{
-    if(confirm("Er du sikker på du vil slette denne sensorø?"))
-      document.location = 'deleteS.php?id=' + id;
-}
+	function refreshStatuses(){
+		$.ajax({
+			url: "auto_refresh_kar.php",
+			method: "GET",
+			data: { id: <?php echo $_smarty_tpl->tpl_vars['kar']->value->id;?>
+ },
+			dataType: "json",
+			success: function( data ) {
+				if(data.mwstatus == 1){
+					$("#MWSTATUS" )
+					.html("Stop manuel vandning")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","MWSTOP");
+					$("#image").attr("src","medie/VHV.png");
+				}else{
+					$("#MWSTATUS" ).html( "Start manuel vandning")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","MWSTART");
+					$("#image").attr("src","medie/VH.png");
+				}
+				
+				if(data.ovalvestatus == 1){
+					$("#OVALVESTATUS" ).html("Luk afløbsventil")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","ClOSEOVALVE");
+				}else{
+					$("#OVALVESTATUS" ).html( "Åben afløbsventil")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","OPENOVALVE");
+				}
+				
+				if(data.ivalvestatus == 1){
+					$("#IVALVESTATUS" ).html("Luk indløbsventil")
+					.removeClass('btn btn-primary btn-md')
+					.addClass('btn btn-default btn-md')
+					.attr("name","ClOSEIVALVE");
+				}else{
+					$("#IVALVESTATUS" ).html( "Åben indløbsventil")
+					.removeClass('btn btn-default btn-md')
+					.addClass('btn btn-primary btn-md')
+					.attr("name","OPENIVALVE");
+				}
+			}
+		})
+	}
+	
+	function refreshKarSensorData(){
+		$.ajax({
+			url: "auto_refresh_kar.php",
+			method: "GET",
+			data: { id: <?php echo $_smarty_tpl->tpl_vars['kar']->value->id;?>
+ },
+			dataType: "json",
+			success: function( data ) {
+				if(data.ph >= 0 ){
+					$("#phData").html(data.ph);
+				} else {
+					$("#phData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
+			
+				if(data.volumen >= 0 ){
+					$("#volumenData").html(data.volumen);
+				} else {
+					$("#volumenData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
+			
+				if(data.humidity >= 0 ){
+					$("#humidityData").html(data.humidity);
+				} else {
+					$("#humidityData").html("<font size='1' color='red'><i>error: can't read value</i></font>");
+				}
+				
+		
+				$(data.sensorOeData).each(function(i, e) {
+					var td = $('td.asd[data-oe_id="' + e.oe_id + '"]');
+					td.html(e.measure);
+				});
+				
+			}
+		})
+	}
+
+	$(function() {									// call function when page is loaded
+		refreshStatuses();
+		refreshKarSensorData();
+		setInterval(refreshStatuses, 1000); 		// refresh every second
+		setInterval(refreshKarSensorData, 5000);	
+	});
+
+	function delFunction(id) 
+	{
+		if(confirm("Er du sikker på du vil slette denne sensorø?"))
+		  document.location = 'deleteS.php?id=' + id;
+	}
+	
+	
 <?php echo '</script'; ?>
 >
 
-</body>
 </html><?php }} ?>

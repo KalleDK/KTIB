@@ -11,6 +11,7 @@ $kar = new Kar($conn);
 
 // New client
 $client = new Client('localhost', 5555);        //PORT 5555
+$client->connect();
 
 
 // Load kar with $id

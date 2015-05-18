@@ -2,6 +2,7 @@
 
 include 'mysql.php';
 include 'lib/SensorOe.Class.php';
+include 'lib/socketClient.Class.php';
 
 $s = new SensorOE($conn);
 
@@ -13,6 +14,7 @@ if($s->loadFromDB($id) == TRUE){
 
 // New client
 $client = new Client('localhost', 5555);        //PORT 5555
+$client ->connect();
 $client->DeleteSonsorOe($s->karID, $id);
 
 
