@@ -18,19 +18,13 @@ class Client
     //Connection 
     public function connect()
 	{
-	//Create socket
-		if($this->socket = socket_create(AF_INET, SOCK_STREAM, 0)){
-			echo "Client: socket_create(): socket created<br>";
-		}else{
-			echo "Client: socket_create(): error creating socket<br>";
-		}
-		
-		//connect to server
-		if(socket_connect($this->socket, $this->ip, $this->port)){
-			echo "Client: socket_connect(): socket connected<br>";
-		}else{
-			echo "Client: socket_connect(): error connecting to socket<br>";
-		}
+                //Create socket
+                $this->socket = socket_create(AF_INET, SOCK_STREAM, 0)
+                        or die("Client: socket_create(): error creating socket");
+                
+                //connect to server
+                socket_connect($this->socket, $this->ip, $this->port)
+                        or die("Client: socket_connect(): error connecting to socket");
 	}
         
 	public function close()
