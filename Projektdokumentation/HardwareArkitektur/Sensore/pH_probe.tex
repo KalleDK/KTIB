@@ -112,7 +112,7 @@ For at måle responstiden, sættes proben i en buffer 7 og derefter direkte over
 \end{figure} 
 
 \subsubsection{Probens præcision}
-Selve proben vil have en afvigelse. Denne afvigelse tages der tildels højde for ved kalibreringen, men dette er kun den systematiske fejl der bliver reguleret ind. Der vil også være et antal tilfældige fejl, som vil være umulige at justere ind. For at få et overblik over fejlprocenten laver vi 10 målinger efter kalibrering af buffer 7. Her sætter vi proben ned i en kop vand, for derefter at sætte den ned i pH-bufferen igen. Vi venter i 2 minutter og aflæser derefter i debuggin mode hvad pH-værdien er. Målingerne skrives ind i et excel-regneark således vi kan udregne standardafvigelsen ved en konfidens på 95. 
+Selve proben vil have en afvigelse. Denne afvigelse tages der tildels højde for ved kalibreringen, men dette er kun den systematiske fejl der bliver reguleret ind. Der vil også være et antal tilfældige fejl, som vil være umulige at justere ind. For at få et overblik over fejlprocenten laver vi 10 målinger efter kalibrering af buffer 7. Her sætter vi proben ned i en kop vand, for derefter at sætte den ned i pH-bufferen igen. Vi venter i 2 minutter og aflæser derefter i debuggin mode hvad pH-værdien er. Målingerne skrives ind i et excel-regneark således vi kan udregne standardafvigelsen ved en konfidens på 95. Det skal dog siges at dette er en meget simplificeret metode, da der her ikke taget højde for temperatur forskelle. Der laves også kun 10 målinger ved en bestemt pH-værdi. Der burde laves målinger over hele aksen, for at dække usikkerheden helt ind.    
 
  \begin{figure}[H]
 	\centering 
@@ -121,10 +121,10 @@ Selve proben vil have en afvigelse. Denne afvigelse tages der tildels højde for
 	\label{photo:probe_afvigelse}
 \end{figure} 
 
-Afvigelsen findes ved at trække målingen fra middelværdien af alle målinger. Kvadratet findes ved at kvadrere afvigelsen. Det ses at vi med 95\% sikkerhed kan sige at den målte værdi ligger inden for +-0,051175704.  
+Det ses at vi med 95\% sikkerhed kan sige at den målte værdi ligger inden for +-0,051175704 i pH-værdi, men som nævnt tidligere er dette ikke en endelig præcision.    
 
-\subsubsection{Konklusion}
-Vi så i denne del at vores beregnede støj var ca en faktor 10 større ved realiseringen end beregningerne. Dette kan skyldes at der er støj i tilledningerne da vi arbejder med ekstremt høje impedanser. Vi kan hermed konkludere at ved meget høje impedanser bliver ens udstyr meget støjfølsomt og det er derfor vigtigt at tage det med i beregningerne når der udlægges print, samt ved beslutning om hvilken terminering der skal benyttes. Præcisionen af proben er også blevet målt og denne må siges at være god.
+\subsubsection{Fremtidigt arbejde}
+Vi så i denne del at vores beregnede støj var ca en faktor 10 større ved realiseringen end beregningerne. Dette kan skyldes at der er støj i tilledningerne da vi arbejder med ekstremt høje impedanser. Vi kan hermed konkludere at ved meget høje impedanser bliver ens udstyr meget støjfølsomt og det er derfor vigtigt at tage det med i beregningerne når der udlægges print, samt ved beslutning om hvilken terminering der skal benyttes. Fremtidigt arbejde kan være at lave kalibreringsfunktionen således den selv giver besked, når der er gået en måned, om at det er tid til kalibrering. 
 
 
 

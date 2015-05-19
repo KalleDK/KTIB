@@ -123,7 +123,7 @@ I PSoC creator laves der en funktion der udlæser værdien fra ADC'en og omregne
 
 Aflæser vi 100$\Omega$ på figur \ref{photo:jordspyd_modstand} kan vi se at en fugtighed på 33 stemmer fint overens med det forventede og funktion antages efter flere ligende resultater at virke. Efterfølgende er funktionen lavet om således den også kommunikerer med sensor ø'en. Den færdige kode fildes i bilagende. 
 
-Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme program tegnet et printlayout. Dette ses på figur \ref{photo:Print_2} og \ref{photo:Print_2}.
+Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme program tegnet et printlayout. Dette ses på figur \ref{photo:Print_2}.
 
 \begin{figure}[H]
 	\centering 
@@ -132,12 +132,6 @@ Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme prog
 	\label{photo:Print_2}
 \end{figure} 
 
-\begin{figure}[H]
-	\centering 
-\includegraphics[scale=0.1]{HardwareArkitektur/Sensore/Jordfugt_billeder/Print_1.jpg}
-	\caption{Printplade set fra overfladen}
-	\label{photo:Print_1}
-\end{figure} 
 
 Det ses på printet at der er blevet lavet nogle modifikationer. Dette skyldes at der var glemt nogle pull op modstande, samt at DesignSpark havde valgt at ligge stel sammen med forsyningen. 
 Diagrammet blev derfor tegnet om til følgende i figur \ref{photo:Diagram_jordfugt} 
@@ -160,16 +154,31 @@ Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket st
 
 \begin{figure}[H]
 	\centering 
-\includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/print_ny_bund.JPG}
-	\caption{Det nye print set fra bunden}
-	\label{photo:print_ny_bund}
-\end{figure} 
-
-\begin{figure}[H]
-	\centering 
 \includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/shield.JPG}
 	\caption{Shield. Potientiometeret emulerer proben}
 	\label{photo:shield}
 \end{figure} 
 
-Vi kørte en test med det nye shield og da dette virkede var designet af jordfugtsensoren færdig. 
+\subsubsection{Præcision og afvigelse}
+Vi kørte en test med det nye shield med jord taget fra blomsterbedet, foran Edison bygningen, ved ingeniørhøjskolen i Århus. Da vi ikke kendte ledeevnen i jorden eller fugtigheden målte vi først jorden da den var tør. Her målte vi fugtigheden til 3,5\%. Efterfølgende tilsatte vi 10\% vand og brugte denne blanding til at udregnede afvigelsen. Afvigelsen fik vi til 1,58\% med 95\% konfidens. 
+
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=0.08]{HardwareArkitektur/Sensore/Jordfugt_billeder/test_maling.JPG}
+	\caption{Test måling}
+	\label{photo:shield}
+\end{figure} 
+
+\begin{figure}[H]
+	\centering 
+\includegraphics[scale=1]{HardwareArkitektur/Sensore/Jordfugt_billeder/afvigelse.PNG}
+	\caption{Udregning af afvigelsen}
+	\label{photo:shield}
+\end{figure} 
+
+Selve præcisionen af proben er 12 bit og 5V. Dette giver en opløsning på 1.2mV. Omregnet til opløsning af procentenheden bliver det 0.061. 
+
+\subsubsection{Fremtidigt arbejde}
+Det bedste fremtidige arbejde vil være at lave målingen kapacitivt, dette vil dog kræve en del arbejde. Skal der laves forbedringer på den resistive måling, skal der findes ud af hvorfor PSoC'en ikke ville virke på print samt finde et materiale som ikke så let forgår som kobber og lave jordspyddet af det. 
+
+   

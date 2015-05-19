@@ -20,7 +20,7 @@
 #define RESISTOR 10000
 #define VDD 5
 
-int8 humidity[SIZE];
+float humidity;
 
 // læs fugtigheden i jorden og skriv den i de globale variabler
 float32 getHumidity(){
