@@ -29,9 +29,6 @@ $smarty->assign('soeer', $soeer);
 $smarty->assign('kar', $kar);
 
 
-/********************* ***********************************/
-
-
 /******************** Manual wattering *************************/
 if(array_key_exists('MWSTART',$_POST)){
 	//Manual watering start
@@ -55,7 +52,7 @@ if(array_key_exists('OPENIVALVE',$_POST)){
 }
 
 /********************** OUT Valve ***************************/
-if(array_key_exists('ClOSEOVALVE',$_POST)){
+if(array_key_exists('CLOSEOVALVE',$_POST)){
 	//Out valve close
 	$client -> OValveClose($id);
 }
