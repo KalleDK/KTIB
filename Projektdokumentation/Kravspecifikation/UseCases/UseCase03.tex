@@ -1,0 +1,48 @@
+%!TEX root = ../../main.tex
+
+\subsection*{Use case 3}
+I denne use case Oprettes en \gls{sensoroe}, den kan kun tilgås af Teknikeren, som er nødt til at kende adressen på sensor øen. 
+\begin{usecase}
+
+\addtitle{Use Case 3}{Opret Sensor Ø} 
+
+\addfield{Mål:}{
+At Oprette en Sensor Ø
+}
+
+\addfield{Initieret af:}{
+	Tekniker   
+}
+
+\additemizedfield{Aktører:}{\item Primær: Tekniker}
+
+\addfield{Samtidige forekomster:}{1}
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{Teknikeren kender adressen til \glslink{sensoroe}{Sensor Øen}}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{Der er oprettet en \gls{sensoroe} til det ønskede kar}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenarie:}{
+	\item Teknikeren sætter \glslink{sensoroe}{Sensor Øen} til kar bussen 
+	\item Teknikeren trykker på det ønskede kar i \glslink{gui}{gui'en}
+	\item Systemet viser et skærmbillede hvor det er muligt at oprette en sensor Ø
+	\item Teknikeren trykker på \textit{Opret Sensorø}
+	\item Systemet viser en menu hvor det er muligt at indtaste en adresse
+	\item Teknikeren indtaster adresse i adresse feltet
+	\item Teknikeren trykker \textit{Opret Sensorøen}
+	\item Den nye \gls{sensoroe} forekommer nu i listen over \glslink{sensoroe}{Sensor Øer}. 
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
+
+
+\end{usecase}

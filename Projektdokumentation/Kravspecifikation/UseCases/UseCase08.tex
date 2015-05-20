@@ -1,8 +1,8 @@
-\subsection{Use case 2}
-I denne use case ønsker bruger at tilføre vand manuelt til planterne. Denne use case kan kun tilgås af en person. For at denne use case kan gennemføres skal der være vand i det kar der ønskes at vande fra samt at dette er tilføjet til systemet. Karet skal være koblet på mindst en sensor ø.
+\subsection*{Use case 8}
+I denne use case ønsker Bruger at tilføre vand manuelt til planterne. For at denne use case kan gennemføres skal der være vand i det kar der ønskes at vande fra samt at dette er tilføjet til systemet. Karet skal være koblet på mindst en sensor ø.
 \begin{usecase}
 
-\addtitle{Use Case 2}{Manuel vanding} 
+\addtitle{Use Case 8}{Manuel vanding} 
 
 \addfield{Mål:}{At tilføre vand til planterne}
 
@@ -10,24 +10,24 @@ I denne use case ønsker bruger at tilføre vand manuelt til planterne. Denne us
 	\item Bruger
 }
 
-\addfield{Aktør:}{Bruger}
+\additemizedfield{Aktører:}{\item Primær: Bruger}
 
 \addfield{Samtidige forekomster:}{1}
 
 %Preconditions: What must be true on start and worth telling the reader?
-\addfield{Prækondition:}{Der skal være vand i det kar der ønskes at vande fra og der skal være tilkoblet mindst en sonsor ø. GUI'en befinder sig i hovedmenuen}
+\addfield{Prækondition:}{Der skal være vand i det kar der ønskes at vande fra og der skal være tilkoblet mindst en sonsor ø. \glslink{gui}{gui'en} befinder sig i hovedmenuen}
 
 %Postconditions: What must be true on successful completion and worth telling the reader
 \addfield{Postkonditions:}{Der er vand ved planterne}
 
 %Main Success Scenario: A typical, unconditional happy path scenario of success.
 \addscenario{Hovedscenario:}{
-	\item Bruger trykker på det ønskede kar i \gls{gui}
+	\item Bruger trykker på det ønskede kar i \glslink{gui}{gui'en}
 	\item Systemet viser et skærmbillede hvor der kan vælges manuel vanding
-	\item Bruger trykker på "Start manuel vanding"
+	\item Bruger trykker på \textit{Start manuel vanding}
 	\item Systemet begynder at vande
 %	\item[ ] [Ex.1 Karret er tomt]
-	\item Når der ikke ønskes at vande længere trykker bruger på "Stop manuel vanding"
+	\item Når der ikke ønskes at vande længere trykker Bruger på \textit{Stop manuel vanding}
 	\item Systemet stopper med at vande
 }
 

@@ -1,0 +1,46 @@
+%!TEX root = ../../main.tex
+
+\subsection*{Use case 9}
+I denne use case Tømmes karet via afløbsventilen. Afløbsventilen kan styres af Brugeren via \gls{gui}{gui'en}. 
+\begin{usecase}
+
+\addfield{Use Case 9}{Tøm kar} 
+
+\additemizedfield{Mål:}{
+\item At tømme karet for væske
+}
+
+\addfield{Initieret af:}{
+	Bruger  
+}
+
+\additemizedfield{Aktører:}{\item Primær: Bruger}
+
+\addfield{Samtidige forekomster:}{1}
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{Karet indeholder vand}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{Karet er tømt for væske}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenarie:}{
+	\item Systemet trykker på det ønskede kar i \glslink{gui}{gui'en}
+	\item Systemet viser et skærmbillede hvor man kan tilgå ventilstyringen
+	\item Bruger trykker på \textit{Åben afløbsventil} 
+	\item Afløbsventilen bliver åbnet og karet bliver tømt for væske
+	\item Når karet er tømt for vand trykker Brugeren på \textit{Luk afløbsventil}
+	\item Afløbsventilen bliver lukket og karet er tom. 
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
+
+
+\end{usecase}

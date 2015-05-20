@@ -1,0 +1,46 @@
+%!TEX root = ../../main.tex
+
+\subsection*{Use case 1}
+I denne use case kalibreres pH-proben, som er tilsluttet et kar. Dette skal gøres når systemet startes op. 
+\begin{usecase}
+
+\addtitle{Use Case 1}{Kalibrer pH-probe} 
+
+\addfield{Mål:}{
+	At kalibrere en pH-probe
+}
+
+\addfield{Initieret af:}{
+	Tekniker   
+}
+
+\additemizedfield{Aktører:}{\item Primær: Tekniker}
+
+\addfield{Samtidige forekomster:}{1}
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{ En rød LED lyser på karprintet og Teknikeren er i besiddelse af en buffer-væske med pH-værdi på 7}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{pH-proben er kalibreret og en grøn LED lyser på karprintet\fxnote{glossary til karprint} tilhørende pH-proben }
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenarie:}{
+	\item Tekniker sætter pH-proben ned i buffer-væsken
+	\item Tekniker venter i 2 min 		
+	\item Tekniker trykker på knappen \textit{kalibrer} i 3 sekunder
+	\item Karprintet indlæser værdien fra proben
+	\item Rød LED slukker
+	\item Grøn LED lyser 			
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Udvidelser:}{
+%	\item[Ex.1] Teknikeren ønsker kun at aflæse værdier:
+%		\begin{enumerate}
+%		\item[1.] Teknikeren trykker på "OK"
+%		\end{enumerate}
+%}
+
+
+\end{usecase}
