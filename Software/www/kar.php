@@ -13,57 +13,58 @@ $kar = new Kar($conn);
 $client = new Client('localhost', 5555);        //PORT 5555
 
 
+
 // Load kar with $id
 if(!$kar->loadFromDB($id))
 {
   die("Ikke fundet!");
 }
 
-// Render page
-$soeer = $kar->getSensorOer();
-
-
-$smarty = new Smarty;
-$smarty->assign('soeer', $soeer);
-$smarty->assign('kar', $kar);
-
-
-/********************* ***********************************/
-
 
 /******************** Manual wattering *************************/
 if(array_key_exists('MWSTART',$_POST)){
+        $client->connect();
 	//Manual watering start
 	$client -> MWStart($id);
 } 
 
 if(array_key_exists('MWSTOP',$_POST)){
+        $client->connect();
 	//Manual watering stop
 	$client -> MWStop($id);
 }
 
 /********************** In Valve ***************************/
 if(array_key_exists('CLOSEIVALVE',$_POST)){
+        $client->connect();
 	//In valve close
 	$client -> IValveClose($id);
 }
 
 if(array_key_exists('OPENIVALVE',$_POST)){
+        $client->connect();
 	//In valve open
 	$client -> IValveOpen($id);
 }
 
 /********************** OUT Valve ***************************/
-if(array_key_exists('ClOSEOVALVE',$_POST)){
+if(array_key_exists('CLOSEOVALVE',$_POST)){
+        $client->connect();
 	//Out valve close
 	$client -> OValveClose($id);
 }
 
 if(array_key_exists('OPENOVALVE',$_POST)){
+        $client->connect();
 	//Out valve open
 	$client -> OValveOpen($id);
 }
 
+// Render page
+$smarty = new Smarty;
+$smarty->assign('soeer', $kar->getSensorOer());
+$smarty->assign('kar', $kar);
 $smarty->display('templates/kar.html');
+
 ?>
 

@@ -31,7 +31,7 @@
 		if($data['type']==2){
 			$volumen = $data['measure'];
 		}
-		if($data['type']==3){
+		if($data['type']==4){
 			$humidity = $data['measure'];
 		}
 	}

@@ -139,9 +139,9 @@ public:
 class MOeValveState : public KarBusMessage {
 public:
 	MOeValveState(MessageThread* s, Kar* k) : KarBusMessage(s, k) {};
-    enum ValveType { INTAKE = 1, OUTTAKE = 2 };
     enum ValveState { CLOSED = 0, OPEN = 1 };
     ValveState state;
+    unsigned char address;
 };
 
 

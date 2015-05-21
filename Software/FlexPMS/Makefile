@@ -6,7 +6,7 @@ ARGV=
 ARCH=host
 BUILD_DIR=${ARCH}
 SRC_DIR=src
-SOURCES=${SRC_DIR}/main.cpp ${SRC_DIR}/KarContainer.cpp ${SRC_DIR}/SocketClient.cpp ${SRC_DIR}/SocketServer.cpp ${SRC_DIR}/MessageQueue.cpp ${SRC_DIR}/Bridge.cpp ${SRC_DIR}/MessageThread.cpp ${SRC_DIR}/Message.cpp ${SRC_DIR}/RS485.cpp ${SRC_DIR}/Kar.cpp ${SRC_DIR}/Thread.cpp ${SRC_DIR}/KarBus.cpp ${SRC_DIR}/Protocol.cpp ${SRC_DIR}/SensorOe.cpp ${SRC_DIR}/SensorOeContainer.cpp
+SOURCES=${SRC_DIR}/main.cpp ${SRC_DIR}/Log.cpp ${SRC_DIR}/KarContainer.cpp ${SRC_DIR}/SocketClient.cpp ${SRC_DIR}/SocketServer.cpp ${SRC_DIR}/MessageQueue.cpp ${SRC_DIR}/Bridge.cpp ${SRC_DIR}/MessageThread.cpp ${SRC_DIR}/Message.cpp ${SRC_DIR}/RS485.cpp ${SRC_DIR}/Kar.cpp ${SRC_DIR}/Thread.cpp ${SRC_DIR}/KarBus.cpp ${SRC_DIR}/Protocol.cpp ${SRC_DIR}/SensorOe.cpp ${SRC_DIR}/SensorOeContainer.cpp
 OBJECTS=${SOURCES:${SRC_DIR}/%.cpp=${BUILD_DIR}/%.o}
 DEPS_CPP=${SOURCES:${SRC_DIR}/%.cpp=${BUILD_DIR}/%.dpp}
 DEPS=${DEPS_CPP:${SRC_DIR}/%.c=${BUILD_DIR}/%.d}

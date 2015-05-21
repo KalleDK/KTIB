@@ -47,13 +47,13 @@ void KarBus::eHandleKarSetPumpState(MKarSetPumpState* msg){
 			state = 0;
 			break;
 		case MKarSetPumpState::SLOW :
-			state = 1;
+			state = 25;
 			break;
 		case MKarSetPumpState::MIDDLE :
-			state = 2;
+			state = 50;
 			break;
 		case MKarSetPumpState::FAST :
-			state = 3;
+			state = 50;
 			break;
 		default:
 			break;
@@ -212,7 +212,7 @@ void KarBus::eHandleKarOpretOe(MKarSetOpretOe* msg) {
 
 
 void KarBus::dispatch(unsigned long event_id, Message* msg) {
-
+//	serialPort_.RS485readDebug();
 	switch (event_id)
 	{
 		case E_KAR_READY:
