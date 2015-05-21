@@ -1,0 +1,13 @@
+Kar Print:
+								output
+2 x RS konvertere	OK			male-header 3ben 
+2 x Ventiler		OK			terminal 2ben
+1 x doseringspumpe	OK			terminal 2ben
+1 x pH-probe		OK			BNC
+1 x Flowsensor		OK			male-header 3ben
+
+
+Ø print: 
+1 x RS konterter	OK			male-header 3ben 
+1 x Ventil			OK			terminal 2ben
+1 x I2C	  						terminal 4ben

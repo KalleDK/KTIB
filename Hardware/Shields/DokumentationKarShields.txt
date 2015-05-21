@@ -1,0 +1,33 @@
+Dokumentation af KarShields
+
+Oprettelse af egne komponenter: 
+For at kunne implementere det eksterne counterkredsløb på PSoC shield´et, er det nødvendigt at oprette en custom model af 74HC393-counteren, samt 74HZ08-gaten.
+Dette skyldes at på de eksisterende modeller af disse moduler, er GND internt routed og således tænkt til at benytte stelplan på printet. Men da der i vores tilfælde ønskes at kunne konnekte GND fysisk til én af PSoC´ens GND-pin, skal dette kunne routes manuelt.
+I Eagle oprettes der et brugerbibliotek, og deri en custommodel af modulerne med igangspunkt i databladene. (herunder ses oprettelse af HC393)
+Først udlægges pins på IC´en
+
+	INDSÆT SCRN: OprettelseAfEgneKomponenter
+
+Her jævnføres med databladet.
+
+Derudover skal der oprettes et footprint til modellen så denne kan pleceres på printet. Her hentes Package outline-specs fra Databladene. Da begge IC´er følger standard package, er afstanden imellem de 2 rækker 0.3 inches, og afstanden imellem hvert ben er 0.1 inches. 
+Målene vælges i inches da Eagle benytter inches som standard. Værdierne ses dokumenteret herunder
+
+	INDSÆT SCRN: PackageOutline
+	
+Disse værdier benyttes til at skabe følgende footprint, og dette mappes til pins fra schematic. 
+
+	INDSÆT SCRN: Mapping
+	
+Det samme foretages for AND-gate IC´en. 
+	
+Herefter kan modellerne indsætte i KarPrint-projektet, og herefter kan GND frit routes.
+
+
+
+
+	
+	
+ 
+
+ 

@@ -1,0 +1,40 @@
+Pin configuration ver.1
+Dato: 	20150517
+Author: KE
+
+KarPrint - Pinassignment VER 1
+
+P0_1 I_VALVE_CTL
+P2_5 O_VALVE_CTL	
+P0_0 PUMP_CTL
+P0_6 CP1			
+P1_0 MR1	
+P0_4 KAR_RX			
+P0_5 KAR_TX
+P4_0 OE_RX
+P4_1 OE_TX
+P1_5 PH+	
+P2_3 PH
+P0_7 PH SW1			
+P1_1 PH Grøn LED
+P1_2 PH Rød LED	
+P0_3 - debugRX -	
+P0_2 - debugTX -	
+
+
+Pin configuration ver.1
+Dato: 	20150517
+Author: KE
+
+OePrint - Pinassignment VER 1
+
+P0_0	D_VALVE_CTL
+P0_3	OeRX
+P0_2	OeTX
+P4_0	SCl
+P4_1	SDA
+GND		GND
++5V		VBUS
+
+
+
