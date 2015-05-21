@@ -10,3 +10,5 @@
 
 
 #define LOG_FILE_PATH "FlexPMS.log"
+
+#define SENSOR_TYPE_MOISTURE 4

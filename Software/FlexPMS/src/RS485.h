@@ -62,6 +62,7 @@ class RS485
 		int set_interface_attribs(int baud);
 		void RS485send(Bus_Message* txMessage);
 		bool RS485read(Bus_Message* rxMessage);
+		void RS485readDebug();
 		
 	private:
 		void initGPIO();
