@@ -1,0 +1,44 @@
+\subsection*{Use case 7}
+Når Bruger ønsker at aflæse målingerne, kan personen tilgå de forskellige kar og aflæses data via \glslink{gui}{gui'en}.
+
+\begin{usecase}
+
+\addtitle{Use Case 7}{Aflæs målinger} 
+
+\addfield{Mål:}{Bruger aflæser ønskede målinger}
+
+\addfield{Initieret af:}{Bruger}
+
+\additemizedfield{Aktører:}{\item Primær: Bruger}
+
+\addfield{Samtidige forekomster:}{1 }
+
+%Preconditions: What must be true on start and worth telling the reader?
+\addfield{Prækondition:}{Et fungerende system}
+
+%Postconditions: What must be true on successful completion and worth telling the reader
+\addfield{Postkondition:}{Målinger er aflæst af Bruger}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Hovedscenario:}{
+	\item Bruger trykker på det ønskede kar i \glslink{gui}{gui'en}
+	\item Systemet viser et skærmbillede med oversigt over kar data.
+	\item Bruger aflæser de ønskede målinger.
+}
+
+%Extensions: Alternate scenarios of success or failure.
+%\addscenario{Extensions:}{
+%	\item[2.a] Invalid login data:
+%		\begin{enumerate}
+%		\item[1.] System shows failure message
+%		\item[2.] User returns to step 1
+%		\end{enumerate}
+%	\item[5.a] Invalid subsriber data:
+%		\begin{enumerate}
+%		\item[1.] System shows failure message
+%		\item[2.] User returns to step 2 and corrects the errors
+%		\end{enumerate}
+%}
+
+
+\end{usecase}

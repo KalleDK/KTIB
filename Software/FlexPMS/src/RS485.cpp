@@ -50,7 +50,8 @@ void RS485::initGPIO() {
 		cout << "Could not set gpio direction" << endl;
 	}
 	write(gpio_fd_, "out", 3);
-	gpio_fd_ = open("/sys/class/gpio/gpio18/value", O_WRONLY);
+	close(gpio_fd_);
+	gpio_fd_ = open("/sys/class/gpio/gpio18/value", O_WRONLY | O_SYNC);
 	if(gpio_fd_ < 0)
 	{
 		cout << "could not open gpio for changing state" << endl;
@@ -59,7 +60,7 @@ void RS485::initGPIO() {
 
 void RS485::txEnable(bool state) {
 	char setDirection;
-	setDirection = (state ? '0' : '1');
+	setDirection = (state ? '1' : '0');
 	cout << "gpio value is: "  << state << "\n";
 	if(!write(gpio_fd_, &setDirection, 1))
 	{
@@ -113,6 +114,7 @@ void RS485::sendChar(char ch, bool address) {
 	}
 	tcsetattr(tty_fd_, TCSADRAIN, &tio_);
 	write(tty_fd_, &ch, 1);
+	tcdrain(tty_fd_);
 }
 
 bool RS485::parityCheck(char &ch, bool parity) {
@@ -310,3 +312,14 @@ bool RS485::RS485read(Bus_Message* rxMessage) {
 	}
 	return true;
 }
+
+void RS485::RS485readDebug() {
+	char read_out;
+	cout << hex;
+	while(1){
+		if(read(tty_fd_,&read_out,1)){
+			cout << "0x" << (unsigned int)read_out << endl;
+		}
+	}
+}
+

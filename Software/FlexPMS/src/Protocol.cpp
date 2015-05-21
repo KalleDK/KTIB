@@ -48,6 +48,7 @@ bool Protocol::getKarRdy(unsigned char karID, unsigned char& karState) {
 	}
 	return false;
 }
+
 bool Protocol::getKarSensorData(unsigned char karID, unsigned char& len, unsigned char* data) {
 	txMessage_->rxAddr = karID;
 	txMessage_->txAddr = masterAddr_;

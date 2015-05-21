@@ -217,7 +217,7 @@
 \setlength{\tabcolsep}{10pt}						 %indryk i celle 
 \renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
 \center
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}		 %længden på alle rum
+\begin{tabular}{|>{\raggedright}p{4cm}|>{\raggedright}p{4cm}|>{\raggedright\arraybackslash}p{4cm}|}		 %længden på alle rum
 \hline
 
 \multicolumn{3}{|>{\columncolor{white!20!black!90}}m{13.44cm}|}{\textcolor{white}{\large{\textbf{Revision}}}} \\\hline
@@ -243,7 +243,7 @@
 \setlength{\tabcolsep}{10pt}						 %indryk i celle 
 \renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
 \center
-\begin{tabular}{|p{20mm}|p{40mm}|p{30mm}|p{30mm}|}		 %længden på alle rum
+\begin{tabular}{|>{\raggedright}p{20mm}|>{\raggedright}p{40mm}|>{\raggedright}p{30mm}|>{\raggedright\arraybackslash}p{30mm}|}		 %længden på alle rum
 \hline
 
 \multicolumn{4}{|>{\columncolor{white!20!black!90}}m{14.20cm}|}{\textcolor{white}{\large{\textbf{Signal beskrivelser}}}} \\\hline
@@ -278,15 +278,14 @@
 \renewcommand{\arraystretch}{1.5}					 %højden på tabelrum
 \center
 \small
-\begin{tabular}{|p{4cm}|p{4cm}|p{3cm}|p{2.5cm}|}		 %længden på alle rum
+\begin{tabular}{|>{\raggedright}p{4.5cm}|>{\raggedright}p{4.5cm}|>{\raggedright\arraybackslash}p{4.5cm}|}		 %længden på alle rum
 \hline
 
-\multicolumn{4}{|>{\columncolor{white!20!black!90}}m{15.67cm}|}{\textcolor{white}{\large{\textbf{Accepttest #2}}}} \\\hline
+\multicolumn{3}{|>{\columncolor{white!20!black!90}}m{14.94cm}|}{\textcolor{white}{\large{\textbf{Accepttest #2}}}} \\\hline
 \rowcolor{white!70!black!60}
 \textcolor{black}{\large{\textbf{Test}}}&
 \textcolor{black}{\large{\textbf{Forventet resultat}}}&	
-\textcolor{black}{\large{\textbf{Resultat}}}&
-\textcolor{black}{\large{\textbf{Godkendt Kommentar}}}\\
+\textcolor{black}{\large{\textbf{Resultat}}}\\
 \hline
 #3
 \hline

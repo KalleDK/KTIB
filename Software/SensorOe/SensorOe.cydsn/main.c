@@ -72,10 +72,11 @@ void sendFieldsensors(uint8 receiver)
 {
     uint8 i = 0;
     while(oe.fieldsensors[i] != 0) {++i;}
-    OEBUS_PutTxMessage(receiver, i*4, RES_OE_FS_DATA);
+    OEBUS_PutTxMessage(receiver, i*5, RES_OE_FS_DATA);
     i = 0;
     while(oe.fieldsensors[i] != 0) {
         OEBUS_PutTxMessageArg(oe.fieldsensors[i]->addr);
+        OEBUS_PutTxMessageArg(oe.fieldsensors[i]->type);
         OEBUS_PutTxMessageArg(oe.fieldsensors[i]->status);
         OEBUS_PutTxMessageArg(oe.fieldsensors[i]->values[FS_VALUE_HIGH]);
         OEBUS_PutTxMessageArg(oe.fieldsensors[i]->values[FS_VALUE_LOW]);
@@ -285,6 +286,9 @@ int main()
         
         if (OEBUS_ReadRxStatus() == OEBUS_MSG_READY)
             parseOEBUS();
+            
+        if (oe.fieldsensor_connected == 0)
+            scanFieldsensors(1);
         
         //We poll a single sensor, before we loop around, to be sure we don't spend to much time polling
         //Could be empty array if no sensors are added

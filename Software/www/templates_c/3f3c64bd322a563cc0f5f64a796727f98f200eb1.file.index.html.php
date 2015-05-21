@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.21-dev, created on 2015-05-03 12:07:32
+<?php /* Smarty version Smarty-3.1.21-dev, created on 2015-05-13 14:55:40
          compiled from "templates/index.html" */ ?>
 <?php /*%%SmartyHeaderCode:803483812553239df2bc880-70809402%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3f3c64bd322a563cc0f5f64a796727f98f200eb1' => 
     array (
       0 => 'templates/index.html',
-      1 => 1429602222,
+      1 => 1431528503,
       2 => 'file',
     ),
   ),
@@ -33,6 +33,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 >
     <?php echo '<script'; ?>
  type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"><?php echo '</script'; ?>
 >
     <style type="text/css">
         body { margin: 0 15px; }
@@ -73,13 +76,14 @@ $_smarty_tpl->tpl_vars['kar']->_loop = true;
 ?>
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3">
+										
+										<div class="col-xs-4">
 											<a href="kar.php?id=<?php echo $_smarty_tpl->tpl_vars['kar']->value['id'];?>
 "><?php echo $_smarty_tpl->tpl_vars['kar']->value['name'];?>
 </a>
 										</div>
 										
-										<div class="col-md-6" style="text-align: center;">
+										<div class="col-xs-4" style="text-align: center;">
 											<?php if ($_smarty_tpl->tpl_vars['kar']->value['OVALVESTATUS']) {?>
 												<span class="label label-warning">Tømmer kar</span>
 											<?php }?>
@@ -93,16 +97,16 @@ $_smarty_tpl->tpl_vars['kar']->_loop = true;
 											<?php }?>
 										</div>
 										
-										<div class="col-md-3">
+										<div class="col-xs-4">
 											<button onclick="delFunction(<?php echo $_smarty_tpl->tpl_vars['kar']->value['id'];?>
 )" type="button" class="btn btn-default btn-sm"  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-											<span class="glyphicon glyphicon-trash"> </span>
-										</button>
+												<span class="glyphicon glyphicon-trash"> </span>
+											</button>
 					  
-										<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm<?php echo $_smarty_tpl->tpl_vars['kar']->value['id'];?>
+											<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm<?php echo $_smarty_tpl->tpl_vars['kar']->value['id'];?>
 " style="float: right;" data-toggle="tooltip" data-placement="top" title="Edit name"> 
-											<span class="glyphicon glyphicon-edit"> </span>
-										</button>
+												<span class="glyphicon glyphicon-edit"> </span>
+											</button>
 										</div>
 										
 										

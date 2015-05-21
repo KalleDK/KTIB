@@ -5,7 +5,7 @@
 
 #define BUFFER_SIZE 50
 #define UART_FILE "/dev/ttyAMA0"
-#define UART_BAUD 19200
+#define UART_BAUD B19200
 
 class Message;
 

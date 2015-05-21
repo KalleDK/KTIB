@@ -25,11 +25,11 @@ void SensorOe::add_sensor_data(int type, double value) {
     sql::PreparedStatement *pstmt;
     std::string query;
     
-    query = "UPDATE OeSensorData SET type = ?, measure = ? WHERE oeid = ?";
+    query = "INSERT INTO OeSensorData (oeid, type, measure) VALUES (?, ?, ?);";
     pstmt = db_conn_->prepareStatement(query);
-    pstmt->setInt(1, type);
-    pstmt->setDouble(2, value);
-    pstmt->setInt(3, id);
+    pstmt->setInt(1, id);
+    pstmt->setInt(2, type);
+    pstmt->setDouble(3, value);
     pstmt->executeUpdate();
     
     delete pstmt;

@@ -282,12 +282,18 @@ void  `$INSTANCE_NAME`_SensorChangeMode(uint8 addr, uint8 mode)
 }
     
 uint8  `$INSTANCE_NAME`_SensorPoll(uint8 addr, uint8 *values, uint8 *type)
-{    
+{
+    uint8 high = values[0];
+    uint8 low = values[1];
     if(`$INSTANCE_NAME`_Read(addr, values, 2, 0)) {
         if (*type == `$INSTANCE_NAME`__UNKNOWN) {
             `$INSTANCE_NAME`_SensorChangeMode(addr, `$INSTANCE_NAME`_REQ_TYPE);
             `$INSTANCE_NAME`_Read(addr, type, 1, 0);
             `$INSTANCE_NAME`_SensorChangeMode(addr, `$INSTANCE_NAME`_REQ_VALUE);
+        }
+        if (values[0] == 0xFF || values[0] == 0x00) {
+            values[0] = high;
+            values[1] = low;
         }
         return 1;
     }

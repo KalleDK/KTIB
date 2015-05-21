@@ -9,4 +9,11 @@ RS485-bussen er valgt til at kommunikere på, se hvorfor i teknologiundersøgels
 	\label{photo:RS485converter}
 \end{figure}
 
+For at udregne det maksimale strømforbrug kigges i databladet for MAX3082. Under "Absolute Maximum Ratings" findes det, at i et 8-pin plastic DIP hus som det der anvendes, har et typisk effekt forbrug på 727mW.
+
+Udregningen af det maksimale strømforbrug bliver derfor følgende:
+\begin{equation}
+	I = \frac{P}{U} = \frac{727mW}{5V} = 145,4mA
+\end{equation}
+
 \fxnote{Scopebilleder, forklaringer osv.}

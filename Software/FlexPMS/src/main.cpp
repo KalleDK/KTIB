@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <sstream>
 
 // MySQL++ connector library includes (mysqlcppconn)
 #include <cppconn/driver.h>
@@ -9,6 +10,7 @@
 
 // Project includes
 #include "defines.h"
+#include "Log.h"
 #include "Bridge.h"
 #include "KarBus.h"
 #include "SocketServer.h"
@@ -55,6 +57,9 @@ void run(sql::Connection *db_conn) {
 
 
 int main(int argc, char** argv) {
+    Log* log = Log::getInstance();
+    log->write("FlexPMS booted");
+    
     sql::Connection *db_conn = mysql_connect();
     run(db_conn);
 }
