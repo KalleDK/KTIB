@@ -21,9 +21,10 @@ uint16 `$INSTANCE_NAME`_flowTickResolution;
 uint16 `$INSTANCE_NAME`_flowLiters;
 
 CY_ISR(`$INSTANCE_NAME`_FLOW) {
-    `$INSTANCE_NAME`_Pin_Reset_Counter_Write(0);
-    `$INSTANCE_NAME`_flowTicks += 1;
     `$INSTANCE_NAME`_Pin_Reset_Counter_Write(1);
+    `$INSTANCE_NAME`_flowTicks += 1;
+    `$INSTANCE_NAME`_Pin_Reset_Counter_Write(0);
+    `$INSTANCE_NAME`_Pin_blink_Write(!`$INSTANCE_NAME`_Pin_blink_Read());
 }
 
 void  `$INSTANCE_NAME`_Start() {

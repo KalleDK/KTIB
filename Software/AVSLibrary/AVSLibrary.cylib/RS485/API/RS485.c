@@ -30,12 +30,23 @@ CY_ISR_PROTO(`$INSTANCE_NAME`_RX485);
 
 CY_ISR(`$INSTANCE_NAME`_RX485)
 {
+    uint32 rx;
+    if (`$INSTANCE_NAME`_UART_GetRxInterruptSource() & `$INSTANCE_NAME`_UART_INTR_RX_NOT_EMPTY) {
+    rx = `$INSTANCE_NAME`_UART_UartGetByte();
+    
+    if (rx & 0x100) {
+        `$INSTANCE_NAME`_ClearRxMessage();
+    }
+    
     if (`$INSTANCE_NAME`_receiving_buffer->status == `$INSTANCE_NAME`_MSG_EMPTY) {
         `$INSTANCE_NAME`_receiving_buffer->head = `$INSTANCE_NAME`_receiving_buffer->data;
          ++`$INSTANCE_NAME`_receiving_buffer->status;
     }
     
-    *(`$INSTANCE_NAME`_receiving_buffer->head) = `$INSTANCE_NAME`_UART_UartGetChar();
+    
+    //printf("0x%08X \n\r", rx);
+    *(`$INSTANCE_NAME`_receiving_buffer->head) = (char8)rx;
+    
     ++`$INSTANCE_NAME`_receiving_buffer->head;
     
     switch(`$INSTANCE_NAME`_receiving_buffer->status)
@@ -61,7 +72,17 @@ CY_ISR(`$INSTANCE_NAME`_RX485)
     }
     
     `$INSTANCE_NAME`_UART_ClearRxInterruptSource(`$INSTANCE_NAME`_UART_INTR_RX_NOT_EMPTY);
-
+    }
+    
+    if (`$INSTANCE_NAME`_UART_GetTxInterruptSource() & `$INSTANCE_NAME`_UART_INTR_TX_UART_DONE) {
+        if (`$INSTANCE_NAME`_tx_left == 0) {
+            printf("Done transmit\n\r");
+            `$INSTANCE_NAME`_Pin_TxEn_Write(0);
+            `$INSTANCE_NAME`_UART_SetTxInterruptMode(0);
+            `$INSTANCE_NAME`_UART_SetRxInterruptMode(4);
+        }
+        `$INSTANCE_NAME`_UART_ClearTxInterruptSource(`$INSTANCE_NAME`_UART_INTR_TX_UART_DONE);
+    }
 }
 
 void `$INSTANCE_NAME`_Start()
@@ -75,6 +96,7 @@ void `$INSTANCE_NAME`_Start()
     `$INSTANCE_NAME`_reading_buffer = `$INSTANCE_NAME`_buffer_array;
     `$INSTANCE_NAME`_receiving_buffer = `$INSTANCE_NAME`_buffer_array;
     `$INSTANCE_NAME`_ClearRxMessage();
+    `$INSTANCE_NAME`_Pin_TxEn_Write(0);
     
     #if `$INSTANCE_NAME`_DEBUG_UART
     printf("`$INSTANCE_NAME` up and running\n\r\n\r");
@@ -120,10 +142,16 @@ void `$INSTANCE_NAME`_ClearRxMessage()
 
 void  `$INSTANCE_NAME`_PutTxMessage(uint8 receiver, uint8 len, uint8 cmd)
 {
+    CyDelay(20);
+    `$INSTANCE_NAME`_tx_left = len;
+    `$INSTANCE_NAME`_Pin_TxEn_Write(1);
+    `$INSTANCE_NAME`_UART_SetTxInterruptMode(`$INSTANCE_NAME`_UART_INTR_TX_UART_DONE);
+    `$INSTANCE_NAME`_UART_SetRxInterruptMode(0);
     `$INSTANCE_NAME`_UART_SpiUartWriteTxData(receiver | `$INSTANCE_NAME`_UART_UART_MP_MARK );
     `$INSTANCE_NAME`_UART_SpiUartWriteTxData(`$INSTANCE_NAME`_address);
 	`$INSTANCE_NAME`_UART_SpiUartWriteTxData(len);
 	`$INSTANCE_NAME`_UART_SpiUartWriteTxData(cmd);
+    
     
     #if `$INSTANCE_NAME`_DEBUG_UART
     printf("TX: R 0x%02X, L %d, C 0x%02X\n\r", receiver, len, cmd);
@@ -133,7 +161,10 @@ void  `$INSTANCE_NAME`_PutTxMessage(uint8 receiver, uint8 len, uint8 cmd)
 
 void  `$INSTANCE_NAME`_PutTxMessageArg(uint8 arg)
 {
+    if (arg == 0x0D)
+        --arg;
     `$INSTANCE_NAME`_UART_SpiUartWriteTxData(arg);
+    --`$INSTANCE_NAME`_tx_left;
 }
 
 #if `$INSTANCE_NAME`_DEBUG_UART

@@ -61,6 +61,8 @@ typedef struct {
     uint8  status;
 } `$INSTANCE_NAME`_BUFFER_STRUCT;
 
+uint8 `$INSTANCE_NAME`_tx_left;
+
 /***************************************
 *        Function Prototypes
 ***************************************/
