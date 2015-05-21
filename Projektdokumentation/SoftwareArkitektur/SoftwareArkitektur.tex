@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\chapter{Software Arkitektur}
+\chapter{Softwarearkitektur}
 
 \RevisionsTabel{Software Arkitektur}{
 		& 	 	&   \\
@@ -8,3 +8,14 @@
 		& 		&   \\
 		& 	 	&   \\
 }
+
+I dette afsnit beskrives softwarearkitekturen for AVS\fxnote{AVS glossary}, som der er blevet givet indblik på i systemarkitekturen. Afsnittet skulle gerne give et indblik på det specificeret software indenfor fastlagte ramme, så udviklerne evt. kunne udarbejde det. Afsnittet indeholder dokumentation og design af de forskellige softwaredele med test på nogle af dem. \\
+I afsnittet er softwaren delt ud i fire forskellige blokke som er delt op ud fra domain modelen. De fire blokke er GUI, FlexPMS, KarControl og \gls{sensoroe}. 
+
+\input{SoftwareArkitektur/GUI/GUI}
+
+\input{SoftwareArkitektur/FlexPMS/FlexPMS}
+
+\input{SoftwareArkitektur/kar/kar}
+
+\input{SoftwareArkitektur/sensoroe/sensoroe}
