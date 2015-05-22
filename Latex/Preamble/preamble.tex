@@ -208,6 +208,43 @@
 \end{figure}
 }
 
+\newcommand{\PakkeDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{SoftwareArkitektur/#2/Diagrammer/#3_PakkeDiagram.png}
+	\caption{PakkeDiagram af #3}
+	\label{fig:#2_PakkeDiagram}
+\end{figure}
+}
+
+\newcommand{\KlasseDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{SoftwareArkitektur/#2/Diagrammer/#3_KlasseDiagram.png}
+	\caption{KlasseDiagram af #3}
+	\label{fig:#2_KlasseDiagram}
+\end{figure}
+}
+
+\newcommand{\SekvensDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{SoftwareArkitektur/#2/Diagrammer/#3_SekvensDiagram.png}
+	\caption{SekvensDiagram af #3}
+	\label{fig:#2_SekvensDiagram}
+\end{figure}
+}
+
+\newcommand{\StateDiagram}[3]{
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=#1\textwidth]{SoftwareArkitektur/#2/Diagrammer/#3_StateDiagram.png}
+	\caption{StateDiagram af #3}
+	\label{fig:#2_StateDiagram}
+\end{figure}
+}
+
+
 \newcommand{\RevisionsTabel}[2]
 {
 \begin{table}[H]
@@ -300,6 +337,10 @@
 }
 \end{table}
 }
+
+% To change a font in the middle of a section
+\newcommand*{\kodefont}{\fontfamily{pcr}\selectfont}
+\DeclareTextFontCommand{\textKode}{\kodefont}
 
 %---------------------------CODE--------------------------
 \usepackage{listings}

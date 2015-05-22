@@ -1,0 +1,27 @@
+Kar kommunikations pakken er ansvarlig for at sende beskeder til kar styringen den står altså for grænsefalden ud til sensor og aktautore igennem kommunikation til kar styringen. Den består af 3 klasser der er illustreret  i diagrammet herunder:
+
+\KlasseDiagram{0.82}{FlexPMS}{FlexPMS}
+
+\subsubsection{KarBus klassen}
+Den klasse interfacer med resten af flexpms igennem den event baserede kommunikation der driver systemet klassen har således sin egen message kø og tilsvarende event handlers. KarBus har også en RS485 instans og en Protokol instans i sig, Protokol klassen er implementeringen af Karbus protokollen som KarBus klassen bruger til at sende beskeder til karret, RS485 klassen er ikke direkte brugt af KarBus.
+
+\SekvensDiagram{0.82}{FlexPMS}{Template}
+
+\subsubsection{funktions beskrivelser}
+Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
+
+\subsubsection{Protokol klassen}
+Donec venenatis luctus massa, sed interdum eros interdum quis. Morbi eget massa ut ante venenatis efficitur. Praesent tempus euismod tempus. Integer ac nisl eros. Praesent faucibus nisl non faucibus tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean tristique augue libero, interdum fringilla nibh consequat vel. Nullam id dapibus velit. Fusce sit amet dolor mollis, iaculis tellus ut, cursus nisi. \textKode{Curabitur} eleifend congue lacus sit amet ullamcorper. Pellentesque mollis tincidunt lectus sit amet cursus. Aenean euismod velit tellus, non lobortis quam dapibus a.
+
+\SekvensDiagram{0.82}{FlexPMS}{Template}
+
+\subsubsection{funktions beskrivelser}
+Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
+
+\subsubsection{RS485 klassen}
+Donec venenatis luctus massa, sed interdum eros interdum quis. Morbi eget massa ut ante venenatis efficitur. Praesent tempus euismod tempus. Integer ac nisl eros. Praesent faucibus nisl non faucibus tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean tristique augue libero, interdum fringilla nibh consequat vel. Nullam id dapibus velit. Fusce sit amet dolor mollis, iaculis tellus ut, cursus nisi. \textKode{Curabitur} eleifend congue lacus sit amet ullamcorper. Pellentesque mollis tincidunt lectus sit amet cursus. Aenean euismod velit tellus, non lobortis quam dapibus a.
+
+\SekvensDiagram{0.82}{FlexPMS}{Template}
+
+\subsubsection{funktions beskrivelser}
+Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
