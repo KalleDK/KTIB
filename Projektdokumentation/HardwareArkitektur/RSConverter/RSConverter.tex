@@ -1,5 +1,6 @@
 %!TEX root = ../../main.tex
 \section{RSConverter}
+\subsubsection{Analyse}
 RS485-bussen er valgt til at kommunikere på, se hvorfor i teknologiundersøgelsen. Til dette formål er udformet et simpelt kredsløb vha. MAX3082. Det logiske 0-5V UART-signal fra PSoC 4 konverteres til et differentielt signal, som kører ud på bussen, og vice versa.
 
 \begin{figure}[H]
@@ -9,11 +10,49 @@ RS485-bussen er valgt til at kommunikere på, se hvorfor i teknologiundersøgels
 	\label{photo:RS485converter}
 \end{figure}
 
-For at udregne det maksimale strømforbrug kigges i databladet for MAX3082. Under "Absolute Maximum Ratings" findes det, at i et 8-pin plastic DIP hus som det der anvendes, har et typisk effekt forbrug på 727mW.
+$R_1$ er en pulldown-modstand der sørger for, at standard-tilstanden af kredsen står til at modtage. Når der sendes ud på bussen, kræver det en høj $TX_{Enable}$. $R_2$ fungerer som terminering på bussen og sørger for at undgå reflektion af signalet. Størrelsen af modstanden afhænger derfor af tranmissionslinjen (bussen). Når $R_2 = R_{bus}$ bliver hele signalet overført. 
+\\\\
+Det er samtidigt vigtigt at bussen kun termineres i starten og enden. Dvs. hvis der er koblet flere kar på KarBussen, skal de serieforbindes og den sidste samt den første have en termineringsmodstand. I guiden for RS485 kommunikation anbefales det, at man bruger $120\ohm$ kabler og derfor termineres der med $120\ohm$. 
+\\\\
+For at udregne det maksimale strømforbrug til videre design af PSU kigges i databladet for MAX3082. Under "Absolute Maximum Ratings" findes det, at i et 8-pin plastic DIP hus som det der anvendes, har et maksimal effektforbrug på 727mW.
 
 Udregningen af det maksimale strømforbrug bliver derfor følgende:
 \begin{equation}
 	I = \frac{P}{U} = \frac{727mW}{5V} = 145,4mA
 \end{equation}
 
-\fxnote{Scopebilleder, forklaringer osv.}
+
+\subsubsection{Realisering}
+Kredsløbet opbygges på VERO board og der laves en testopstilling. UART-kommunikation simuleres med et 1kHz firkant-signal. Der vil blive målt følgende:
+\begin{enumerate}
+\item RS232 konverteret til RS485 og konverteret tilbage til RS232.
+\item RS232 konverteret til RS485.
+\item RS485 i begge ender af bussen.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{../Hardware/RS485_Converter/RS232_RS485_RS232}
+	\caption{RS232 konverteret til RS485 og konverteret tilbage til RS232.}
+	\label{photo:RS232_RS485_RS232}
+\end{figure}
+
+Kanal 1 (orange) viser det simulerede 1kHz signal. Kanal 2 (blå) viser signalet efter det er blevet konverteret til RS485 og tilbage til RS232. Som det ses af figur~\ref{photo:RS232_RS485_RS232} er signalet fuldstænding intakt. Dette viser samtidig at kredsløbet fungerer som det var tiltænkt.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{../Hardware/RS485_Converter/RS232_RS485}
+	\caption{RS232 konverteret til RS485.}
+	\label{photo:RS232_RS485}
+\end{figure}
+
+Kanal 1 (orange) viser det simulerede 1kHz signal. Kanal 2 (blå) viser signalet efter det er blevet konverteret til RS485. Som det ses af figur~\ref{photo:RS232_RS485} er signalet nu koncentreret omkring 0V. Den når dog ikke den fulde $V_{pp} = 5$. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{../Hardware/RS485_Converter/RS485_RS485}
+	\caption{RS485 i begge ender af bussen.}
+	\label{photo:RS485_RS485}
+\end{figure}
+
+Kanal 1 (orange) viser signalet efter det er blevet konverteret til RS485. Kanal 2 (blå) viser signalet efter i den anden ende af bussen. Som det ses af figur~\ref{photo:RS485_RS485} er de 2 signaler ens og der er ikke noget tab af signalet ved transmissionen.
