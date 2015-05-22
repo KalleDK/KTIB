@@ -37,3 +37,24 @@ Dette PWM omsættes via et eksternt counterkredsløb til at give logisk '1' ved 
 	\caption{Grænsefladebeskrivelse: Flowsensor}
 	\label{screenshot:tabel3}
 \end{figure}
+
+\subsection{pH-probe Grænsefladebeskrivelse}
+pH-proben måler pH-værdien i karet. Proben giver en analog spænding ud afhængig af pH-værdien i væsken. Karet omsætter denne værdi til en floating point. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{../Projektdokumentation/Systemarkitektur/Graenseflader/Screenshots/tabel4_pH-probe.PNG}
+	\caption{Grænsefladebeskrivelse: pH-probe}
+	\label{screenshot:tabel4}
+\end{figure}
+
+\subsection{Jordfugt Grænsefladebeskrivelse}
+Jordfugt måleren måler fugten i jorden. Her stikkes der nogle spyd ned i jorden, som giver en spænding ud afhængig af fugtigheden. PSoC'en omsætter denne spænding til en streng på I2C bussen.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{../Projektdokumentation/Systemarkitektur/Graenseflader/Screenshots/tabel5_jordfugt.PNG}
+	\caption{Grænsefladebeskrivelse: Jordfugt}
+	\label{screenshot:tabel5}
+\end{figure}
+
