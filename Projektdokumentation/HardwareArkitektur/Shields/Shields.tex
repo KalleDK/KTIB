@@ -86,19 +86,6 @@ Shield'et monteres på Ø-PSoC'en.
 
 Det færdige print ses på fig.\ref{screenshot:OeShield}, s.\pageref{screenshot:OeShield}.
 
-\subsection{Printlayout}
-
-Herefter designes boardet, og printbaner lægges ud. Her tages der hensyn til følgende: 
-
-\begin{description}
- \item[•] Antal ampere der løber i banen
- \item[•] Hvilken type signal der løber i banen
- \item[•] Kritiske afstande i layoutet
-\end{description}
-
-Standard tykkelsen af en printbane (for op til 600mA) er 0.000254 mm, til alle ventiler løber 500mA. Printbanen fra forsyning til pumpen, trækker dog 3A max, derfor vælges banetykkelsen her til 0.00254 mm.
-I kommunikationsbanerne løber XX A
-
 \newpage
 \begin{figure}[H]
 	\centering
@@ -108,3 +95,25 @@ I kommunikationsbanerne løber XX A
 \end{figure}
 
 \fxnote{Siden med OeShield-diagram skal være A3}
+
+\subsection{PiShield}
+
+Ligeledes oprettes der et shield til Rasparry Pi'en. Dette shield indeholder følgende komponenter: 
+
+\begin{description}
+ \item[•] RS-konverter til karBus
+\end{description}
+
+
+\subsection{Printlayout}
+
+På baggrund at disse schematics designes de 3 boards og deres printbaner lægges ud. Her tages der hensyn til følgende: 
+
+\begin{description}
+ \item[•] Antal ampere der løber i banen
+ \item[•] Hvilken type signal der løber i banen
+ \item[•] Kritiske afstande i layoutet
+\end{description}
+
+Standard tykkelsen af en printbane (for op til 600mA) er 0.000254 mm, til alle ventiler løber 500mA. Printbanen fra forsyning til pumpen, trækker dog 3A max, derfor vælges banetykkelsen her til 0.00254 mm. Derudover løber et PWM-kontrolsignal til pumpen på 3,5kHz, dette skaber en del støj, hvorfor denne bane bør isoleres så meget som muligt fra specielt ventilerne.
+Derudover bør banerne til kommunikationsbusserne ligeledes isoleres, da disse indeholder rette flanker og dermed skaber en del støj. 
