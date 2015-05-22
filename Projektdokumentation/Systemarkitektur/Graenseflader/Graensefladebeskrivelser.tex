@@ -38,23 +38,16 @@ Dette PWM omsættes via et eksternt counterkredsløb til at give logisk '1' ved 
 	\label{screenshot:tabel3}
 \end{figure}
 
-\subsection{pH-probe Grænsefladebeskrivelse}
-pH-proben måler pH-værdien i karet. Proben giver en analog spænding ud afhængig af pH-værdien i væsken. Karet omsætter denne værdi til en floating point. 
+\subsection{PSU (Power Supply Unit) Grænsefladebeskrivelse}
+Strømforsyningen har til formål at forsyne hele systemet med både 5V og 12V. Den genererer disse spændinger ud fra el-nettets 230VAC.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.6]{../Projektdokumentation/Systemarkitektur/Graenseflader/Screenshots/tabel4_pH-probe.PNG}
-	\caption{Grænsefladebeskrivelse: pH-probe}
-	\label{screenshot:tabel4}
-\end{figure}
-
-\subsection{Jordfugt Grænsefladebeskrivelse}
-Jordfugt måleren måler fugten i jorden. Her stikkes der nogle spyd ned i jorden, som giver en spænding ud afhængig af fugtigheden. PSoC'en omsætter denne spænding til en streng på I2C bussen.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.6]{../Projektdokumentation/Systemarkitektur/Graenseflader/Screenshots/tabel5_jordfugt.PNG}
-	\caption{Grænsefladebeskrivelse: Jordfugt}
-	\label{screenshot:tabel5}
-\end{figure}
-
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Navn} & \textbf{Definition} & \textbf{Område} & \textbf{Kommentar} \\ \hline
+5V            & Analogt signal      & 0-5V            & Forsyning          \\ \hline
+12V           & Analogt signal      & 0-12V           & Forsyning          \\ \hline
+GND           & Analogt signal      & 0V              & Stel               \\ \hline
+\end{tabular}
+\end{table}
