@@ -1,0 +1,27 @@
+\subsection{Controller}
+Som de kan ses på figur \ref{fig:web}, er der en Controller, den indeholder alle PHP filer. Disse filer indeholder funktionen der anvendes til at sætte websiden op og hente/opdaterer data fra databasen. De følgende filer har hver deres opgave og disse vil blive beskrevet i følgende afsnit. Controller har følgende filerne som kan ses i tabel \ref{table:con_fil}. Hvis man ønsker at se filerne skal man gå ind under sourcekoden\footnote{Se bilag under Software\textbackslash www}.
+
+\begin{table}[H]
+\center
+	\begin{tabular}{ | >{\raggedright}p{3.5cm} | >{\raggedright\arraybackslash}p{8.5cm} | }
+    \hline
+    \vskip 1pt \textbf{PHP fil} \vskip 0.5pt	& \vskip 0.5pt \textbf{Beskrivelse}  \vskip 1pt									\\ \hline
+    \textit{mysql.php} 							& Opretter forbindelse til databasen											\\ \hline
+    \textit{index.php}							& Bygger index/home siden til AVS												\\ \hline
+    \textit{kar.php}							& Bygger kar siden til det kar man tilgår										\\ \hline
+    \textit{create.php} 						& Opretter et kar, som bliver visualiseret i GUI'en og sat ind i databasen		\\ \hline
+  	\textit{createSO.php} 						& Opretter en Sensor Ø som bliver visualiseret i GUI'en og sat ind i databasen	\\ \hline
+   	\textit{delete.php} 						& Sletter et kar, både fra databasen og GUI'en									\\ \hline
+   	\textit{deleteS.php}	 					& Sletter en Sensor Ø, både fra databasen og GUI'en							 	\\ \hline
+   	\textit{edit.php}							& Redigere navnet på karet														\\ \hline
+   	\textit{updateData.php}						& Opdaterer de indtastede data i karet											\\ \hline
+   	\textit{auto\_refresh\_kar.php}				& opdaterer de aflæste date og er sammentidlig en fil der bliver opdateret hvert sekund \\ \hline
+\end{tabular}
+\caption{Beskrivelser af php filer under Controller}
+\label{table:con_fil}
+\end{table}
+I følgende er der nogle af filerne der bliver beskrevet mere detaljeret, for at illustrer hvordan de påvirker gui'en og databasen.
+
+
+\subsubsection{index}
+
