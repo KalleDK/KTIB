@@ -78,8 +78,10 @@ Denne kommando er en forespørgsel på data som Karrets sensorer har indsamlet.
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
-Kommando & 0x1 & & \\\hline
-Argumenter & ingen & & \\
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x1 & & \\
+Argumenter & ingen & & \\\hline
 \end{tabular}
 \end{table}
 
@@ -91,8 +93,10 @@ Denne kommando er et svar der indeholder den data karrets sensorer har indsamlet
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x2 & & \\
-Argumenter & ID & Value1 & Value2 \\
+Argumenter & ID & Value1 & Value2 \\\hline
 \end{tabular}
 \end{table}
 
@@ -101,9 +105,11 @@ Argumenterne kan forekomme flere gange og vil være reflekteret i længden. Det 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argument uddybning}\\\hline
 ID & Dette er følerens identifikation alt efter om det er pH, flow eller andet der bliver målt. \\
-Value1 & Dette er første del af den målte værdi. \\
-Value2 & Dette er anden del af den målte værdi.\\
+Value1 & Er heltals værdien af den målte størrelse. \\
+Value2 & Hvis MSB'en i denne er sat betyder det at der skal lægges en halv til value1.\\\hline
 \end{tabular}
 \end{table}
 
@@ -114,8 +120,10 @@ Denne kommando er en forespørgsel på at styre karrets ventiler.
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x3 & & \\
-Argumenter & ID & STATE & \\
+Argumenter & ID & STATE & \\\hline
 \end{tabular}
 \end{table}
 
@@ -124,8 +132,10 @@ STATE kan være følgende:
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
 Lukket & 0x0 \\
-Åben & 0x1 \\
+Åben & 0x1 \\\hline
 \end{tabular}
 \end{table}
 
@@ -135,8 +145,10 @@ Denne kommando er et svar der indeholder den tilstand ventilen er i.
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x4 & & \\
-Argumenter & STATE & & \\
+Argumenter & STATE & & \\\hline
 \end{tabular}
 \end{table}
 
@@ -148,24 +160,28 @@ Denne kommando er en forespørgsel på at styre karrets pumpe.
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x5 & & \\
-Argumenter & STATE & & \\
+Argumenter & STATE & & \\\hline
 \end{tabular}
 \end{table}
-
 
 Da pumpen kan køre med flere hastigheder sendes der en state der kan være følgende:
 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
 Slukket & 0 \\
 Lav hastighed & 25 \\
 Middel hastighed & 50 \\
-Høj hastighed & 75 \\
+Høj hastighed & 75 \\\hline
 \end{tabular}
 \end{table}
 
+Tallene betyder hvor mange procent duty cycle PWM signalet der styrer pumpen skal sættes til dvs, 50 er en duty cycle på 50\%.
 
 \subsubsection{RES\_KAR\_PUMPE}
 Denne kommando er et svar der indeholder den tilstand pumpen er i.
@@ -173,58 +189,168 @@ Denne kommando er et svar der indeholder den tilstand pumpen er i.
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x6 & & \\
-Argumenter & STATE & & \\
+Argumenter & STATE & & \\\hline
 \end{tabular}
 \end{table}
 
 
-Svaret på en pumpe forespørgsel er hvilken tilstand pumpen er blevet sat til.
+Svaret på en pumpe forespørgsel er hvilken tilstand pumpen er blevet sat til. Altså om den er slukket eller kører med en af de tre hastigheder.
 
 
 \subsubsection{REQ\_KAR\_OPRET}
-Denne kommando er en forespørgsel give et kar en adresse.
+Denne kommando er en forespørgsel give en sensorø der er koblet på et kar en adresse.
 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x7 & & \\
-Argumenter & ADDR & & \\
+Argumenter & ADDR & & \\\hline
 \end{tabular}
 \end{table}
 
 
 \subsubsection{RES\_KAR\_OPRET}
-Denne kommando er et svar der fortæller om det lykkedes at oprette karret.
+Denne kommando er et svar der fortæller om det lykkedes at oprette sensorøen på karret.
 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x8 & & \\
-Argumenter & ADDR & & \\
+Argumenter & ADDR & & \\\hline
 \end{tabular}
 \end{table}
 
 
 \subsubsection{REQ\_KAR\_OE\_LIST}
-Denne kommando er en forespørgsel give et kar en adresse.
+Denne kommando er en forespørgsel på at få af vide hvilke ø'er der er oprettede .
 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
 Kommando & 0x9 & & \\
-Argumenter & ingen & & \\
+Argumenter & ingen & & \\\hline
 \end{tabular}
 \end{table}
 
 
 \subsubsection{RES\_KAR\_OE\_LIST}
-Denne kommando er et svar der fortæller om det lykkedes at oprette karret.
+Denne kommando er et svar der fortæller hvilke ø'er der er koblet til karret. Der returneres 1 adresse per ø.
 
 \begin{table}[H]
 \setlength{\parindent}{12pt}
 \begin{tabular}{|l|lcc|}
-Kommando & 0x10 & & \\
-Argumenter & ingen & & \\
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xA & & \\
+Argumenter & ADDR & & \\\hline
 \end{tabular}
 \end{table}
+
+\subsubsection{REQ\_KAR\_OE\_SENSOR\_DATA}
+Denne kommando er en forespørgsel at få data fra de sensorer der er tilkoblet en sensorø. Argumentet er adressen på den ø der ønskes at der skal læses fra.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xB & & \\
+Argumenter & ADDR & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OE\_SENSOR\_DATA}
+Denne kommando er et svar der indeholder den data sensorø'en har opsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lccc|}
+\hline
+\multicolumn{5}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xC & & & \\
+Argumenter & FS\_ADDR & FS\_STATUS & VALUE1 & VALUE2 \\\hline
+\end{tabular}
+\end{table}
+
+Argumenterne beskrives her:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+FS\_ADDR 	& Dette er adressen på selve fieldsensoren \\
+FS\_STATUS	& Status indikere om fieldsensoren er online (1) eller offline (0) \\
+VALUE1 		& Heltals værdien af det sensoren udlæser \\
+VALUE2 		& Hvis MSB er sat i denne indikere den at der er en halv der skal lægge til heltals værdien \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_KAR\_OE\_VENTIL}
+Denne kommando er en forespørgsel at åbne en ø ventil.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xD & & \\
+Argumenter & OE\_ADDR & STATE & \\\hline
+\end{tabular}
+\end{table}
+
+State er om ventilen skal være åben(1) eller lukket(0).
+
+\subsubsection{RES\_KAR\_OE\_VENTIL}
+Denne kommando er et svar der fortæller om det lykkedes at åbne ventilen det gøres ved at returnere den tilstand ventilen er i state har samme betydning som ovenfor.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xE & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+State er om ventilen er åben(1) eller lukket(0).
+
+\subsubsection{REQ\_KAR\_OE\_SENSOR\_TYPE}
+Denne kommando er en forespørgsel på at få afvide hvilken type sensor der er koblet til en bestemt fieldsensor adresse.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xF & & \\
+Argumenter & OE\_ADDR & FS\_ADDR & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OE\_SENSOR\_TYPE}
+Denne kommando er et svar der indeholder typen på den sensor der blev spurgt på.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x10 & & \\
+Argumenter & TYPE & & \\\hline
+\end{tabular}
+\end{table}
+
+Type kan være ??.
