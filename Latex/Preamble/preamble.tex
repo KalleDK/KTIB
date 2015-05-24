@@ -341,6 +341,22 @@
 % To change a font in the middle of a section
 \newcommand*{\kodefont}{\fontfamily{pcr}\selectfont}
 \DeclareTextFontCommand{\textKode}{\kodefont}
+\newcommand{\funkArg}[2]
+{
+& \textKode{#1}	& \multicolumn{3}{p{115mm}}{#2}\\
+}
+
+\newcommand{\funk}[4]
+{
+\begin{table}[H]
+\begin{tabular}{p{5mm}p{20mm}p{50mm}p{50mm}p{20mm}}
+\multicolumn{5}{l}{\textKode{#1}}\\
+& \multicolumn{4}{p{140mm}}{#2}\\
+& Retur-værdi & \multicolumn{3}{p{150mm}}{#3}\\    
+#4                          
+\end{tabular}
+\end{table}
+}
 
 %---------------------------CODE--------------------------
 \usepackage{listings}
