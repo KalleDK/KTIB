@@ -9,6 +9,20 @@ Alle	& 1.0	& 17-03-2015  \\
 		& 	 	&   \\
 }
 
+Dette afsnit beskriver systemarkitekturen for systemet \gls{AVS}, som er specificeret i kravspecifikation. Her anvendes SysML til beskrivelse af struktur og interaktion imellem komponenterne. Fastlæggelse af grænseflader mellem systemets komponenter og beskrivelse af disse.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{SystemArkitektur/AVS}
+    \caption{Grafisk systembeskrivelse}
+    \label{fig:graf_sys}
+\end{figure}
+Figur \ref{fig:graf_sys}, er en grafisk systembeskrivelse af det overordnede system som har indholder følgende:
+\begin{itemize}
+\item De blå pile illustrer vandvejen gennem vandslanger i forhold til kar, ventiler og pumpen. 
+\item Ud fra var vandkaret sider en PSoC, som er forbundet til sensorerne på karet og de PSoC's der ligger i gromediet/plantekasserne.
+\item I plantekasserne ligger der nogle PSoC's som bliver kaldt for \glslink{sensoroe}{Sensor Øer}, disse er forbundet til nogle sensorer der tager nogle forskellige målinger. 
+\end{itemize}
 \section{System diagrammer}
 \fxnote{Der skal laves software diagrammer til system arkitektur - applikationsmodel sekvens diagrammer state machines osv. }
 
