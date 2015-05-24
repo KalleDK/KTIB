@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "SocketClient.h"
 #include "Message.h"
+#include "defines.h"
 #include "events.h"
 
 
@@ -145,6 +146,7 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
     } else if(cmd == "OVALVEOPEN") {
         handle_ovalve_open(args);
     } else if(cmd == "OVALVECLOSE") {
+#ifdef DEBUG
         handle_ovalve_close(args);
     } else if(cmd == "OEREAD") {
         handle_oe_sensor_read(args);
@@ -156,6 +158,7 @@ void SocketClient::handle_incoming_command(string cmd, string args) {
         handle_oe_list_read(args);
     } else if(cmd == "SENSORTYPE") {
         handle_sensor_type_read(args);
+#endif
     } else {
         cout << "SocketClient recieved invalid command: " << cmd << "(args: " << args << ")" << endl;
     }

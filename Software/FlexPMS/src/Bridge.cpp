@@ -97,6 +97,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             handle_ivalve_close(static_cast<GuiMessage*>(msg));
             break;
 			
+#ifdef DEBUG
         case E_OE_SENSOR:
             cout << "Bridge: recieved event E_OE_SENSOR" << endl;
             handle_oe_read(static_cast<GuiMessage*>(msg));
@@ -117,6 +118,7 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             cout << "Bridge: recieved event E_SENSOR_TYPE" << endl;
             handle_sensor_type_read(static_cast<GuiMessage*>(msg));
             break;
+#endif
 			
         
         // -- OTHER EVENTS ------------------------------------------------- //
