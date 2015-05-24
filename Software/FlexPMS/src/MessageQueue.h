@@ -19,7 +19,6 @@ class MessageQueue
 public:
     MessageQueue();
     void send(unsigned long id, Message* msg = NULL);
-    Message* recieve_nowait(unsigned long& id);
     Message* recieve(unsigned long& id);
     ~MessageQueue();
 private:
