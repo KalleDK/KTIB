@@ -1,1 +1,78 @@
-\subsubsection{RS485}
+\subsubsection{Formål}
+Denne komponent er en UART udbygget til at virke via en RS485 bus. 
+Der er tilføjet en TX Pin der skal være høj under transmission, og 
+ellers lav. UARTen er bygget via interrupts og buffer, 
+hvilket sikre bedre mod tab af beskedr. TX benet er implementeret ved 
+at disable RX og enable TX, tænde for TX Pin og vente 20 ms. Derefter 
+sende komandoen samt eventuelle argumenter. Når alt er sendt disables 
+TX Pin, samt enables RX og TX disables. Da der ingen collison detection 
+er, er protokollen lavet til at kun masteren snakker, og slaves kun 
+svarer når master forventer dette. Modtagelsen af beskeder sker via interrupts 
+og det er først relevant at kalde RS485\_GetRxMessage når beskeden er helt 
+modtaget. Mark Space adresseringen er indbygget i UART komponenten, eller 
+er modtage statemachinen ca det samme som kan ses under \ref{fig:RS485RX_StateDiagram}. 
+Afsendelsen er lidt mere kompliceret, da afsendelsen af UART beskederne sker 
+i hardwaren og ikke software. Derfor er vi nød til at aktivere interrupts 
+når sender bufferen er tom, og først derefter slukke for TX benet.
+
+\StateDiagram{0.82}{AVSLibrary}{RS485TX}
+
+\subsubsection{Funktioner}
+
+\funk{void RS485\_Start(void)}
+{Initialiserer den underlæggende UART samt 
+TX Pin'en, og klargører buffere}
+{Void}
+{}
+
+\funk{void RS485\_SetAddress(uint8 addr)}
+{Skifter addresse på interfacet}
+{Void}
+{
+\funkArg{addr}{Den nye adresse der skal benyttes}
+}
+
+\funk{uint8 RS485\_GetAddress(}
+{Henter adresse på interfacet}
+{Adressen}
+{}
+
+\funk{uint8 RS485\_ReadRxStatus()}
+{Angiver hvad status er i forhold til at der ligger en besked i bufferen}
+{RS485\_MSG\_EMPTY, RS485\_MSG\_READY er de to vigtigste}
+{}
+
+\funk{void RS485\_GetRxMessage(RS485\_MSG\_STRUCT *msg)}
+{Returnerer en modtaget besked, beskeden ligger stadig i bufferen og skal behandles inden den næste modtages}
+{Void}
+{
+\funkArg{msg}{Pointer til en msg struct, som blot er pointere til forskellige steder i bufferen}
+}
+
+\funk{void RS485\_ClearRxMessage()}
+{Skal køres når en besked er parset, dette gør at interfacet igen kan modtage en besked. Det gør også at værdierne i beskedn ikke længere kan forvente at være korrekte}
+{Void}
+{}
+
+\funk{void  RS485\_PutTxMessage(uint8 receiver, uint8 len, uint8 cmd)}
+{Sender en besked til receiver med kommandoen command, er len større end 0 skal der sendes len antal RS485\_PutTxMessageArg. Mens der sendes kan der ikke modtages beskeder. Dvs hvis der er mitchmatch mellem len og RS485\_PutTxMessageArg(uint8 arg) ender programmet i en deadlock}
+{Void}
+{
+\funkArg{receiver}{Modtager adressen af beskeden}
+\funkArg{len}{Antallet af argumenter der sendes med}
+\funkArg{cmd}{Kommandoen der sendes med}
+}
+
+\funk{void RS485\_DebugHandle(const char ch)}
+{Ikke implementeret endnu }
+{Void}
+{
+\funkArg{ch}{Input char}
+}
+
+\funk{void RS485\_DebugMsg(RS485\_MSG\_STRUCT *msg)}
+{Udskriver beskeden på skærmen i HEX koder, hvis debug er aktiveret bliver alle modtagne pakker udskrevet på denne måde}
+{Void}
+{
+\funkArg{msg}{Pointer til beskeden}
+}
