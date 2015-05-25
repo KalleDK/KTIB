@@ -1,3 +1,28 @@
 \section{Sensor Ø}
 
+Sensor Øen består af følgende komponenter, 
+hvor DebugUart er optional, og bruges under 
+test og implementering. De enkelte pakker er 
+videre beskrevet under AVSLibrary sektionen.
+
 \PakkeDiagram{0.82}{SensorOe}{SensorOe}
+
+Systemet er i kort vist i følgende sekvens diagram
+
+\SekvensDiagram{0.82}{SensorOe}{SensorOe}
+
+Selve parse funktionen af de enkelte beskeder er ikke 
+vist da de er unikke efter hver kommando, men er simple 
+i deres udførelse, f.eks. skifte state på den tilkoblede 
+ventil. For at sikre mest mulig oppetid i forhold til 
+Øbus kommunikationen er pollning af Fieldsensorer, med 
+vilje lavet til at kun en bliver pollet per loop. Derved 
+har Øbussen mulighed for kommunikation mellem hver pollning 
+i stedet for at skulle vente til alle sensorer er pollet. 
+Der er desuden implementeret en scannings funktion der 
+automatisk tilføjer alle Fieldsensorer der er tilkoblet 
+SensorBussen før Øen booter. Derved kan man tilføje de 
+sensorer man skal bruge og genstarte SensorØen, de er 
+derefter alle blevet tilføjet. Dette er noget der er 
+blevet arbejdet på at skulle ske automatisk løbende i 
+stedet for under boot.
