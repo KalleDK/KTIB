@@ -12,10 +12,6 @@
 #include "MessageThread.h"
 
 
-#define SOCK_HOST localhost
-#define SOCK_PORT 5555
-
-
 class SocketClient;
 
 

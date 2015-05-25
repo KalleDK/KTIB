@@ -12,3 +12,7 @@
 #define LOG_FILE_PATH "FlexPMS.log"
 
 #define SENSOR_TYPE_MOISTURE 4
+
+
+#define SOCK_HOST localhost
+#define SOCK_PORT 5555
