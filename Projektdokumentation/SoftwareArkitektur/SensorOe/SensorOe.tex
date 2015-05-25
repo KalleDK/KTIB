@@ -26,3 +26,86 @@ sensorer man skal bruge og genstarte SensorØen, de er
 derefter alle blevet tilføjet. Dette er noget der er 
 blevet arbejdet på at skulle ske automatisk løbende i 
 stedet for under boot.
+
+\subsection{Funktioner}
+
+\funk{void SetVentilState(uint8 state)}
+{Bruges til at skifte tilstand på ventilen alt efter om den skal være åben eller lukket}
+{intet}
+{
+\funkArg{state}{Den tilstand ventil skal sættes til åben(1) eller lukket(1)}
+}
+
+\funk{uint8 GetOebusAddr()}
+{Bruges til at hente den adresse som øen har på ø bussen}
+{Ø'ens bus adresse}
+{
+}
+
+\funk{void SetOebusAddr(uint8 addr)}
+{Bruges til at ændre øens adresse}
+{intet}
+{
+\funkArg{addr}{Den adresse øen skal have}
+}
+
+\funk{void addFieldsensor(uint8 addr)}
+{Denne funktion allokere plads til en ny fieldsensor og initiere den med default værdier samt den adresse funktionen er kaldt med}
+{intet}
+{
+\funkArg{addr}{Den adresse fieldsensoren skal have}
+}
+
+\funk{void pollFieldsensor(Fieldsensor* fs)}
+{Her startes udlæsning af data fra fieldsensoren, hvis det lykkes sættes sensoren til at være online ellers offline}
+{intet}
+{
+\funkArg{fs}{Er en pointer til den sensor der skal polles}
+}
+
+\funk{void sendFieldsensors(uint8 receiver)}
+{Tæller op hvor mange sensorer der er koblet til øen og sender en besked med rette retur type og længde i henhold til antal sensorer derefter deres argumenter}
+{intet}
+{
+\funkArg{receiver}{Adressen på den der skal modtage fieldsensor data}
+}
+
+\funk{Fieldsensor* findFieldsensor(uint8 sensor\_addr)}
+{Leder listen af fieldsensorer igennem efter en sensor med adressen i argumentet}
+{En pointer til Fieldsensor hvis alt gik godt ellers NULL}
+{
+\funkArg{sensor\_addr}{Adressen på den sensor der skal findes}
+}
+
+\funk{void parseOEBUS()}
+{dispatcher for OeBus}
+{intet}
+{
+}
+
+\funk{void scanFieldsensors(uint8 import)}
+{funktionen skanner alle valide adresse og forsøger at læse fra dem hvis det lykkes importeres sensoren i fieldsensor listen såfremt import parameteren er sat}
+{intet}
+{
+\funkArg{import}{Fortæller om der skal gemmes de sensorer der er blevet skannet}
+}
+
+\funk{void debugListFieldsensors()}
+{Udskriver adresse og status på alle tilkoblede fieldsensorer på debug uart}
+{intet}
+{
+}
+
+\funk{void debugConfig()}
+{udskriver alt data omhandlende sensorøs configuration på debug uart}
+{intet}
+{
+}
+
+\funk{void DebugHandle(const char ch)}
+{Bruges til at skifte DebugHandle og udskrive en liste af Komponenter der er tilkoblet debug}
+{intet}
+{
+\funkArg{ch}{tegn fra uart som der switches på}
+}
+>>>>>>> Beskrevet Oe funktioner
