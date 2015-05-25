@@ -1,1 +1,36 @@
 \subsubsection{Flowsensor}
+Flowsensor komponentens software er designet ud fra dens hardware som giver et frekvens moduleret signal altså et signal hvor frekvens stiger alt efter hvor meget vand der løber igennem. Dette signal vil stå og skifte imellem logisk lav og logisk høj, det betyder at vi kan tælle de pulser der kommer ud af føleren.\
+Til at gøre dette her vi designet en komponent der indeholder en input pin og en interrupt service routine, denne tæller 1 op hver gang der kommer et interrupt og holder derved øje med flowet.\
+Der er så skrevet nogle metoder der kan udlæse og oversætte de talte pulser til et antal liter, der er ved empirisk måler fundet det antal pulser der svare til en liter og dette tal bruges så til at finde ud af liter antallet.
+
+\subsubsection{Funktioner}
+
+\funk{CY\_ISR(FlowSensor\_FLOW)}
+{Dette er interrupt service routinen der bruges til at registrer antal ticks fra flow måleren}
+{intet}
+{
+}
+
+\funk{void FlowSensor\_Start()}
+{Denne funktion starter alle afhængigheder flowsensor komponenten har}
+{intet}
+{
+}
+
+\funk{uint16 FlowSensor\_getFlowTicks()}
+{Denne funktion returnere antal ticks der er talt}
+{antal ticks}
+{
+}
+
+\funk{uint16 FlowSensor\_getFlowLiter()}
+{Denne funktion returnere antal liter vand der er beregnet}
+{antal ticks}
+{
+}
+
+\funk{void FlowSensor\_calcFlowLiter()}
+{Denne funktion beregner det antal liter der er talt via flow ticks}
+{intet}
+{
+}

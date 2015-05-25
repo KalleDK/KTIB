@@ -1,1 +1,34 @@
 \subsubsection{pHProbe}
+Softwaren til pHProbe er implementeret med en OPAmp og en ADC i PSoC 4 chippen desuden er der en interrupt service routine der bruges til at calibrere proben med. OPAmp'en og ADC er beskrevet i hardware delen af dokumentationen, i software bliver ADC'en aflæst for hvilken værdi der er i milivolt på ADC'ens indgang. Desuden er der sat default værdier for pH4 og pH7 som er disse pH proben kalibreres efter, disse to værdier bruges til at regne den aktuelle pH i forhold til det antal milivolt der læses på ADC'en.
+
+\subsubsection{Funktioner}
+
+\funk{CY\_ISR(pHProbe\_CALIBRATE)}
+{Dette er interrupt service routinen der bruges til at kalibrere proben det er vigtigt at nævne at når denne kørers kan karret ikke kommunikere fordi at karret står og venter i denne routine}
+{intet}
+{
+}
+
+\funk{void pHProbe\_Start()}
+{Denne funktion start alle afhængigheder pHProbe komponenten har, herunder ADC og OPAmp}
+{intet}
+{
+}
+
+\funk{float pHProbe\_mvToPh(float mv, float ph4, float ph7)}
+{Denne funktion regner den aktuelle pHVærdi ud fra målingen fra ADCen}
+{pHVærdien}
+{
+}
+
+\funk{float pHProbe\_getpH()}
+{Denne funktion aflæser ADC'en og returnere pHVærdien udregnet ved at kalde \textKode{pHProbe\_mvToPh} funktionen}
+{antal ticks}
+{
+}
+
+\funk{void FlowSensor\_calcFlowLiter()}
+{Denne funktion beregner det antal liter der er talt via flow ticks}
+{intet}
+{
+}
