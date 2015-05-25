@@ -1,15 +1,22 @@
 \subsection{GUI}
-Som udgangspunkt til at lave \glslink{gui}{gui'en} er der blevet implementeret en webside, hvor selve kommunikation mellem databasen, websiden og clienten ser ud som det kan ses i diagrammet på figur \ref{fig:web}.
+Som udgangspunkt til at lave \glslink{gui}{GUI'en} er der blevet implementeret en webside, hvor selve kommunikation mellem databasen, websiden, clienten mm. ser ud som det kan ses i diagrammet på figur \ref{fig:web}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{SoftwareArkitektur/GUI/Intro_GUI_DB/photo/webDiagram.PNG}
+    \includegraphics[width=.9\textwidth]{SoftwareArkitektur/GUI/Intro_GUI_DB/photo/webDiagram.PNG}
     \caption{Diagram over gui og databasens interaktion}
     \label{fig:web}
 \end{figure}
-
-I Libary ligger der nogle klasser så det er muligt at oprette objekter, ud fra indholdet i DB\footnote{Databasen}, inde i Controlleren. Controlleren indeholder alle PHP filerne som indeholder funktioner til at sætte websiden op og henter/opdaterer data fra databaserne.
+\textbf{DB}\\
+DB står for Databasen, som indeholder nogle tabeller med alle data.
 \\\\
+\textbf{Libary}\\
+I Libary ligger der nogle klasser så det er muligt at oprette objekter, ud fra indholdet i Databasen, inde i Controlleren. 
+\\\\
+\textbf{Controller}\\
+Controlleren indeholder alle PHP filerne som indeholder funktioner til at sætte websiden op og henter/opdaterer data fra databaserne.
+\\\\
+\textbf{Template}\\
 Under Template ligger alle HTML filerne som strukturerer indholdet på websiden og visualiserer \glslink{gui}{gui'en}. Hertil er smarty anvendt som Template Engine, det den gør, er at det tager et PHP script, udfører det, og derefter sender forskellige genererede variabler til template (HTML filerne), hvor Smarty derefter udfører forskellige opgaver med variablerne, for til slut at kompilere skabelonen til \glslink{gui}{gui'en}.
 \\\\
 Til template er der også anvendt Bootstrap\footnote{http://getbootstrap.com/}, som er beregnet til at gøre webudvikling lettere, da den består af HTML- og CSS- baserede design skabeloner til typografi, formularer, knapper, navigation og andre interface komponenter, samt valgfri JavaScript udvidelser.
@@ -37,10 +44,12 @@ Kar indeholder alle kar, deres kar data, som brugeren har oprettet og status for
 
 \begin{table}[H]
 \center
-\footnotesize
+\setlength{\tabcolsep}{16pt}
+\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{ | >{\raggedright}p{2.5cm} | >{\raggedright\arraybackslash}p{9.5cm} | }
     \hline
-    \vskip 1px \textbf{Kolonnenavn} 	\vskip 0.5px 			& \vskip 0.5px \textbf{Beskrivelse} \vskip 1px 	\\ \hline
+    \rowcolor{lightgray} 
+ 	\textbf{Kolonnenavn} 				& \textbf{Beskrivelse} 	\\ \hline
     \textit{id} 						& Et unikt id for hver kar tabellen indeholder   						\\ \hline
    	\textit{name} 						& Navnet på karet   													\\ \hline
    	\textit{adresse}	 				& Adressen til karet    												\\ \hline
@@ -85,10 +94,12 @@ Kar indeholder alle kar, deres kar data, som brugeren har oprettet og status for
 SensorOe indeholder alle Sensor Øer, deres data brugeren har oprette og status for dens ventil. hver Sensor Ø har også et KarID så man kan se hvilket Kar de hører til. Kolonnenavnene er beskrevet i tabel \ref{table:SensorOe_kol}.
 \begin{table}[H]
 \center
-\footnotesize
+\setlength{\tabcolsep}{16pt}
+\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{ | >{\raggedright}p{2.5cm} | >{\raggedright\arraybackslash}p{9.5cm} | }
     \hline
-    \vskip 1px \textbf{Kolonnenavn} \vskip 0.5px & \vskip 0.5px \textbf{Beskrivelse}  \vskip 1px 				\\ \hline
+    \rowcolor{lightgray} 
+    \textbf{Kolonnenavn} 				& \textbf{Beskrivelse}  						\\ \hline
     \textit{id} 						& Et unikt id for hver Sensor Ø tabellen indeholder   					\\ \hline
    	\textit{adresse} 					& Adressen til Sensor Ø    													\\ \hline
    	\textit{KarID}	 					& En reference til det Kars id som Sensor Øen sidder på   				\\ \hline
@@ -111,10 +122,12 @@ SensorOe indeholder alle Sensor Øer, deres data brugeren har oprette og status 
 KarSensorData indholder alle de målte værdier ved hver kar, derfor har de et KarID, som man kan se hvilken værdi det tilhører. Her indikerer type hvilken slags måling det er, hvor measure værdien der bliver målt. Ydermere er der time der angiver tiden hvor de tilhørende data blev sat ind, på den måde kan man altid tilgå de nyeste data. Kolonnenavnene er beskrevet i tabel \ref{table:karSensorData_kol}.
 \begin{table}[H]
 \center
-\footnotesize
+\setlength{\tabcolsep}{16pt}
+\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{ | >{\raggedright}p{2.5cm} | >{\raggedright\arraybackslash}p{9.5cm} | }
     \hline
-    \vskip 1px \textbf{Kolonnenavn} \vskip 0.5px & \vskip 0.5px \textbf{Beskrivelse}  \vskip 1px 				\\ \hline
+    \rowcolor{lightgray} 
+    \textbf{Kolonnenavn} 				& \textbf{Beskrivelse}  						\\ \hline
     \textit{KarID} 						& En reference til det Kars id der bliver målt på    					\\ \hline
     \vskip 4pt \textit{type} 			& \vskip 1px
 											\begin{minipage}{9cm}
@@ -139,10 +152,12 @@ OeSensorData minder meget om KarSensorData men indholder alle de målte værdier
 
 \begin{table}[H]
 \center
-\footnotesize
+\setlength{\tabcolsep}{16pt}
+\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{ | >{\raggedright}p{2.5cm} | >{\raggedright\arraybackslash}p{9.5cm} | }
     \hline
-    \vskip 1px \textbf{Kolonnenavn} \vskip 0.5px & \vskip 0.5px \textbf{Beskrivelse}  \vskip 1px 				\\ \hline
+    \rowcolor{lightgray} 
+    \textbf{Kolonnenavn} 				& \textbf{Beskrivelse}  						\\ \hline
     \textit{OeID} 						& En reference til det Sensor Øs id der bliver målt på    				\\ \hline
     \vskip 4pt \textit{type} 			& \vskip 1px
 											\begin{minipage}{9cm}
