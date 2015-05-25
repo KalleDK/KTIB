@@ -1,1 +1,50 @@
-\subsubsection{DebugUart}
+\subsubsection{Formål}
+Denne komponents formål er at overtage 
+printf funktionen, og sende data strømmen fra denne ud 
+via en UART. Ideen er at programmet kan kompileres med 
+og uden debug. Hvis debug er deaktiveret bliver printf 
+data strømmen sendt i et sort hul, ellers bliver det 
+sendt ud af en UART. Dette gør at andre komponenter 
+blot skal inludere en header fil, og kan derefter bruge 
+printf uden at skulle tænke videre over det. Desuden giver 
+komponenten også mulighed for andre komponenter at koble 
+sig på en debug menu, så man kan sende kommandoer direkte 
+til de individuelle komponenter. Dette er gjort via 
+funktiones pointere. Når en anden komponent bliver tilføjet 
+bliver denne automatisk givet et nummer i menuen. Når et 
+nummer bliver indtastet skifter DebugHandle til denne 
+komponent. Brugeren kan derefter bruge ESC for at komme 
+tilbage til menuen og vælge en ny DebugHandle.
+
+\StateDiagram{0.82}{AVSLibrary}{DebugMenu}
+
+\subsubsection{Funktioner}
+
+\funk{int Debug\_printf(const char* string, ...)}
+{Er dokumenteret her, da det er en fri funktion, men hører til denne komponent.}
+{Success: Antal chars udskrevet Failure: Negative number}
+
+\funk{void Debug\_Start(void)}
+{Kobler UART'ens PutString til printf funktionen. Samt starter denne op.}
+{Void}
+
+\funk{void Debug\_PutChar(char8 txDataByte)}
+{Wrapper for UART\_PutChar}
+{Void}
+
+\funk{void Debug\_PutString(const char8 string[])}
+{Wrapper for UART\_PutString}
+{Void}
+
+\funk{void Debug\_Communicate()}
+{Redirecter input chars fra UART til den valgte DebugHandle}
+{Void}
+
+\funk{void Debug\_DebugHandle(const char ch)}
+{Bruges til at skifte DebugHandle og udskrive en liste af Komponenter der er tilkoblet debug}
+{Void}
+
+\funk{void Debug\_AddComponent(void (*debugchar) (char))}
+{Tilføjer en DebugHandle funktion, bruges til at koble komponenters DebugHandle til.}
+{Void}
+

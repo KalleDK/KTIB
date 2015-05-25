@@ -1,1 +1,105 @@
-\subsubsection{SensorBus}
+\subsubsection{Formål}
+SensorBussen er en overbygning på en I2C Multi-Master-Slave Bus. 
+Der bør kun sidde en Sensor Ø på bussen, men op til 10 Fieldsensors 
+(begrænset i Sensor Ø’ens hukommelse). Hovedformålet er at hive 
+sensordata ud af Fieldsensorne, derfor er SensorPoll bygget op til 
+kun at hive måleværdier ud som default. Hvis Fieldsensortypen er ukendt, 
+kan denne også trække ud, bemærk at der bliver skiftet tilbage til Value, 
+derved er der mindst muligt overhead i de fremtidige afmålinger. 
+Der er startet op på en Scan funktion, samt en automatisk tildeling 
+af adresser til Fieldsensor. Disse er ikke blevet færdigjort, derfor 
+heller ikke dokumenteret i nedenstående. Scan benytter sig af 
+non-blocking read, til at teste om en enhed svarer.
+
+\SekvensDiagram{0.82}{AVSLibrary}{SensorPoll}
+
+\subsubsection{Funktioner}
+
+\funk{void SB\_Start(void)}
+{Initialisere I2C komponenten, samt indlæser dummy værdier indtil reelle værdier er klar.}
+{Void}
+{}
+
+\funk{void SB\_Communicate()}
+{Er funktionen der kalder ParseRead og ParseWrite, denne funktion bør kaldes i mainloopet}
+{Void}
+{}
+
+\funk{uint8 SB\_Read(uint8 addr, uint8 * str, uint8 len, uint8 blocking\_mode)}
+{Der er to modes til denne kommando blocking og 
+non-blocking. I blocking lader den hardwaren om al 
+kommunikation, dog kan dette ende i deadlock. 
+i non-blocking mode tester den om enheden eksisterer 
+og kan kommunikeres med.}
+{Success: 1 Failure: Anything else}
+{
+\funkArg{addr}{Adressen der skal læses fra}
+\funkArg{str}{Char pointer hvor dataen fra læsningen gemmes}
+\funkArg{len}{Hvor mange chars der skal læses}
+\funkArg{blocking\_mode}{Sætter blocking mode}
+}
+
+\funk{uint8 SB\_Write(uint8 addr, uint8 * str, uint8 len, uint8 blocking\_mode)}
+{Se SB\_Read}
+{Success: 1 Failure: Anything else}
+{
+\funkArg{addr}{Adressen der skal skrives til}
+\funkArg{str}{Char pointer hvor dataen fra skrivningen hentes}
+\funkArg{len}{Hvor mange chars der skal skrives}
+\funkArg{blocking\_mode}{Sætter blocking mode}
+}
+
+\funk{void SB\_ParseRead(void)}
+{Nulstiller readpointeren efter læsning.}
+{Void}
+{}
+
+\funk{void SB\_ParseWrite(void)}
+{Fieldsensor: Skifter hvilken værdi der skal returneres, hvis Sensor Øen har bedt om dette. Sensor Ø: Bruges til at verificere at Fieldsensoren har skiftet mode}
+{Void}
+{}
+
+\funk{void SB\_ChangeMode(uint8 mode)}
+{Fieldsensor: Skifter mode mellem Value og Type}
+{Void}
+{
+\funkArg{mode}{SB\_REQ\_TYPE, SB\_REQ\_VALUE}
+}
+
+\funk{void SB\_RefreshData()}
+{Opdatere read bufferen med Type eller Value værdierne}
+{Void}
+{}
+
+\funk{void SB\_LoadValue(uint8 high, uint8 low)}
+{Bruges af Fieldsensoren til at opdatere værdien der måles}
+{Void}
+{
+\funkArg{high}{0x00 - 0xFF Værdien har betydning efter hvilken Fieldsensor der anvendes}
+\funkArg{low}{0x00 - 0xFF Værdien har betydning efter hvilken Fieldsensor der anvendes}
+}
+
+\funk{void SB\_SensorChangeMode(uint8 addr, uint8 mode)}
+{Sensor Ø: Få en Fieldsensor til at skifte mode}
+{Void}
+{
+\funkArg{addr}{Adressen på Fieldsensoren}
+\funkArg{mode}{Hvilken mode der skal skiftes til}
+}
+
+\funk{void SB\_SensorPoll(uint8 addr, uint8 *values, uint8 *type)}
+{Sensor Ø: Henter værdier samt type fra en Fieldsensor}
+{Success: 1 - Failure: 0}
+{
+\funkArg{addr}{Adressen på Fieldsensoren}
+\funkArg{values}{uint8 pointer hvor values gemmes i}
+\funkArg{type}{uint8 pointer hvor typen gemmes i}
+}
+
+\funk{void SB\_DebugHandle(const char ch)}
+{Kan bl.a. læse og skrive I2C direkte, læse i buffers, scanne efter enheder mm. Debug handler,
+se mere under DebugUart}
+{Void}
+{
+\funkArg{ch}{Input char}
+}

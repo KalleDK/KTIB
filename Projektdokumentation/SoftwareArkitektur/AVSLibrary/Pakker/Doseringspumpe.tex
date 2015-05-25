@@ -1,1 +1,63 @@
-\subsubsection{Doseringspumpe}
+\subsubsection{Formål}
+Formålet med denne komponent er at lave en ens tilgang 
+til pumper i systemet. Komponenten består af et Clock 
+input, en PWM generator, samt en Pin. Clocken er input 
+til PWM generatoren, som outputter sit signal til Pin'en. 
+Dette signal bliver derefter brugt på et pumpe 
+styreboard. Selve PWM signalet er et Fast PWM signal 
+hvor vi sætter comparatoren efter de procenter den 
+bliver indstillet til. Der kan på komponenten vælges om 
+signalet skal invertes. Hastigheden af PWM signalet 
+angives i procent. Komponenten har 2 states running (0x01) 
+og blocked (0x00). Dette angiver om PWM generatoren er 
+indstillet til at sende det ønskede signal. 
+Man kan derved instille en hastighed inden man starter 
+pumpen, skulle dette være ønsket, samt huske pumpen den 
+sidste værdi den var indstillet til, hvis man midlertidig 
+vil stoppe pumpen og starte den igen med samme hastighed.
+
+\subsubsection{Funktioner}
+
+\funk{void Pumpe\_Start(void)}
+{Funktionen bruges til at initialisere PWM generatoren}
+{Void}
+{}
+
+\funk{void Pumpe\_Run(void)}
+{Indstiller PWM generatoren med den forprogrammerede hastighed, hvis den tidligere hastighed var 0\%, bliver hastigheden sat til 100\%. Pumpens state bliver ændret til running (0x01)}
+{Void}
+{}
+
+\funk{void Pumpe\_Block(void)}
+{Stopper PWN generatoren og ændre pumpens state til blocked (0x00)}
+{Void}
+{}
+
+\funk{void Pumpe\_SetSpeed(uint8 percent)}
+{Indstiller hastigheden PWM generatoren ønskes at køre med, er staten running (0x01) bliver PWM generatoren's comperator ændret med det samme}
+{Void}
+{
+\funkArg{percent}{0 - 100, hvor mange procent af tiden signalet skal være aktivt.}
+}
+
+\funk{void Pumpe\_ApplySpeed(void)}
+{Intern funktion der indstiller PWM Generatoren med den ønskede hastighed}
+{Void}
+{}
+
+\funk{uint8 Pumpe\_GetSpeed(void)}
+{Returnerer den indstillede hastighed i procent}
+{0 - 100 procent}
+{}
+
+\funk{void Pumpe\_DebugHandle(const char ch)}
+{Kan bl.a. starte, stoppe pumpen, samt ændre hastighed på signalet. Debug handler, se mere under DebugUart}
+{Void}
+{
+\funkArg{ch}{Input char}
+}
+
+\funk{void Pumpe\_DebugState(void)}
+{Udskriver hvilken state pumpen er i, samt hastighed mm.}
+{Void}
+{}

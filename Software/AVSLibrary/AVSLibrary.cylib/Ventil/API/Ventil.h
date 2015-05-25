@@ -19,14 +19,14 @@
     
 #define `$INSTANCE_NAME`_DEBUG_UART                 (`$VENTIL_DEBUG`)
 
-void  `$INSTANCE_NAME`_Start();
+void  `$INSTANCE_NAME`_Start(void);
 void  `$INSTANCE_NAME`_SetState(uint8 state);
 uint8 `$INSTANCE_NAME`_GetState(void);
 
 
 #if `$INSTANCE_NAME`_DEBUG_UART
     void  `$INSTANCE_NAME`_DebugHandle(const char ch);
-    void  `$INSTANCE_NAME`_DebugState();
+    void  `$INSTANCE_NAME`_DebugState(void);
 #endif
 
 #endif

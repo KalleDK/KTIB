@@ -1,1 +1,39 @@
-\subsubsection{Ventil}
+\subsubsection{Formål}
+Formålet med denne komponent er at lave en ens 
+tilgang til alle ventiler. Den indeholder en Pin, 
+som kan sættes logisk høj (1) eller logisk lav(0). 
+Pin signalet bliver routed til en udgang på psoc'en, 
+som den styrekredsen til Ventil kan aflæse og derefter 
+ændre ventil staten. I bund og grund en simpel wrapper 
+for en Pin, men med debug indbygget.
+
+\subsubsection{Funktioner}
+
+\funk{void Ventil\_Start(void)}
+{Funktionen bruges til at initialisere Pin komponenten, og derved sikre at ventilen er lukket}
+{Void}
+{}
+
+\funk{void Ventil\_SetState(uint8 state)}
+{Funktionen bruges til at sende signal til at sætte staten på Pin komponenten, staten bliver forwardet direkte til denne}
+{Void}
+{
+\funkArg{state}{0: Lukket 1: Åben}
+}
+
+\funk{uint8 state Ventil\_GetState(void)}
+{Funktionen bruges til at aflæse Pin'ens state}
+{0: Lukket 1: Åben}
+{}
+
+\funk{void Ventil\_DebugHandle(const char ch)}
+{Debug handler, se mere under DebugUart}
+{Void}
+{
+\funkArg{ch}{Input char}
+}
+
+\funk{void Ventil\_DebugState(void)}
+{Udskriver hvilken state ventilen er i}
+{Void}
+{}
