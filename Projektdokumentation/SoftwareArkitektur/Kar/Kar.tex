@@ -1,3 +1,153 @@
 \section{Kar}
 
+Karret består af følgende komponenter, 
+hvor DebugUart er optional, og bruges under 
+test og implementering. De enkelte pakker er 
+videre beskrevet under AVSLibrary sektionen. 
+Bemærk der er 2 ventiler og 2 RS485
+
 \PakkeDiagram{0.82}{Kar}{Kar}
+
+Hovedtrådens opgave er at lytte efter beskeder fra FlexPMS, 
+hvis der ingen er, polles en enkelt Sensor Ø. Hvis FlexPMS 
+sender en besked, der kræver at en besked sendes videre til 
+en Sensor Ø, bliver der hverken pollet eller lyttet mere 
+på KarBussen, før der er kommet retursvar.
+
+\StateDiagram{0.82}{Kar}{Kar}
+
+\subsection{Funktioner}
+
+\funk{void pollKarSensor()}
+{Aflæser alle sensorerne på karret}
+{Void}
+{}
+
+\funk{Sensoroe* findSensorOe(uint8 addr)}
+{Returnerer en pointer til en SensorOe, baseret på addressen, hvis denne findes}
+{Success: Pointer til SensorOe Failure: NULL}
+{
+\funkArg{addr}{Adresse til Sensor Øen}
+}
+
+\funk{Fieldsensor* findFieldsensor(uint8 oe\_addr, uint8 sensor\_addr)}
+{Returnerer en pointer til en Fieldsensor, baseret på Ø adressen og Fieldsensor adressen, NULL hvis den ikke eksisterer}
+{Success: Pointer til Fieldsensor Failure: NULL}
+{
+\funkArg{oe\_addr}{Adresse til Sensor Øen}
+\funkArg{sensor\_addr}{Adresse til Fieldsensoren}
+}
+
+\funk{void addSensoroe(uint8 addr)}
+{Allokerer plads til en Sensor Ø og tilføjer den til listen over Sensor Ø'er der skal polles}
+{Void}
+{
+\funkArg{addr}{Adresse til Sensor Øen}
+}
+
+\funk{void pollSensoroe()}
+{Poller enkelt Sensor Ø, der skiftes automatisk videre til næste, ved næste kald}
+{Void}
+{}
+
+\funk{void handleReqKarSensorData(KARBUS\_MSG\_STRUCT* msg)}
+{Sender Kar Sensordata tilbage}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarVentil(KARBUS\_MSG\_STRUCT* msg)}
+{Skifter state på den ønskede ventil, samt sender den nye state tilbage}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarPumpe(KARBUS\_MSG\_STRUCT* msg)}
+{Skifter state på pumpen, samt sender den nye state tilbage}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarOpret(KARBUS\_MSG\_STRUCT* msg)}
+{Opretter den ønskede Sensor Ø via addSensoroe}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarOeList(KARBUS\_MSG\_STRUCT* msg)}
+{Returnerer en liste med alle adresser på de oprettede Sensor Ø'er}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarOeSensorData(KARBUS\_MSG\_STRUCT* msg)}
+{Returnerer alle Fieldsensor dataene fra en enkelt Sensor Ø}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarOeVentil(KARBUS\_MSG\_STRUCT* msg)}
+{Sender besked til den ønskede Sensor Ø om at denne skal skifte state på sin ventil}
+{Void}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void handleReqKarOeSensorType(KARBUS\_MSG\_STRUCT* msg)}
+{Returnerer hvilken type en Fieldsensor er}
+{}
+{
+\funkArg{msg}{Besked indholdende requesten}
+}
+
+\funk{void parseOEBUS()}
+{Står for at sende Ventil state tilbage til FlexPMS, samt opdatere med nye værdier fra Sensor Øerne}
+{Void}
+{}
+
+\funk{void parseKARBUS()}
+{Dispathcer til beskeder fra FlexPMS}
+{Void}
+{}
+
+\funk{void debugListFieldsensors(Sensoroe* oe)}
+{Lister alle Fieldsensors tilkoblet en Sensor Ø}
+{Void}
+{
+\funkArg{oe}{Pointer til Sensor Ø'en}
+}
+
+\funk{void debugSensorOe(Sensoroe* oe)}
+{Printer diverse informationer omkring en Sensor Ø}
+{Void}
+{
+\funkArg{oe}{Pointer til Sensor Ø'en}
+}
+
+\funk{void debugListSensorOes()}
+{Lister alle tilsluttede Sensor Ø'er}
+{Void}
+{}
+
+\funk{void Flow\_DebugState()}
+{Printer debug info fra Flowmåleren}
+{Void}
+{}
+
+\funk{void debugConfig()}
+{Lister diverse informationer fra Karret}
+{Void}
+{}
+
+\funk{void DebugHandle(const char ch)}
+{Kan liste de forskellige Sensor Ø'er, tilføje Sensor Ø'er, tænde og slukke for polling mm.}
+{Void}
+{
+\funkArg{ch}{Input char}
+}
