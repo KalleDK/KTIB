@@ -354,3 +354,103 @@ Argumenter & TYPE & & \\\hline
 \end{table}
 
 Type kan være ??.
+
+\subsection{Ø bus kommandoer}
+Alle kommandoer er delt op på et "request" / "response" format dette er pga. af master/slave kommunikationen, det gør så at master altid kan forvente at få et svare og hvis ikke der bliver svaret er der sket en fejl.
+
+Der er implementere følgende kommandoer på ØBussen:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}\hline
+\multicolumn{2}{|c|}{ØBus\cellcolor[gray]{0.7}}\\\hline
+Kommando & Beskrivelse \\\hline
+REQ\_OE\_FS\_DATA 		& Forespørgsel på at få data fra sensor der er koblet til Sensor Ø \\\hline 
+REQ\_OE\_FS\_DATA 		& Svar indeholdende sensor data								 \\\hline 
+REQ\_OE\_VENTIL	   		& Forespørgsel på at skifte tilstand på ventil der er koblet til Sensor Ø \\\hline 
+REQ\_OE\_VENTIL       		& Svar der indeholder den tilstand ventilen er sat til \\\hline 
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_OE\_FS\_DATA}
+Denne kommando er en forespørgsel på data som Sensor Øen sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x1 & & \\
+Argumenter & ingen & & \\\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsubsection{RES\_OE\_FS\_DATA}
+Denne kommando er et svar der indeholder den data karrets sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcccc|}
+\hline
+\multicolumn{6}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x2 & & & & \\
+Argumenter & Addr & Type & Status & Value1 & Value2 \\\hline
+\end{tabular}
+\end{table}
+
+Argumenterne gentages per Fieldsensor der er tilkoblet
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argument uddybning}\\\hline
+Addr & Adresse på Fieldsensoren. \\
+Type & Type af Fieldsensoren. \\
+Status & Status på Fieldsensoren 0x01 er aktiv og 0x00 svarer ikke. \\
+Value1 & Er heltals værdien af den målte størrelse. \\
+Value2 & Hvis MSB'en i denne er sat betyder det at der skal lægges en halv til value1.\\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_OE\_VENTIL}
+Denne kommando er en forespørgsel på at styre Sensor Ø'ens ventiler.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x3 & & \\
+Argumenter & ID & STATE & \\\hline
+\end{tabular}
+\end{table}
+
+Her er ID den ventil der ønske manipuleret og STATE er hvilken tilstand der ønskes at ventilen skal stå i.\\\\
+STATE kan være følgende:
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+Lukket & 0x0 \\
+Åben & 0x1 \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{RES\_OE\_VENTIL}
+Denne kommando er et svar der indeholder den tilstand ventilen er i.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x4 & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+Svaret på en ventil forespørgsel er hvilken tilstand ventilen er blevet sat til.
