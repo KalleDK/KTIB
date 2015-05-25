@@ -1,0 +1,456 @@
+%!TEX root = ../../main.tex
+
+\subsection{Overordnet}
+Til kommunikation i AVS har vi valgt at implementere en protokol der bruges til kommunikation mellem hardware enheder.
+Det drejer sig om to busser der følger samme format, samt er der gjort brug af I2C i forhold til følere. De to busser Kar og Ø bus basere sig begge på samme data format da deres fysiske lag er ens. Busserne kører master/slave kommunikation det gør at det kun er master der kan initiere kommunikation.
+
+\subsection{Dataformat - Kar og Ø bus} 
+Data bliver sendt på følgende format:
+
+\begin{enumerate}
+\item Adressen på modtager af besked
+\item Adressen på afsender af besked
+\item Længden af de kommende argumenter (kan være 0)
+\item Kommando der ønskes behandlet
+\item Argumenter i henhold til længden
+\end{enumerate}
+
+Systemet er inddelt i forespørgsler og svar, grundet master/slave formatet. Derfor kan en hel besked betragtes som en forespørgsel fra master og et svar fra slave.
+
+Forespørgsler og svar har samme format som beskrevet ovenfor.
+
+En kommunikation mellem master og slave kunne se således ud:
+Master vil sende på dette format:
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|c|c|c|}\hline
+\multicolumn{5}{|l|}{Master\cellcolor[gray]{0.9}}\\\hline
+RxAddr & TxAddr & len & cmd & args \\\hline
+1 Byte & 1 Byte & 1 Byte & 1 Byte & len * 1 Bytes \\\hline 
+\end{tabular}
+\end{table}
+
+
+Slave vil svare på dette format:
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|c|c|c|}\hline
+\multicolumn{5}{|l|}{Slave\cellcolor[gray]{0.7}}\\\hline
+RxAddr & TxAddr & len & cmd & args  \\\hline
+1 Byte & 1 Byte & 1 Byte & 1 Byte & len * 1 bytes \\\hline 
+\end{tabular}
+\end{table}
+
+Alt efter hvilken kommando der sendes vil det variere om der er argumenter med det vil sige at len godt kan være 0. Som det også kan ses er master/slave forespørgsel og svar ens i opbygningen.
+
+\subsection{Kar bus kommandoer}
+Alle kommandoer er delt op på et "request" / "response" format dette er pga. af master/slave kommunikationen, det gør så at master altid kan forvente at få et svare og hvis ikke der bliver svaret er der sket en fejl.
+
+Der er implementere følgende kommandoer på KarBus:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}\hline
+\multicolumn{2}{|c|}{KarBus\cellcolor[gray]{0.7}}\\\hline
+Kommando & Beskrivelse \\\hline
+REQ\_KAR\_SENSOR\_DATA 		& Forespørgsel på at få data fra sensor der er koblet til kar \\\hline 
+RES\_KAR\_SENSOR\_DATA 		& Svar indeholdende sensor data								 \\\hline 
+REQ\_KAR\_VENTIL	   		& Forespørgsel på at skifte tilstand på ventil der er koblet til kar \\\hline 
+RES\_KAR\_VENTIL       		& Svar der indeholder den tilstand ventilen er sat til \\\hline 
+REQ\_KAR\_PUMPE		   		& Forespørgsel på at skifte hastighed på pumpen \\\hline 
+RES\_KAR\_PUMPE 	   		& Svar indeholdende den hastighed pumpen der sat til \\\hline 
+REQ\_KAR\_OPRET 	   		& Forespørgsel om at oprette en ny sensor ø \\\hline
+RES\_KAR\_OPRET 	   		& Svar med adressen på den nye ø \\\hline 
+REQ\_KAR\_OE\_LIST	   		& Forespørgsel om at oprette en ny sensor ø \\\hline
+RES\_KAR\_OE\_LIST	   		& Svar med adressen på den nye ø \\\hline 
+REQ\_KAR\_OE\_SENSOR\_DATA	& Forespørgsel på at få sensors øens sensor data \\\hline
+RES\_KAR\_OE\_SENSOR\_DATA 	& Svar med data for sensor ø og om sensor er koblet til eller ej \\\hline 
+REQ\_KAR\_OE\_VENTIL 	    & Forespørgsel om at åbne/lukke sensor øens ventil \\\hline
+RES\_KAR\_OE\_VENTIL 	    & Svar med den tilstand ventilen er efterlad i \\\hline
+REQ\_KAR\_OE\_SENSOR\_TYPE 	& Forespørgsel om hvilken type føler der er tilsluttet øen \\\hline
+RES\_KAR\_OE\_SENSOR\_TYPE 	& Svar med sensor type \\\hline  
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_KAR\_SENSOR\_DATA}
+Denne kommando er en forespørgsel på data som Karrets sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x1 & & \\
+Argumenter & ingen & & \\\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsubsection{RES\_KAR\_SENSOR\_DATA}
+Denne kommando er et svar der indeholder den data karrets sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x2 & & \\
+Argumenter & ID & Value1 & Value2 \\\hline
+\end{tabular}
+\end{table}
+
+Argumenterne kan forekomme flere gange og vil være reflekteret i længden. Det vil sige at en længde på 3 i dette tilfælde betyder at der kun er indeholdt en sensor i svaret, hvis længden var 6 ville der være to sensorer osv.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argument uddybning}\\\hline
+ID & Dette er følerens identifikation alt efter om det er pH, flow eller andet der bliver målt. \\
+Value1 & Er heltals værdien af den målte størrelse. \\
+Value2 & Hvis MSB'en i denne er sat betyder det at der skal lægges en halv til value1.\\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{REQ\_KAR\_VENTIL}
+Denne kommando er en forespørgsel på at styre karrets ventiler.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x3 & & \\
+Argumenter & ID & STATE & \\\hline
+\end{tabular}
+\end{table}
+
+Her er ID den ventil der ønske manipuleret og STATE er hvilken tilstand der ønskes at ventilen skal stå i.\\\\
+STATE kan være følgende:
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+Lukket & 0x0 \\
+Åben & 0x1 \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{RES\_KAR\_VENTIL}
+Denne kommando er et svar der indeholder den tilstand ventilen er i.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x4 & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+Svaret på en ventil forespørgsel er hvilken tilstand ventilen er blevet sat til.
+
+\subsubsection{REQ\_KAR\_PUMPE}
+Denne kommando er en forespørgsel på at styre karrets pumpe.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x5 & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+Da pumpen kan køre med flere hastigheder sendes der en state der kan være følgende:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+Slukket & 0 \\
+Lav hastighed & 25 \\
+Middel hastighed & 50 \\
+Høj hastighed & 75 \\\hline
+\end{tabular}
+\end{table}
+
+Tallene betyder hvor mange procent duty cycle PWM signalet der styrer pumpen skal sættes til dvs, 50 er en duty cycle på 50\%.
+
+\subsubsection{RES\_KAR\_PUMPE}
+Denne kommando er et svar der indeholder den tilstand pumpen er i.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x6 & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+
+Svaret på en pumpe forespørgsel er hvilken tilstand pumpen er blevet sat til. Altså om den er slukket eller kører med en af de tre hastigheder.
+
+
+\subsubsection{REQ\_KAR\_OPRET}
+Denne kommando er en forespørgsel give en sensorø der er koblet på et kar en adresse.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x7 & & \\
+Argumenter & ADDR & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OPRET}
+Denne kommando er et svar der fortæller om det lykkedes at oprette sensorøen på karret.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x8 & & \\
+Argumenter & ADDR & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{REQ\_KAR\_OE\_LIST}
+Denne kommando er en forespørgsel på at få af vide hvilke ø'er der er oprettede .
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x9 & & \\
+Argumenter & ingen & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OE\_LIST}
+Denne kommando er et svar der fortæller hvilke ø'er der er koblet til karret. Der returneres 1 adresse per ø.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xA & & \\
+Argumenter & ADDR & & \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_KAR\_OE\_SENSOR\_DATA}
+Denne kommando er en forespørgsel at få data fra de sensorer der er tilkoblet en sensorø. Argumentet er adressen på den ø der ønskes at der skal læses fra.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xB & & \\
+Argumenter & ADDR & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OE\_SENSOR\_DATA}
+Denne kommando er et svar der indeholder den data sensorø'en har opsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lccc|}
+\hline
+\multicolumn{5}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xC & & & \\
+Argumenter & FS\_ADDR & FS\_STATUS & VALUE1 & VALUE2 \\\hline
+\end{tabular}
+\end{table}
+
+Argumenterne beskrives her:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+FS\_ADDR 	& Dette er adressen på selve fieldsensoren \\
+FS\_STATUS	& Status indikere om fieldsensoren er online (1) eller offline (0) \\
+VALUE1 		& Heltals værdien af det sensoren udlæser \\
+VALUE2 		& Hvis MSB er sat i denne indikere den at der er en halv der skal lægge til heltals værdien \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_KAR\_OE\_VENTIL}
+Denne kommando er en forespørgsel at åbne en ø ventil.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xD & & \\
+Argumenter & OE\_ADDR & STATE & \\\hline
+\end{tabular}
+\end{table}
+
+State er om ventilen skal være åben(1) eller lukket(0).
+
+\subsubsection{RES\_KAR\_OE\_VENTIL}
+Denne kommando er et svar der fortæller om det lykkedes at åbne ventilen det gøres ved at returnere den tilstand ventilen er i state har samme betydning som ovenfor.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xE & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+State er om ventilen er åben(1) eller lukket(0).
+
+\subsubsection{REQ\_KAR\_OE\_SENSOR\_TYPE}
+Denne kommando er en forespørgsel på at få afvide hvilken type sensor der er koblet til en bestemt fieldsensor adresse.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0xF & & \\
+Argumenter & OE\_ADDR & FS\_ADDR & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{RES\_KAR\_OE\_SENSOR\_TYPE}
+Denne kommando er et svar der indeholder typen på den sensor der blev spurgt på.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x10 & & \\
+Argumenter & TYPE & & \\\hline
+\end{tabular}
+\end{table}
+
+Type kan være ??.
+
+\subsection{Ø bus kommandoer}
+Alle kommandoer er delt op på et "request" / "response" format dette er pga. af master/slave kommunikationen, det gør så at master altid kan forvente at få et svare og hvis ikke der bliver svaret er der sket en fejl.
+
+Der er implementere følgende kommandoer på ØBussen:
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}\hline
+\multicolumn{2}{|c|}{ØBus\cellcolor[gray]{0.7}}\\\hline
+Kommando & Beskrivelse \\\hline
+REQ\_OE\_FS\_DATA 		& Forespørgsel på at få data fra sensor der er koblet til Sensor Ø \\\hline 
+REQ\_OE\_FS\_DATA 		& Svar indeholdende sensor data								 \\\hline 
+REQ\_OE\_VENTIL	   		& Forespørgsel på at skifte tilstand på ventil der er koblet til Sensor Ø \\\hline 
+REQ\_OE\_VENTIL       		& Svar der indeholder den tilstand ventilen er sat til \\\hline 
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_OE\_FS\_DATA}
+Denne kommando er en forespørgsel på data som Sensor Øen sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x1 & & \\
+Argumenter & ingen & & \\\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsubsection{RES\_OE\_FS\_DATA}
+Denne kommando er et svar der indeholder den data karrets sensorer har indsamlet.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcccc|}
+\hline
+\multicolumn{6}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x2 & & & & \\
+Argumenter & Addr & Type & Status & Value1 & Value2 \\\hline
+\end{tabular}
+\end{table}
+
+Argumenterne gentages per Fieldsensor der er tilkoblet
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argument uddybning}\\\hline
+Addr & Adresse på Fieldsensoren. \\
+Type & Type af Fieldsensoren. \\
+Status & Status på Fieldsensoren 0x01 er aktiv og 0x00 svarer ikke. \\
+Value1 & Er heltals værdien af den målte størrelse. \\
+Value2 & Hvis MSB'en i denne er sat betyder det at der skal lægges en halv til value1.\\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{REQ\_OE\_VENTIL}
+Denne kommando er en forespørgsel på at styre Sensor Ø'ens ventiler.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x3 & & \\
+Argumenter & ID & STATE & \\\hline
+\end{tabular}
+\end{table}
+
+Her er ID den ventil der ønske manipuleret og STATE er hvilken tilstand der ønskes at ventilen skal stå i.\\\\
+STATE kan være følgende:
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Argumenter uddybet}\\\hline
+Lukket & 0x0 \\
+Åben & 0x1 \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{RES\_OE\_VENTIL}
+Denne kommando er et svar der indeholder den tilstand ventilen er i.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & 0x4 & & \\
+Argumenter & STATE & & \\\hline
+\end{tabular}
+\end{table}
+
+Svaret på en ventil forespørgsel er hvilken tilstand ventilen er blevet sat til.
