@@ -1,0 +1,23 @@
+\section{Fieldsensor}
+
+Fieldsensor projektet er en skabelon til alle 
+Fieldsensorer. Hvis en ny type sensor skal 
+udvikles, er det blot at indsætte den nye sensor 
+og bruge SB\_LoadValue\_Float32 eller SB\_LoadValue 
+til at overføre data til SensorBus kommunikationen. 
+Der skal desuden også tilføjes et type id for denne 
+sensor, så systemet kan identificere den senere. Typen 
+bliver hardcoded på sensoren, mens det er mening at 
+adressen på sigt bliver automatisk tildelt.
+Selve projektet består af en SensorBus, en Sensor 
+og en DebugUart (optional).
+
+\SekvensDiagram{0.82}{Fieldsensor}{Fieldsensor}
+
+Der er indlagt en "dummy" tæller for at main loopet er 
+mest muligt aktivt, og samtidig mindske hvor ofte en 
+given sensor bliver aflæst. Dette prøver at sikre 
+at kommunikation ikke går tabt mens der ventes. 
+Debug komponenten er til at debugge komponenten under 
+udvikling og test, det er meningen at denne kan disables 
+og derved spare plads og energi mens enheden ellers kører.
