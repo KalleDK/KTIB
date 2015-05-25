@@ -1,27 +1,227 @@
 Kar kommunikations pakken er ansvarlig for at sende beskeder til kar styringen den står altså for grænsefalden ud til sensor og aktautore igennem kommunikation til kar styringen. Den består af 3 klasser der er illustreret  i diagrammet herunder:
 
-\KlasseDiagram{0.82}{FlexPMS}{FlexPMS}
+\KlasseDiagram{0.82}{FlexPMS}{KarBus}
 
 \subsubsection{KarBus klassen}
 Den klasse interfacer med resten af flexpms igennem den event baserede kommunikation der driver systemet klassen har således sin egen message kø og tilsvarende event handlers. KarBus har også en RS485 instans og en Protokol instans i sig, Protokol klassen er implementeringen af Karbus protokollen som KarBus klassen bruger til at sende beskeder til karret, RS485 klassen er ikke direkte brugt af KarBus.
 
-\SekvensDiagram{0.82}{FlexPMS}{Template}
 
 \subsubsection{funktions beskrivelser}
-Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
+\funk{void eHandleKarReady(MKarReady* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at tjekke at karret er klar til kommunikation}
+}
+
+\funk{void eHandleKarGetSensorData(MKarGetSensorData* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at hente sensor data fra karret}
+}
+
+\funk{void eHandleKarSetPumpState(MKarSetPumpState* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at styre pumpen så denne køre med den hastighed der er indehold i beskeden}
+}
+
+\funk{void eHandleKarSetPumpState(MKarSetPumpState* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at styre pumpen så denne køre med den hastighed der er indehold i beskeden}
+}
+
+\funk{void eHandleOeGetSensorData(MOeGetSensorData* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om hente data fra sensor'øen}
+}
+
+\funk{void eHandleOeSetValve(MOeSetValveSate* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked at styre ventilen på sensor'øen}
+}
+
+\funk{void eHandleOeGetSensorType(MOeGetSensorType* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked at få afvide hvilken sensortype der er koblet til en bestemt adresse}
+}
+
+\funk{void eHandleKarSetValve(MKarSetValveState* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked at styre ventilen på karret den kan indeholde om det er afløb eller indløb der skal styres}
+}
+
+\funk{void eHandleKarGetOeList(MKarGetOeLIst* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at få en list af ø'er der er tilkoblet et kar}
+}
+
+\funk{void eHandleKarOpretOe(MKarSetOpretOe* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
+{
+\funkArg{msg}{En besked om at oprette en ø der bliver knyttet til et kar}
+}
 
 \subsubsection{Protokol klassen}
-Donec venenatis luctus massa, sed interdum eros interdum quis. Morbi eget massa ut ante venenatis efficitur. Praesent tempus euismod tempus. Integer ac nisl eros. Praesent faucibus nisl non faucibus tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean tristique augue libero, interdum fringilla nibh consequat vel. Nullam id dapibus velit. Fusce sit amet dolor mollis, iaculis tellus ut, cursus nisi. \textKode{Curabitur} eleifend congue lacus sit amet ullamcorper. Pellentesque mollis tincidunt lectus sit amet cursus. Aenean euismod velit tellus, non lobortis quam dapibus a.
-
-\SekvensDiagram{0.82}{FlexPMS}{Template}
+Denne klasse er en direkte implementering af karbus protokollen det vil sige at den har en funktion per besked der er i protokollen det gør at det er nemt at tilføje beskeder til protokollen men også at andre dele af koden er mindre afhængige af protokollen og hvordan denne håndtere kommunikationen til hardware.
+Klassen har en pointer til RS485 klassen som den bruger til at sende beskederne med, RS485 kunne for så vidt erstattes af en anden klasse hvis det var ønskeligt at kommunikere på anden vis end via RS485. 
 
 \subsubsection{funktions beskrivelser}
-Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
+\funk{bool sendAndReceive()}{Denne funktion kalder send og modtage funktionerne i RS485 klassen}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+}
+
+\funk{bool getKarRdy(unsigned char karID, unsigned char\& karState)}{Denne funktion gør en besked klar til at forspørge om et kar er klar til kommunikation derefter venter den indtil der er modtaget en besked med \textKode{sendAndReceive} funktionen returtypen sætte alt efter om der modtages en besked}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{karState}{Parameter til at returnere status på kar}
+}
+
+\funk{bool getKarSensorData(unsigned char karID, unsigned char\& len, unsigned char\* data))}{Denne funktion gør en besked klar til at forspørge om at hente sensor data fra kar derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{len}{længden af det data der er modtaget}
+\funkArg{data}{data'en der blev modtager lagt i et char array}
+}
+
+\funk{bool setPumpState(unsigned char karID, unsigned char\& state)}{Denne funktion gør en besked klar til at forespørge om at styre pumpen på et kar derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{state}{Bruges til at modtage hvilken state pumpen skal sættes til samt at returnere hvilken tilstand den blev sat til såfremt at vi får et rigtigt svar fra bussen}
+}
+
+\funk{bool getOeSensorData(unsigned char karID, unsigned char oeID, unsigned char\& len, unsigned char\* data)}{Denne funktion gør en besked klar til at forespørge om at hente data fra en sensorø derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{oeID}{Adressen på den ø vi øsnker at hente data fra}
+\funkArg{len}{længden på svaret fra bussen, dette parameter bruges til at returnere værdier}
+\funkArg{data}{den data der er indhentet fra ø'en, dette parameter bruges til at returnere værdier}
+}
+
+\funk{bool setOeValve(unsigned char karID, unsigned char oeID, unsigned char\& state)}{Denne funktion gør en besked klar til at forespørge om at styre ventil på en sensor ø der er tilkoblet et kar, derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{oeID}{Adressen på den ø vi øsnker at hente data fra}
+\funkArg{state}{Bruges til at modtage hvilken state ventilen skal sættes til samt at returnere hvilken tilstand den blev sat til såfremt at vi får et rigtigt svar fra bussen}
+}
+
+\funk{bool setKarValve(unsigned char karID, unsigned char\& ventilID, unsigned char\& state)}{Denne funktion gør en besked klar til at forespørge om at styre en ventil der er tilkoblet et kar, derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{ventilID}{Adressen på den ventil der skal styres bruges også til at returnere hvilken ventil der blev styret}
+\funkArg{state}{Bruges til at modtage hvilken state ventilen skal sættes til samt at returnere hvilken tilstand den blev sat til såfremt at vi får et rigtigt svar fra bussen}
+}
+
+\funk{bool getKarOelist(unsigned char karID, unsigned char\& len, unsigned char\* data)}{Denne funktion gør en besked klar til at forespørge om at få en liste af tilkoblede ø'er på kar, derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{len}{længden på svaret fra bussen, dette parameter bruges til at returnere værdier}
+\funkArg{data}{den liste af ø'er der er indhentet fra karret, dette parameter bruges til at returnere værdier}
+}
+
+\funk{bool getOeSensorType(unsigned char karID, unsigned char oeID, unsigned char\& fsID)}{Denne funktion gør en besked klar til at forespørge om at få typen af en bestemt sensor, derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{oeID}{Adressen på den ø vi øsnker at hente data fra}
+\funkArg{fsID}{Adressen på den sensor vi øsnker at kende typen på}
+}
+
+\funk{bool opretOeKar(unsigned char karID, unsigned char\& oeID)}{Denne funktion gør en besked klar til at forespørge om at oprette en ø på et kar, derefter venter den på svar fra \textKode{sendAndReceive} hvis denne returnere true tjekkes det om vi har fået det rigtige svar hvis det er tilfældet sættes de relevante svar værdier}{Der bliver returneret true hvis en besked blev modtaget ellers false}
+{
+\funkArg{karID}{Adressen på det kar der kommunikeres med}
+\funkArg{oeID}{Adressen på den ø vi ønsker at oprettet}
+}
 
 \subsubsection{RS485 klassen}
-Donec venenatis luctus massa, sed interdum eros interdum quis. Morbi eget massa ut ante venenatis efficitur. Praesent tempus euismod tempus. Integer ac nisl eros. Praesent faucibus nisl non faucibus tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean tristique augue libero, interdum fringilla nibh consequat vel. Nullam id dapibus velit. Fusce sit amet dolor mollis, iaculis tellus ut, cursus nisi. \textKode{Curabitur} eleifend congue lacus sit amet ullamcorper. Pellentesque mollis tincidunt lectus sit amet cursus. Aenean euismod velit tellus, non lobortis quam dapibus a.
+Denne klasse bliver brugt til at sende og modtage data på RS485 bussen, den gør brug af termios interfacet til at skrive data ud serielt fra raspberry pi's GPIO pinde, den kan også styre en GPIO pin der fungere som transmit enable(TxEn). Dette er en nødvendighed da hardware der konvertere fra logisk signal til differentielt signal kan sættes i transmit eller receive mode. Klassen er også ansvarlig for at styre pariteten på de bytes vi sender. Grunden til dette er at KarBus bruger mark/space paritet til at indikere om den byte der sendes er en adresse eller en almindelig data byte. Dette har givet lidt udfordring i forhold til at regne pariteten ud for alle bytes der sendes da kommunikationen ellers ikke ville fungere, i linux kan der officielt kun sendes med odd eller even paritet.
+Selve modtager delen er implementeret som en state machine dette er gjort for at holde styr på adresseringen.
 
-\SekvensDiagram{0.82}{FlexPMS}{Template}
+\StateDiagram{0.82}{FlexPMS}{RS485RX}
 
 \subsubsection{funktions beskrivelser}
-Duis egestas congue odio, et convallis arcu eleifend vel. Vivamus sed risus congue, tincidunt ipsum in, volutpat eros. Vestibulum eros quam, vulputate eu varius id, pellentesque at risus. Duis in iaculis dolor, consequat sollicitudin libero. Aliquam pulvinar gravida nunc vitae pulvinar. Nam ligula nisl, dapibus at facilisis vel, porttitor id metus. Curabitur malesuada enim mauris, ut dignissim sapien bibendum sit amet.
+
+\funk
+{void initGPIO()}
+{Denne funktion initiere GPIO'en der skal bruges som TxEn}
+{ingen}
+{
+}
+
+\funk
+{void txEnable(bool state)}
+{Denne funktion bruges til at tænde og slukke for TxEn}
+{ingen}
+{
+\funkArg{state}{Kan være true for at tænde txen eller false for at slukke}
+}
+
+\funk
+{void sendChar(char ch, bool address)}
+{Denne funktion sender en enkelt char ad gangen samtidigt vender den pariteten før den sender den holder også øje med hvilken paritet vi er efterladt i da vi skal bruge det når vi modtager}
+{ingen}
+{
+\funkArg{ch}{Den char der skal sendes}
+\funkArg{address}{Hvis denne er true indikere det at den char vi sender er en adresse ellers hvis den er false sendes der data}
+}
+
+\funk
+{bool parityCheck(char \&ch, bool parity) }
+{Denne funktion bruges til at checke pariteten på de char's der bliver indlæst af modtageren for at identificere om det er en adresse}
+{hvilken paritet en char er blevet læst med}
+{
+\funkArg{ch}{Den char der skal tjekkes paritet på}
+\funkArg{parity}{Kaldes med den tilstand der ønskes at tjekke paritet efter}
+}
+
+\funk
+{int getChar(char \&ch, bool \&address) }
+{Denne funktion bruges til at indlæse en char fra hardware der tjekkes her på paritets fejl da linux håndtere paritets fejl ved at sende \textKode{0xFF} efter fulgt af \textKode{0x00} dermed kan vi vide hvordan vi skal teste hvilken paritet char'en burde have haft}
+{hvor mange bytes \textKode{read()} har indlæst}
+{
+\funkArg{ch}{Den char der skal tjekkes paritet på}
+\funkArg{parity}{Kaldes med den tilstand der ønskes at tjekke paritet efter}
+}
+
+\funk
+{void getPacket()}
+{Denne funktion indeholder state machinen der bruger getChar til at indlæse char og bestemmer hvor i bufferen de skal placeres alt efter om det er en char som er en adresse eller det er en data char, den holder også øje med når vi har modtaget en hel besked det gør den via length i selve beskeden}
+{intet}
+{
+}
+
+\funk
+{void sendPacket(char *packet, unsigned int len)}
+{Denne funktion bruges til at sende en besked det er blot en for løkke der sender den char pointers værdier som funktionen for med som parametre til \textKode{sendChar()}}
+{intet}
+{
+\funkArg{packet}{den besked der skal sendes}
+\funkArg{len}{Hvor mange char's pointeren packet indeholder}
+}
+
+\funk
+{bool getMessage(char* msg)}
+{Denne funktion bruges til at tjekke om der er en besked klar til at blive indlæst}
+{returnere true hvis der er en besked klar ellers false}
+{
+\funkArg{msg}{kan bruges til at læse bufferen ud}
+}
+
+\funk
+{void initBuffer()}
+{Denne funktion bruges til at gøre bufferen klar til at modtage en ny besked}
+{intet}
+{
+}
+
+\funk
+{void RS485send(Bus\_Message\* txMessage)}
+{Denne funktion bruges af protokollen til at sende en besked på bussen}
+{intet}
+{
+\funkArg{txMessage}{den besked der skal sendes i stuct format}
+}
+
+\funk
+{bool RS485read(Bus\_Message\* rxMessage)}
+{Denne funktion bruges af protokollen til at sende en besked på bussen}
+{Hvis der er modtaget en besked returneres true}
+{
+\funkArg{txMessage}{den besked der skal sendes i stuct format}
+}
+
+
