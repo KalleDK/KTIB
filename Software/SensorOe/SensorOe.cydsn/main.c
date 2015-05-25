@@ -47,7 +47,7 @@ void addFieldsensor(uint8 addr)
     oe.fieldsensors[oe.fieldsensor_connected]->values[FS_VALUE_LOW] = 0;
     ++oe.fieldsensor_connected;
     #if defined(DEBUG_UART)
-    printf("Fieldsensor added\t[ 0x%02X ]\n\r", addr);  
+        printf("Fieldsensor added\t[ 0x%02X ]\n\r", addr);  
     #endif
     
 }
@@ -99,7 +99,7 @@ void parseOEBUS()
     OEBUS_MSG_STRUCT msg;
     OEBUS_GetRxMessage(&msg);
     #if OEBUS_DEBUG_UART
-    OEBUS_DebugMsg(&msg);
+        OEBUS_DebugMsg(&msg);
     #endif
     
     switch(msg.cmd) {
@@ -123,7 +123,7 @@ void scanFieldsensors(uint8 import)
     uint8 scan_addr;
     uint8 dummy;
     #if defined(DEBUG_UART)
-    printf("Scanning\n\r");
+        printf("Scanning\n\r");
     #endif
     for (scan_addr = 0x08; scan_addr <= 0x78; ++scan_addr) {
         if (scan_addr == SensorBus_GetAddress())
@@ -131,14 +131,14 @@ void scanFieldsensors(uint8 import)
         
         if (SensorBus_Read(scan_addr, &dummy, 1, 0)) {
             #if defined(DEBUG_UART)
-            printf("Found Sensor:\t [ 0x%02X ]\n\r", scan_addr);
+                printf("Found Sensor:\t [ 0x%02X ]\n\r", scan_addr);
             #endif
             if (import == 1 && findFieldsensor(scan_addr) == NULL)
                 addFieldsensor(scan_addr);
         }
     }
     #if defined(DEBUG_UART)
-    printf("Done\n\r");
+        printf("Done\n\r");
     #endif
 }
 
@@ -246,6 +246,7 @@ void DebugHandle(const char ch) {
     }
     
 }
+
 #endif
 
 int main()
@@ -281,7 +282,7 @@ int main()
     for(;;)
     {   
         #if defined(DEBUG_UART)
-        Debug_Communicate();
+            Debug_Communicate();
         #endif 
         
         if (OEBUS_ReadRxStatus() == OEBUS_MSG_READY)
@@ -292,13 +293,13 @@ int main()
         
         //We poll a single sensor, before we loop around, to be sure we don't spend to much time polling
         //Could be empty array if no sensors are added
-			if (oe.fieldsensor_connected > 0) {
-				if (oe.fieldsensors[polling_nr] != 0)
-					pollFieldsensor(oe.fieldsensors[polling_nr]);
-			
-				if (oe.fieldsensors[++polling_nr] == 0 )
-					polling_nr = 0;
-			}
+		if (oe.fieldsensor_connected > 0) {
+			if (oe.fieldsensors[polling_nr] != 0)
+				pollFieldsensor(oe.fieldsensors[polling_nr]);
+		
+			if (oe.fieldsensors[++polling_nr] == 0 )
+				polling_nr = 0;
+		}
         
         CyDelay(1);
     }

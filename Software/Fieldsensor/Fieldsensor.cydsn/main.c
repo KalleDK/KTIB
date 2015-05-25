@@ -25,6 +25,8 @@ int main()
             Debug_AddComponent(SB_DebugHandle);
         #endif
     #endif
+    
+    uint8 measure_sleep = 0;
   
     SB_Start();
     
@@ -36,9 +38,13 @@ int main()
         - uint8 value_high = 0; //Heltal værdier fra sensor
         - uint8 value_low = 0; //Sættes til 128 hvis det er 0,5
         */
-        
-        SB_LoadValue_Float32(35.5);
-        //SB_LoadValue(35, 128);
+        if (measure_sleep >= 100) {
+            SB_LoadValue_Float32(35.5);
+            measure_sleep = 0;
+        } else {
+            CyDelay(1);
+            ++measure_sleep;
+        }
         
         #if defined(DEBUG_UART)
         Debug_Communicate();
