@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "MessageThread.h"
+#include "defines.h"
 
 
 #define SOCK_BUFFER_SIZE 256
@@ -66,10 +67,12 @@ private:
     
     void handle_add_sensor_oe(std::string args);
 	
+#ifdef DEBUG
 	void handle_oe_sensor_read(std::string args);
     void handle_kar_sensor_read(std::string args);
 	void handle_kar_ready_read(std::string args);
 	void handle_oe_list_read(std::string args);
 	void handle_sensor_type_read(std::string args);
+#endif
 
 };

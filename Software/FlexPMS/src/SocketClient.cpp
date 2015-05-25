@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "SocketClient.h"
 #include "Message.h"
-#include "defines.h"
 #include "events.h"
 
 
@@ -286,12 +285,11 @@ void SocketClient::handle_add_sensor_oe(string args) {
 }
 
 
+/* -- DEBUG METHODS -------------------------------------------------------- */
 
 
+#ifdef DEBUG
 
-
-
-/* -- Sensor read out -------------------------------------------------------- */
 
 void SocketClient::handle_oe_sensor_read(string args) {
     int kar_id = atoi(args.c_str());
@@ -354,6 +352,7 @@ void SocketClient::handle_sensor_type_read(string args) {
     }
 }
 
+#endif
 
 
 /* ------------------------------------------------------------------------- */

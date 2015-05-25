@@ -530,7 +530,10 @@ void Bridge::handle_ovalve_close(GuiMessage* msg) {
 }
 
 
-/* -- SESNOR READ -------------------------------------------------------- */
+/* -- DEBUG METHODS -------------------------------------------------------- */
+
+
+#ifdef DEBUG
 
 void Bridge::handle_oe_read(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
@@ -543,8 +546,8 @@ void Bridge::handle_oe_read(GuiMessage* msg) {
     MOeGetSensorData* kmsg = new MOeGetSensorData(this, kar);
     kmsg->address = 0x4; 
     kar_bus_->send(E_OE_GET_SENSOR_DATA, kmsg);
-
 }
+
 
 void Bridge::handle_kar_read(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
@@ -556,8 +559,8 @@ void Bridge::handle_kar_read(GuiMessage* msg) {
     
     MKarSensorData* kmsg = new MKarSensorData(this, kar);
     kar_bus_->send(E_KAR_GET_SENSOR_DATA, kmsg);
-    
 }
+
 
 void Bridge::handle_ready_read(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
@@ -569,8 +572,8 @@ void Bridge::handle_ready_read(GuiMessage* msg) {
     
     MKarReady* kmsg = new MKarReady(this, kar);
     kar_bus_->send(E_KAR_READY, kmsg);
-    
 }
+
 
 void Bridge::handle_oe_list_read(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
@@ -582,8 +585,8 @@ void Bridge::handle_oe_list_read(GuiMessage* msg) {
     
     MKarGetOeList* kmsg = new MKarGetOeList(this, kar);
     kar_bus_->send(E_KAR_GET_OE_LIST, kmsg);
-    
 }
+
 
 void Bridge::handle_sensor_type_read(GuiMessage* msg) {
     Kar* kar = kar_list_.get(msg->kar_id);
@@ -597,8 +600,10 @@ void Bridge::handle_sensor_type_read(GuiMessage* msg) {
 	kmsg->address = 0x4;
 	kmsg->sensor_id = 0x1;
     kar_bus_->send(E_OE_GET_SENSOR_TYPE, kmsg);
-    
 }
+
+#endif
+
 
 /* ------------------------------------------------------------------------- */
 /* -- KAR PINGER ----------------------------------------------------------- */
