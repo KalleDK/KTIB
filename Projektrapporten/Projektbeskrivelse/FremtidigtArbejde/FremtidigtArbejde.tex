@@ -1,22 +1,9 @@
 %!TEX root = ../../main.tex
 \section{Fremtidigt Arbejde}
-Projektforløbet har endt ud i en funktionel prototype. Prototypen gennemførte accepttesten og var et godt \emph{proof-of-concept}. Under dette afsnit vil vi diskutere det fremtidige arbejde som ville opstå i tilfælde af, at projektet skulle færdigudvikles. Det vil blive delt op i 3 punkter:
-\begin{itemize}
-\item Fremtidigt arbejde som indkluderer HW såvel som SW
-\item HW
-\item SW
-\end{itemize}
-
-\subsection{Fælles}
-\begin{itemize}
-\item 
-\end{itemize}
+Projektforløbet har endt ud i en funktionel prototype. Prototypen gennemførte accepttesten og var et godt \emph{proof-of-concept}. Under dette afsnit vil vi diskutere det fremtidige arbejde som ville opstå i tilfælde af, at projektet skulle færdigudvikles. I forlængelse af projektet er der nemlig flere muligheder for, hvordan produktet kan videreudvikles. Mange af ideerne, fremlagt i opgaveformuleringen, er stadig en realistisk del af et endeligt produkt. Disse ideer vil blive delt op i 3 punkter.
 
 \subsection{HW}
-\subsubsection{Ventil-/pumpestyring}
-\subsubsection{Flowsensor}
-\subsubsection{Jordfugtsensor}
-\subsubsection{pH-probe}
+
 \subsubsection{PSU}
 Strømforsyningsprototypen opfyldte deres funktion med små fejl og mangler. Spændingsreguleringen var opsat således, at spænding baserede sig på flere komponent som alle kommer med en tolerance. Dette gør at spænding vil variere fra produkt til produkt, og i værste tilfælde ikke være i stand til at opfylde dens funktion. Derudover var der ved hård belastning (ca. 50\% af den maksimale effekt), en tendens til at der opstod en 100Hz rippel på spændingen. Der er foreslået 2 ændringer til at løse disse problemer:
 
@@ -25,10 +12,15 @@ Strømforsyningsprototypen opfyldte deres funktion med små fejl og mangler. Sp�
 \item Indsætte et potentiometer i spændingsføleren som derved kunne indstille spændingen på udgangen.
 \end{itemize}
 
-\subsubsection{Shields til Raspberry og PSoC}
 
 \subsection{SW} 
-\begin{itemize}
-\item 
-\end{itemize}
+\subsubsection{Automatisk vanding}
+Baseret på at en Bruger kan indtaste en ønsket værdi på jordfugtigheden, aflæse data fra en jordfugtsensor og vande plantere via en GUI, kunne det være en kæmpe fordel, hvis systemmet blev implementeret så vandingen skete automatisk. Her ville vandingen være baseret ske når den målte jordfugtighed er for lav i forhold til den indtastede. 
 
+\subsubsection{Manuel vanding}
+Ved manuel vanding kunne man give brugeren mulighed for at vælge hvilke Sensor Øer der skal vandes ved i stedet for at der bliver vandet alle steder 
+
+\subsection{Fælles}
+Hvis en doseringspumpe der doserer gødning/pH-væske, blev implementeret, kunne de give Brugeren mulighed for at gøde vandet til den pH-værdi der er ønsket, da Brugeren allerede har mulighed for at aflæse pH-værdien, dette kunne styres via GUI'en. Hvis dette kunne lade sig gøre, kunne denne proces ske automatisk baseret på at Brugeren kan indtaste en ønskede pH-værdi, og systemmet kan styre ind- /og afløbsventil. 
+\\\\
+Der kunne være en flowsensor implementeret på udgangen af karet, så det var muligt at beregne hvor meget vand karet indeholdte i stedet for kun at aflæse hvor meget vand der kommer igennem indløbsventilen. 
