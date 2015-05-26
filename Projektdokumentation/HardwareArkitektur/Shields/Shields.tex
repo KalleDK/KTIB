@@ -23,7 +23,7 @@ Dog er det ikke alle komponenter der kan findes, derfor kan det være nødvendig
 For at kunne implementere det eksterne counterkredsløb på shield'et, er det nødvendigt at oprette en custom model af 74HC393-counteren, samt 74HZ08-gaten.
 Dette skyldes at på de eksisterende modeller af disse moduler, er GND internt rout'ed, og således tænkt benyttet i forbindelse med et internt stelplan der benyttes på mange print. Men da der i vores tilfælde ønskes at kunne connecte GND fysisk til én af PSoC'ens GND-pins, skal dette kunne routes manuelt.
 I Eagle oprettes der et brugerbibliotek, og deri en custommodel af modulerne med igangspunkt i databladene. (herunder ses oprettelse af HC393)
-Først udlægges pins på IC'en, se fig.\ref{screenshot:EagleComponents} på s. \pageref{screenshot:EagleComponents}
+Først udlægges pins på IC'en, se fig.\ref{screenshot:EagleComponents} på s.\pageref{screenshot:EagleComponents}
 
 \begin{figure}[H]
 	\centering
@@ -66,7 +66,6 @@ Herefter kan modellerne indsættes på Kar-shield'et og herefter kan GND frit ro
 	\label{screenshot:karShield}
 \end{figure}
 
-
 \fxnote{Siden med KarShield-diagram skal være A3}
 
 
@@ -90,12 +89,14 @@ Det færdige print ses på fig.\ref{screenshot:OeShield}, s.\pageref{screenshot:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{../Hardware/Shields/Screenshots/OeShield}
-	\caption{Screenshot: Det færdige KarShield}
+	\caption{Screenshot: Det færdige ØShield}
 	\label{screenshot:OeShield}
 \end{figure}
 
-\fxnote{Siden med OeShield-diagram skal være A3}
+\fxnote{Siden med ØShield-diagram skal være A3}
 
+
+\newpage
 \subsection{PiShield}
 
 Ligeledes oprettes der et shield til Rasparry Pi'en. Dette shield indeholder følgende komponenter: 
@@ -104,16 +105,30 @@ Ligeledes oprettes der et shield til Rasparry Pi'en. Dette shield indeholder fø
  \item[•] RS-konverter til karBus
 \end{description}
 
+Printet designes på samme måde som de 2 forrige, og det færdige print ses på på fig.\ref{screenshot:PiShield}, s.\pageref{screenshot:PiShield}.
 
+\newpage
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{../Hardware/Shields/Screenshots/PiShield}
+	\caption{Screenshot: Det færdige ØShield}
+	\label{screenshot:PiShield}
+\end{figure}
+
+\fxnote{Siden med PiShield-diagram skal være A3}
+
+\newpage
 \subsection{Printlayout}
-
 På baggrund at disse schematics designes de 3 boards og deres printbaner lægges ud. Her tages der hensyn til følgende: 
 
 \begin{description}
- \item[•] Antal ampere der løber i banen
+ \item[•] Hvilken strøm der løber i banen
  \item[•] Hvilken type signal der løber i banen
  \item[•] Kritiske afstande i layoutet
 \end{description}
 
-Standard tykkelsen af en printbane (for op til 600mA) er 0.000254 mm, til alle ventiler løber 500mA. Printbanen fra forsyning til pumpen, trækker dog 3A max, derfor vælges banetykkelsen her til 0.00254 mm. Derudover løber et PWM-kontrolsignal til pumpen på 3,5kHz, dette skaber en del støj, hvorfor denne bane bør isoleres så meget som muligt fra specielt ventilerne.
-Derudover bør banerne til kommunikationsbusserne ligeledes isoleres, da disse indeholder rette flanker og dermed skaber en del støj. 
+Standard tykkelsen af en printbane er 0.035 mm, og det giver en bredde på bane på 0,115 mm hvis der skal løbe 500 mA, dette er denne strøm der løber i ventiler, derfor vælges banebredden som standard til denne værdi. 
+Printbanen fra forsyning til pumpen, trækkes dog 3A max, derfor vælges banebredden her til 1.37 mm. \newline
+Derudover løber et PWM-kontrolsignal til pumpen på 3,5kHz, dette skaber en del støj, hvorfor denne bane bør isoleres så meget som muligt fra specielt ventilerne.\newline
+Bords'ne er pt. ikke færdigdesignet, hvorfor der ikke foreligger billeder heraf. 
+ 
