@@ -30,7 +30,7 @@ Når \textit{SocketClient} er blevet registreret hos Bridge starter den \textit{
 \item Bridge giver besked om, at forbindelsen til klienten skal lukkes 
 \end{enumerate}
 
-I de to første tilfælde skal \textit{SocketClient} give Bridge besked om, at forbindelse til klienten er død, og \textit{SocketClient} skal stoppes. I det sidste tilfælde skal \textit{SocketClient} reagere på beskeden og stoppe sig selv. Herefter ved Bridge, at den skal fjerne alle spor af \textit{SocketClient} klassen (herunder session og brugt hukommelse).
+I de to første tilfælde skal \textit{SocketClient} give \textit{Bridge} besked om, at forbindelse til klienten er død, og \textit{SocketClient} skal stoppes. I det sidste tilfælde skal \textit{SocketClient} reagere på beskeden og stoppe sig selv. Herefter ved \textit{Bridge}, at den skal fjerne alle spor af \textit{SocketClient} klassen (herunder session og brugt hukommelse).
 
 \StateDiagram{1}{FlexPMS}{SocketClient}
 
