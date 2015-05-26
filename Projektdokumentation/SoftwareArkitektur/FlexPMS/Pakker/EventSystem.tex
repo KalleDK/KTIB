@@ -1,26 +1,28 @@
-FlexPMS er opbygget af adskillige tråde, som alle kan snakke sammen ved at sende beskeder til hinanden. Trådene håndterer udelukkende beskeder sendt til dem udefra, og står derfor udelukkende i blokerende kald til en besked-kø, så længe de ikke er ved at håndtere en indkommende besked. Trådene nedarver fra \textit{MessageThread} og har pointers til de tråde, som de skal kunne sende beskeder til.
+FlexPMS er opbygget af adskillige tråde, som alle kan snakke sammen ved at sende beskeder til hinanden. Trådene håndterer udelukkende beskeder sendt til dem udefra, og står derfor udelukkende i blokerende kald til en besked-kø (et \textit{MessageQueue}-objekt) så længe de ikke er ved at håndtere en indkommende besked. Trådene nedarver fra \textit{MessageThread} og har pointers til de tråde, som de skal kunne sende beskeder til.
 
 \KlasseDiagram{1}{FlexPMS}{EventSystem}
 
 
 \subsubsection{MessageThread}
-Klassen, som er en specialisering af \textit{Thread}, stiller funktionalitet til rådighed til at indgå i det event-baserede beskedsystem. Ved at nedarve fra \textit{MessageThread} bliver en klasse til en modtager af beskeder, og kan i den forbindelse nøjes med at implementere en \textKode{dispatch()} metode, som kaldes hver gang tråden modtager en besked via dens send() metode. \textKode{dispatch()} modtager to argumenter; et event-ID samt en pointer til et \textit{Message}-objekt, der evt. kan være \textKode{NULL}. Dispatch bør overholde reglen om, at kalde en funktion til at håndtere beskeden alt efter hvilket event-ID den modtager.\\\\
+Klassen, som er en specialisering af \textit{Thread}, stiller funktionalitet til rådighed til at indgå i det event-baserede beskedsystem. Ved at nedarve fra \textit{MessageThread} bliver en klasse til en modtager af beskeder, og kan i den forbindelse nøjes med at implementere en \textKode{dispatch()} metode, som kaldes hver gang tråden modtager en besked via dens \textKode{send()} metode. \textKode{dispatch()} modtager to argumenter; et event-ID samt en pointer til et \textit{Message}-objekt, der evt. kan være \textKode{NULL}. Dispatch bør overholde reglen om, at kalde en funktion til at håndtere beskeden alt efter hvilket event-ID den modtager, hvilket typisk implementeres vha. en switch-case.\\\\
 
-\textKode{send()} tager ligeledes to argumenter; et event-ID samt en pointer til et \textit{Message}-objekt. Det er afsenderen, som skal allokere \textit{Message}-objektet, men \textit{MessageThread} sørger selv for, at de-allokere det efter \textKode{dispatch()} er kaldt hos modtageren.\\\\
+\textKode{send()} tager ligeledes to argumenter; et event-ID samt en pointer til et \textit{Message}-objekt. Det er afsenderen, som skal allokere \textit{Message}-objektet, men \textit{MessageThread} sørger selv for, at de-allokere det efter \textKode{dispatch()} er kaldt hos modtageren, og beskeden er håndteret.\\\\
+
+Nedenfor ses et eksempel på kommunikation mellem to tråde, \textit{MessageThread1} og \textit{MessageThread2}, initieret af \textit{MessageThread1}, hvor \textit{MessageThread2} svarer på beskeden. 
 
 \SekvensDiagram{1}{FlexPMS}{MessageThread}
 
-\textit{MessageThread} laver udelukkende blokerende kald til dens besked-kø, og dermed undgår vi, at stå og bruge CPU-tid i løkker, som ikke udfører noget. Det betyder, at alle klasse som nedarver fra \textit{MessageThread} udelukkende håndterer events sendt til dem udefra. På den måde lægges tråde til at sove så længe der ikke er noget at lave, og programmet vil bruge minimalt CPU-tid.
+\textit{MessageThread} laver udelukkende blokerende kald til dens besked-kø (et \textit{MessageQueue}-objekt), og dermed undgår vi at stå og bruge CPU-tid i løkker, som ikke udfører noget. Det betyder, at alle klasse som nedarver fra \textit{MessageThread} udelukkende håndterer events sendt til dem udefra. På den måde lægges tråde til at sove så længe der ikke er noget at lave, og programmet vil bruge minimalt CPU-tid.
 
 
-\StateDiagram{0.7}{FlexPMS}{MessageThread}
+\StateDiagram{0.5}{FlexPMS}{MessageThread}
 
 \subsubsection{Arkitekturspecifikke metoder}
 
-\funk{virtual void init()}{Abstrakt metode, som kaldes inden der begyndes at hente beskeder fra beskedkøen}{Ingenting}
+\funk{virtual void init()}{Abstrakt metode, som kaldes inden der begyndes at hente beskeder fra beskedkøen. Kan bruges til at lave initiering af objektet. Metoden kan overskrives af klasser, som nedarver fra \textit{MessageThread}}{Ingenting}
 {}
 
-\funk{void send(unsigned long id, Message* msg = NULL)}{Lægger en besked i trådens beskedkø}{Ingenting}
+\funk{void send(unsigned long id, Message* msg = NULL)}{Sender en besked til tråden, ved at lægge en besked i dens beskedkø}{Ingenting}
 {
 \funkArg{id}{Et ID, som beskriver det event der sendes}
 \funkArg{msg}{En pointer til et \textit{Message}-objekt, som kan holde på yderligere data}
@@ -53,25 +55,24 @@ Klassen er en FIFO kø, som er trådsikret, dvs. sikret mod de problemer der kan
 \funkArg{msg}{Pointer til \textit{Message}-objekt, som skal puttes i køen}
 }
 
-\funk{Message* recieve(unsigned long\& id)}{Henter den næste besked fra køen. Hvis køen er tom, så blokerer funktionen indtil der bliver puttet noget i køen via \textKode{send()}}{Ingenting}
+\funk{Message* recieve(unsigned long\& id)}{Henter den næste besked fra køen. Hvis køen er tom, så blokerer funktionen indtil der bliver puttet noget i køen via \textKode{send()}}{En pointer til et \textKode{Message}-objekt. Kan være \textKode{NULL}}
 {
 \funkArg{id}{Funktionen skriver event-ID til denne variabel}
 }
 
 \subsubsection{Item}
 
-\textit{Struct}, som udelukkende benyttes internt i \textit{MessageQueue}. Den holder på event ID'er og \textit{Message}-objekter, og er den type, der placeres i køen.
+En struct, som udelukkende benyttes internt i \textit{MessageQueue}. Den holder på event ID'er og \textit{Message}-objekter, og er den type, der placeres i køen.
 
 
 \subsubsection{Message}
 
-\textit{Message} gør det muligt at medsende informationer (ud over et event-ID), når tråde kommunikerer med hinanden. Klassen \textit{Message} indeholder en sender attribut, som er en pointer til den \textit{MessageThread}, der sendte beskeden. sender gør det derfor muligt for \textit{MessageThread}'s at svare på beskeder direkte tilbage til afsenderen.\\\\
+\textit{Message} gør det muligt at medsende informationer (ud over et event-ID), når tråde kommunikerer med hinanden. Klassen \textit{Message} indeholder en \textKode{sender} attribut, som er en pointer til det \textit{MessageThread}-objekt, der sendte beskeden. \textKode{sender} gør det derfor muligt for \textit{MessageThread}'s at svare på beskeder uden at kende til afsenderen.\\\\
 
 Alt efter hvilke data man vil sende med en besked kan man nedarve fra \textit{Message} og tilføje flere attributter.  Der er lavet specialiseringer af \textit{Message} hvor det har været nødvendigt at sende information mellem tråde.\\\\
 
 \textbf{KarBusMessage}\\
-Klassen er en specialisering af \textit{Message} og indeholder – ud over \textKode{sender} – en kar attribut, som er en pointer til det \textit{Kar}-objekt, der skal sendes data til. Grunden til, at kar kun er implementeret på \textit{KarBusMessage} er, at det altid er relevant at have information med omkring hvilket kar der skal sendes instrukser til når der kommunikeres mellem \textit{Bridge} og \textit{KarBus}, hvorimod dette ikke er nødvendigt når der kommunikeres mellem \textit{Bridge} og \textit{SocketClient}.\\\\
-
+Klassen er en specialisering af \textit{Message} og indeholder – ud over \textKode{sender} – en \textKode{kar} attribut, som er en pointer til det \textit{Kar}-objekt, der skal sendes data til. Grunden til, at \textKode{kar} kun er implementeret på \textit{KarBusMessage} er, at det altid er relevant at have information med omkring hvilket kar der skal sendes instrukser til når der kommunikeres mellem \textit{Bridge} og \textit{KarBus}, hvorimod dette ikke er nødvendigt når der kommunikeres mellem \textit{Bridge} og \textit{SocketClient}.\\
 Der er adskillige specialiseringer af \textit{KarBusMessage}, som benyttes alt afhængigt af beskeden (event-ID).\\\\
 
 \textbf{SessionMessage}\\

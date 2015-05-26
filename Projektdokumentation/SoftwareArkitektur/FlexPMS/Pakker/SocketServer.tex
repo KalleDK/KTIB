@@ -1,4 +1,4 @@
-Denne del af FlexPMS giver GUI'en adgang til at kommunikere direkte med FlexPMS via TCP/IP, og bruges til at informere FlexPMS om handlinger, som skal startes eller stoppes, og er den eneste direkte vej for GUI at kommunikere med FlexPMS.
+Denne del af FlexPMS giver GUI'en adgang til at kommunikere direkte med FlexPMS via TCP/IP, og bruges til at informere FlexPMS om handlinger, som skal startes eller stoppes, og er den eneste direkte vej for GUI at kommunikere med FlexPMS. Der kommunikeres gennem en GUI Protokol (se Tabel Se Tabel \ref{fig:GUIProtokol}).
 
 
 
@@ -18,7 +18,7 @@ Serveren lytter på adresse 127.0.0.1 (localhost) port 5555.
 
 \textit{SocketClient} modtager beskeder fra enten \textit{SocketReader} eller \textit{Bridge}. \textit{SocketReader} sender beskeder når der enten er modtaget nyt data fra klienten, eller når klienten lukker forbindelsen. \textit{Bridge} sender beskeder når der enten er data at sende til klienten, eller når forbindelsen til klienten skal lukkes.\\\\
 
-Når \textit{SocketClient} oprettes får den givet en file-descriptor til den socket, som den skal læse fra og skrive til. Lige efter at klassen er blevet oprettet, registrerer den sig hos \textit{Bridge}, der svarer tilbage med et unikt sessions ID, som skal gives med hver gang \textit{SocketClient} sender beskeder til \textit{Bridge}. \textit{Bridge} bruger dette ID til at identificere klienter i tilfælde, hvor der skal sendes et svar tilbage til klienten. \textit{Bridge} har derfor en intern mapning af, hvilke sessions sessions ID'er der hører til hvilke \textit{SocketClient} klasser. Det er med andre ord \textit{Bridge}, og ikke \textit{SocketServer}, som holder styr over åbne forbindelser til klienter.\\\\
+Når \textit{SocketClient} oprettes får den givet en file-descriptor til den socket, som den skal læse fra og skrive til. Lige efter at klassen er blevet oprettet, registrerer den sig hos \textit{Bridge}, der svarer tilbage med et unikt sessions ID, som skal gives med hver gang \textit{SocketClient} sender beskeder til \textit{Bridge}. \textit{Bridge} bruger dette ID til at identificere klienter i tilfælde, hvor der skal sendes et svar tilbage til klienten. \textit{Bridge} har derfor en intern mapning af, hvilke sessions ID'er der hører til hvilke \textit{SocketClient}-objekter. Det er med andre ord \textit{Bridge}, og ikke \textit{SocketServer}, som holder styr over åbne forbindelser til klienter.\\\\
 
 Når \textit{SocketClient} er blevet registreret hos \textit{Bridge} starter den \textit{SocketReader}, som begynder at læse data fra socket. Herefter kan en udveksling af data mellem GUI og FlexPMS begynde.\\\\
 
@@ -33,6 +33,33 @@ Når \textit{SocketClient} er blevet registreret hos \textit{Bridge} starter den
 I de to første tilfælde skal \textit{SocketClient} give \textit{Bridge} besked om, at forbindelse til klienten er død, og \textit{SocketClient} skal stoppes. I det sidste tilfælde skal \textit{SocketClient} reagere på beskeden og stoppe sig selv. Herefter ved \textit{Bridge}, at den skal fjerne alle spor af \textit{SocketClient} klassen (herunder session og brugt hukommelse).
 
 \StateDiagram{1}{FlexPMS}{SocketClient}
+
+\textbf{Events}\\
+
+\textit{SocketClient} kan modtage følgende kommandoer fra \textit{Bridge} og \textit{SocketReader}:
+
+\begin{itemize}
+\item \textKode{E\_START\_SESSION} håndteres af \textKode{handle\_start\_session()}
+\item \textKode{E\_STOP\_SESSION} håndteres af \textKode{handle\_stop\_session()}
+\item \textKode{E\_KILL} håndteres af \textKode{handle\_kill()}
+\item \textKode{E\_SEND\_DATA} håndteres af \textKode{handle\_send\_data()}
+\item \textKode{E\_RECV\_DATA} håndteres af \textKode{handle\_recieve\_data()}
+\end{itemize}
+
+\textbf{Kommandoer}\\
+
+\textit{SocketClient} kan modtage følgende kommandoer fra GUI gennem GUI Protokol:
+
+\begin{itemize}
+\item \textKode{MWSTART} håndteres af \textKode{handle\_start\_watering()}
+\item \textKode{MWSTOP} håndteres af \textKode{handle\_stop\_watering()}
+\item \textKode{IVALVEOPEN} håndteres af \textKode{handle\_ivalve\_open()}
+\item \textKode{IVALVECLOSE} håndteres af \textKode{handle\_ivalve\_close()}
+\item \textKode{OVALVEOPEN} håndteres af \textKode{handle\_ovalve\_open()}
+\item \textKode{OVALVECLOSE} håndteres af \textKode{handle\_ovalve\_close()}
+\end{itemize}
+
+Se Tabel \ref{fig:GUIProtokol} for en detaljeret beskrivelse af kommandoerne i GUI Protokol.\\\\
 
 Nedenfor ses et sekvensdiagram, som illustrerer \textit{SocketClient}'s livscyklus.
 

@@ -2,7 +2,9 @@
 
 \subsection{Overordnet}
 Til kommunikation i AVS har vi valgt at implementere en protokol der bruges til kommunikation mellem hardware enheder.
-Det drejer sig om to busser der følger samme format, samt er der gjort brug af I2C i forhold til følere. De to busser Kar og Ø bus basere sig begge på samme data format da deres fysiske lag er ens. Busserne kører master/slave kommunikation det gør at det kun er master der kan initiere kommunikation.
+Det drejer sig om to busser der følger samme format, samt er der gjort brug af I2C i forhold til følere. De to busser Kar og Ø bus basere sig begge på samme data format da deres fysiske lag er ens. Busserne kører master/slave kommunikation det gør at det kun er master der kan initiere kommunikation.\\\\
+
+Til at kommunikere mellem GUI og CentralControl har vi designet endnu en protokol, som er uafhængig af ovenstående.
 
 \subsection{Dataformat - Kar og Ø bus} 
 Data bliver sendt på følgende format:
@@ -454,3 +456,113 @@ Argumenter & STATE & & \\\hline
 \end{table}
 
 Svaret på en ventil forespørgsel er hvilken tilstand ventilen er blevet sat til.
+
+
+\subsection{GUI Protokol}
+
+Til at kommunikere mellem GUI og CentralControl benyttes en TCP/IP forbindelse. Herunder er protokollen beskrevet. GUI har mulighed for at forbinde til CentralControl gennem en socket, og bruger dette til at starte eller stoppe handlinger, som skal udføres på CentralControl.\\\\
+
+Data sendes i ren tekst (ASCII). Kommandoen efterfølges af argumenter adskilt med mellemrum. Kommandoer afsluttes med et carriage-return karakter efterfulgt af et newline karakter (\textbackslash r\textbackslash n).\\\\
+
+Eksempel:\\
+\textKode{MWSTART 5\textbackslash r\textbackslash n}\\
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|l|}\hline
+\multicolumn{2}{|c|}{GUI Protokol\cellcolor[gray]{0.7}}\\\hline
+Kommando & Beskrivelse \\\hline
+MWSTART 		& Starter manuel vanding for et kar \\\hline 
+MWSTOP  		& Stopper manuel vanding for et kar \\\hline 
+IVALVEOPEN 		& Åbner indløbsventilen \\\hline 
+IVALVECLOSE		& Lukker indløbsventilen \\\hline 
+OVALVEOPEN 		& Åbner afløbsventilen \\\hline 
+OVALVECLOSE		& Lukker afløbsventilen \\\hline 
+\end{tabular}
+\label{tab:GUIProtokol}
+\caption{GUI Protokol kommandoer}
+\end{table}
+
+
+\subsubsection{MWSTART}
+Starter manuel vanding for et kar.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & MWSTART & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{MWSTOP}
+Stopper manuel vanding for et kar.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & MWSTOP & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{IVALVEOPEN}
+Åbner indløbsventilen.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & IVALVEOPEN & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{IVALVECLOSE}
+Lukker indløbsventilen.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & IVALVECLOSE & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{OVALVEOPEN}
+Åbner afløbsventilen.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & OVALVEOPEN & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{OVALVECLOSE}
+Lukker afløbsventilen.
+
+\begin{table}[H]
+\setlength{\parindent}{12pt}
+\begin{tabular}{|l|lcc|}
+\hline
+\multicolumn{4}{|c|}{Kommado med argumenter}\\\hline
+Kommando & OVALVECLOSE & & \\
+Argumenter & KarID & & \\\hline
+\end{tabular}
+\end{table}

@@ -5,11 +5,11 @@ FlexPMS er dybt afhængig af trådteknologi. De tre store komponenter, Socket se
 \subsubsection{Thread}
 \textit{Thread} er en abstrakt basis-klasse for alle klasser, som skal afvikles i sin egen tråd. Ved at nedarve fra \textit{Thread} kan en klasse nøjes med at implementere en \textKode{run()} metode, der kaldes, når tråden startes via \textKode{start()}. Tråden lever indtil \textKode{run()} returnerer, eller indtil der kaldes \textKode{cancel()} på en tråd, og tråden dør. \textit{Thread} er udelukkende skrevet til at understøtte pthread på Linux.
 
-\StateDiagram{1}{FlexPMS}{Thread}
+\StateDiagram{0.6}{FlexPMS}{Thread}
 
 \subsubsection{Arkitekturspecifikke metoder}
 
-\funk{void start()}{Starter tråden}{Ingenting}
+\funk{void start()}{Starter eksekvering af tråden}{Ingenting}
 {}
 
 \funk{void cancel()}{Stopper tråden, hvis annullering er slået til, ellers gør funktionen ingenting. Tråden stoppes først når der stødes på et såkaldt cancellation point. Kun tråden selv kan tillade eller forbyde annullering}{Ingenting}
@@ -18,7 +18,7 @@ FlexPMS er dybt afhængig af trådteknologi. De tre store komponenter, Socket se
 \funk{void join()}{Blokerende kald, som ikke returnerer før tråden er færdig med eksekvering}{Ingenting}
 {}
 
-\funk{virtual void run()}{Abstrakt metode, som kaldes når tråden startes. Tråden lever så længe run() er under afvikling, eller indtil den annulleres}{Ingenting}
+\funk{virtual void run()}{Abstrakt metode, som kaldes når tråden startes. Tråden lever så længe \textKode{run()} er under afvikling, eller indtil den annulleres}{Ingenting}
 {}
 
 \funk{static void* run\_thread(void* arg)}{C-style funktion hvori tråden startes. Denne funktion kaldes af \textKode{start()} og kalder til gengæld \textKode{run()} på Thread-objektet}{Ingenting}
@@ -29,7 +29,7 @@ FlexPMS er dybt afhængig af trådteknologi. De tre store komponenter, Socket se
 \funk{void enable\_cancel()}{Tillader annullering af tråden, så tråden kan stoppes hvis \textKode{cancel()} kaldes}{Ingenting}
 {}
 
-\funk{void disable\_cancel()}{Forbyder annullering af tråden, så hvis \textKode{cancel()} kaldes ignoreres det}{Ingenting}
+\funk{void disable\_cancel()}{Forbyder annullering af tråden, så kald til \textKode{cancel()} ignoreres}{Ingenting}
 {}
 
 \funk{void ssleep(unsigned int sec)}{Lægger tråden til at sove i et antal sekunder (minimum)}{Ingenting}
@@ -37,7 +37,7 @@ FlexPMS er dybt afhængig af trådteknologi. De tre store komponenter, Socket se
 \funkArg{sec}{Antal sekunder tråden minimum skal sove i}
 }
 
-\funk{void msleep(unsigned int msec)}{Lægger tråden til at sove i et antal millisekunder (minimum))}{Ingenting}
+\funk{void msleep(unsigned int msec)}{Lægger tråden til at sove i et antal millisekunder (minimum)}{Ingenting}
 {
 \funkArg{msec}{Antal millisekunder tråden minimum skal sove i}
 }

@@ -5,10 +5,39 @@
 \subsubsection{Bridge}
 
 
-\textbf{Sessions}
-Når Bridge modtager en forespørgsel fra en \textit{SocketClient} om at blive registreret, så tildeler Bridge den forespørgende \textit{SocketClient} det næste ledige sessions ID. Herefter kan \textit{SocketClient} begynde at sende beskeder til Bridge, som videreformidler beskederne til KarBus. Beskeden til KarBus skulle indeholde et sessions ID på den forespørgende \textit{SocketClient}, så i tilfælde af, at \textit{SocketClient} skulle have svar, kunne KarBus sende ID’et med tilbage til Bridge, som kunne identificere hvilken \textit{SocketClient} den skulle sende svaret til. Vi fik dog aldrig brug for at sende svar tilbage til \textit{SocketClient}, så sessions ID'er er ikke blevet implementeret i kommunikationen mellem Bridge og KarBus.\\\\
+\textbf{Sessions}\\
+Når Bridge modtager en forespørgsel fra en \textit{SocketClient} om at blive registreret, så tildeler Bridge den forespørgende \textit{SocketClient} det næste ledige sessions ID. Herefter kan \textit{SocketClient} begynde at sende beskeder til \textit{Bridge}, som videreformidler beskederne til \textit{KarBus}. Beskeden til \textit{KarBus} skulle indeholde et sessions ID på den forespørgende \textit{SocketClient}, så i tilfælde af, at \textit{SocketClient} skulle have svar, kunne \textit{KarBus} sende ID'et med tilbage til \textit{Bridge}, som kunne identificere hvilken \textit{SocketClient} den skulle sende svaret til. Vi fik dog aldrig brug for at sende svar tilbage til \textit{SocketClient}, så sessions ID'er er ikke blevet implementeret i kommunikationen mellem \textit{Bridge} og \textit{KarBus}.\\\\
 
 Se Figur \ref{fig:SocketClient_SekvensDiagram} for en \textit{SocketClient}'s livscyklus, som inkluderer registrering med sessioner.\\\\
 
-\textbf{KarPinger}
-\textit{KarPinger}, som er en specialisering af \textit{Thread}, har det ene formål at sende et PING-event til \textit{Bridge} hvert 10. sekund.
+\textbf{Events}\\
+
+\textit{Bridge} kan modtage følgende events fra \textit{SocketClient}:
+
+\begin{itemize}
+\item \textKode{E\_HELLO} håndteres af \textKode{handle\_hello()}
+\item \textKode{E\_BYE} håndteres af \textKode{handle\_bye()}
+\item \textKode{E\_START\_WATERING} håndteres af \textKode{handle\_start\_watering()}
+\item \textKode{E\_STOP\_WATERING} håndteres af \textKode{handle\_stop\_watering()}
+\item \textKode{E\_OVALVE\_OPEN} håndteres af \textKode{handle\_ovalve\_open()}
+\item \textKode{E\_OVALVE\_CLOSE} håndteres af \textKode{handle\_ovalve\_close()}
+\item \textKode{E\_IVALVE\_OPEN} håndteres af \textKode{handle\_ivalve\_open()}
+\item \textKode{E\_IVALVE\_CLOSE} håndteres af \textKode{handle\_ivalve\_close()}
+\end{itemize}
+
+\textit{Bridge} kan modtage følgende events fra \textit{KarBus}:
+
+\begin{itemize}
+\item \textKode{E\_KAR\_READY\_STATE} håndteres af \textKode{handle\_kar\_ready\_state()}
+\item \textKode{E\_KAR\_OE\_LIST} håndteres af \textKode{handle\_kar\_oe\_list()}
+\item \textKode{E\_KAR\_SENSOR\_DATA} håndteres af \textKode{handle\_kar\_sensor\_data()}
+\item \textKode{E\_KAR\_VALVE\_STATE} håndteres af \textKode{handle\_kar\_valve\_state()}
+\item \textKode{E\_KAR\_PUMP\_STATE} håndteres af \textKode{handle\_kar\_pump\_state()}
+\item \textKode{E\_OE\_VALVE\_STATE} håndteres af \textKode{handle\_oe\_valve\_state()}
+\item \textKode{E\_OE\_SENSOR\_DATA} håndteres af \textKode{handle\_oe\_sensor\_data()}
+\end{itemize}
+
+\textbf{KarPinger}\\
+\textit{KarPinger}, som er en specialisering af \textit{Thread}, har det ene formål at sende et PING-event til \textit{Bridge} hvert 10. sekund. PING-eventet starter processen med at polle sensor-data fra både Kar og Sensor Ø'er.
+
+\SekvensDiagram{1}{FlexPMS}{KarPinger}
