@@ -23,28 +23,41 @@ tilbage til menuen og vælge en ny DebugHandle.
 \funk{int Debug\_printf(const char* string, ...)}
 {Er dokumenteret her, da det er en fri funktion, men hører til denne komponent.}
 {Success: Antal chars udskrevet Failure: Negative number}
+{
+\funkArg{string}{Nultermineret char array}
+\funkArg{...}{Se printf dokumentation for variable argumenter}
+}
 
 \funk{void Debug\_Start(void)}
 {Kobler UART'ens PutString til printf funktionen. Samt starter denne op.}
 {Void}
+{}
 
 \funk{void Debug\_PutChar(char8 txDataByte)}
 {Wrapper for UART\_PutChar}
 {Void}
+{
+\funkArg{txDataByte}{Char der skal sendes via UART}
+}
 
 \funk{void Debug\_PutString(const char8 string[])}
 {Wrapper for UART\_PutString}
 {Void}
+{
+\funkArg{string}{Nultermineret char array med chars der skal sendes via UART}
+}
 
 \funk{void Debug\_Communicate()}
 {Redirecter input chars fra UART til den valgte DebugHandle}
 {Void}
+{}
 
 \funk{void Debug\_DebugHandle(const char ch)}
 {Bruges til at skifte DebugHandle og udskrive en liste af Komponenter der er tilkoblet debug}
 {Void}
+{}
 
 \funk{void Debug\_AddComponent(void (*debugchar) (char))}
 {Tilføjer en DebugHandle funktion, bruges til at koble komponenters DebugHandle til.}
 {Void}
-
+{}
