@@ -17,6 +17,13 @@ systemet består af følgende software blokke:
 \subsection{Database}
 
 \subsection{FlexPMS}
+Programmet FlexPMS er designet til at være bindeled mellem brugergrænsefladen og kar/sensorø
+styringerne, der til får programmet nogle opgaver der hedder sig at programmet skal op sample
+data og gemme dette i databasen, samt holde en log af det opsamlede data. Programmet skal også
+facilitere kommunikationen fra brugergrænsefladen til kar/sensorø når der for eksempel bliver bedt
+om at starte en vanding i brugergrænsefladen eller det ønskes at styre ventiler. FlexPMS kunne
+også udvides således at programmet selv kan bestemme hvornår der skal vandes baseret på de
+målinger der er fortaget.
 
 \subsection{Kar}
 Kar Controlleren er tilkoblet et enkelt Kar, hvor den har en række sensorer og ventiler tilkoblet. Dens funktion er at styre ventilerne baseret på beskeder fra FlexPMS, indsamle data fra dens sensorer tilkoblet karret, indsamle måledata fra Sensor Ø'en og forwarde beskeder videre til SensorØ'en fra FlexPMS. Der er forsøgt at lave automatisk adressering af Sensor Ø'er fra Karret, men da der ingen error detection er på RS485, ligger dette et stykke ude i fremtiden. Sensor Ø'er kan allerede dynamisk oprettes fra FlexPMS.
@@ -29,3 +36,6 @@ Fieldsensoren er en skabelon til alle typer af Fieldsensorer. Den er bygget til 
 
 \subsection{AVSLibrary}
 AVSLibrary er et bibliotek af custom components til PSoC Creator. Dette er lavet da mange af komponenterne bliver brugt af de forskellige enheder PSoC enheder. Derved sikres det at ændringer bliver rullet ud på tværs af enhederne. En positiv bivirkning er at koden på de andre PSoC enheder bliver lettere at læse, da meget af komponent koden er pakket væk. Der er også implementeret en Debug feature de fleste komponenter og enheder bruger, der giver mulighed for at manuelt gå ind og aflæse og manipulere med data.
+
+\subsection{RS485}
+Da vi havde valgt at bruge RS485 som det fysiske lag for vores bus blev vi også nød til selv at lave en protokol til denne. Det gjorde vi ret simpelt ved at definere hvordan en besked ser ud, det blev til at vi valgte at alle på bussen skulle have en adresse således at vi kunne vælge hvem der skulle skrives til. For at kunne skelne mellem en adresse og en data byte har vi valgt at bruge paritetsbit'en i en UART data frame til at indikere adressen. Vi kører med det der hedder mark/space paritet hvor mark betyder at der står 1 i paritetsbit'en og ved space står der 0, i vores løsning betyder mark paritet at det er en adresse der er sendt og space betyder at det er data. En dybere beskrivelse af kommandoer og dataformat kan læses i systemarkitekturen.
