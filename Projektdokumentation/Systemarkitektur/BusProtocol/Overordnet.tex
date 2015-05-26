@@ -2,7 +2,9 @@
 
 \subsection{Overordnet}
 Til kommunikation i AVS har vi valgt at implementere en protokol der bruges til kommunikation mellem hardware enheder.
-Det drejer sig om to busser der følger samme format, samt er der gjort brug af I2C i forhold til følere. De to busser Kar og Ø bus basere sig begge på samme data format da deres fysiske lag er ens. Busserne kører master/slave kommunikation det gør at det kun er master der kan initiere kommunikation.
+Det drejer sig om to busser der følger samme format, samt er der gjort brug af I2C i forhold til følere. De to busser Kar og Ø bus basere sig begge på samme data format da deres fysiske lag er ens. Busserne kører master/slave kommunikation det gør at det kun er master der kan initiere kommunikation.\\\\
+
+Til at kommunikere mellem GUI og CentralControl har vi designet endnu en protokol, som er uafhængig af ovenstående.
 
 \subsection{Dataformat - Kar og Ø bus} 
 Data bliver sendt på følgende format:
@@ -454,3 +456,9 @@ Argumenter & STATE & & \\\hline
 \end{table}
 
 Svaret på en ventil forespørgsel er hvilken tilstand ventilen er blevet sat til.
+
+
+\subsection{GUI Protokol}
+
+Til at kommunikere mellem GUI og CentralControl benyttes en TCP/IP forbindelse. Herunder er protokollen beskrevet.\\\\
+
