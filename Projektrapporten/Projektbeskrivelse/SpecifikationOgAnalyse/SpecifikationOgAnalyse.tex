@@ -1,7 +1,7 @@
 %!TEX root = ../../main.tex
 \section{Specifikation og Analyse}
-I vores overvejelser omkring systemet har vi lagt vægt på at det skulle kunne virke over lange afstande og at brugeren sjældent skal have behov for at skulle tilgå hardware ved kar og sensor ø, det skulle således kun ske ved når der skal tilføjes nye sensorer eller nye sensorøer. \\
-Desuden skulle bruger grænsefladen være nemt at tilgå, det gik også op for os at det var en god ide at have system inddelt således at bruger grænsefladen stod for sig selv da systemet så kan udvides med flere kar, samme argumentation gælder for sensorøen da et kar kan stå for at vande mange planter og det giver god mening at kunne opsamle data flere steder fra og det giver mulighed for bedre at styre vand mængden til forskellig områder af planteområdet.
+I vores overvejelser omkring systemet har vi lagt vægt på, at det skal kunne virke over lange afstande og at brugeren sjældent skal have behov for at tilgå hardware ved kar og sensor ø. Det skulle således kun ske når der skal tilføjes nye sensorer eller nye sensor-øer. \\
+Desuden skulle brugergrænsefladen være nem at tilgå. Det gik også op for os at det var en god ide at have systemet inddelt således at brugergrænsefladen stod for sig selv, da systemet så kan udvides med flere kar. Samme argumentation gælder for sensor-øen da et kar kan stå for at vande mange planter og det giver god mening at kunne opsamle data flere steder fra. Det giver også mulighed for bedre at styre vandmængden til forskellige områder af planteområdet.
 
 \begin{figure}[H]
 	\centering
@@ -10,6 +10,6 @@ Desuden skulle bruger grænsefladen være nemt at tilgå, det gik også op for o
 	\label{fig:DomaeneSys}
 \end{figure} 
 
-På modelen herover\ref{fig:DomaeneSys} ses et udlæg af systemet her er det lidt svært at se at systemet er meget opdelt, men modellen illustrer data vejen i systemet hvordan systemet samler data op som det skal bruge til at logging og automatisk vanding.
+På modelen herover\ref{fig:DomaeneSys} ses et udlæg af systemet. Her er det lidt svært at se at systemet er meget opdelt, men modellen illustrer data vejen i systemet og hvordan systemet samler data op som det skal bruge til at logging og automatisk vanding.
 \\
 På baggrund af disse tanker har vi valgt at bruge en bus med differentielt signal til at opnå afstandene i systemet, desuden har vi valgt selv at designe vores sensorer.
