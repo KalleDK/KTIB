@@ -19,9 +19,13 @@ systemet består af følgende software blokke:
 \subsection{FlexPMS}
 
 \subsection{Kar}
+Kar Controlleren er tilkoblet et enkelt Kar, hvor den har en række sensorer og ventiler tilkoblet. Dens funktion er at styre ventilerne baseret på beskeder fra FlexPMS, indsamle data fra dens sensorer tilkoblet karret, indsamle måledata fra Sensor Ø'en og forwarde beskeder videre til SensorØ'en fra FlexPMS. Der er forsøgt at lave automatisk adressering af Sensor Ø'er fra Karret, men da der ingen error detection er på RS485, ligger dette et stykke ude i fremtiden. Sensor Ø'er kan allerede dynamisk oprettes fra FlexPMS.
 
 \subsection{SensorØ}
+Sensor Ø'en placeret ude i marken med en række Fieldsensorer og en ventil. Her bliver den brugt til at opsamle data fra dens tilkoblede Fieldsensorer, samt styre ventilen. Mens den afventer beskeder fra Karret, indsamler den data fra Fieldsensoren, derved har den altid de opdaterede tal, når der kommer en forespørgsel fra Karret. Når Sensor Ø'en tændes, scanner den SensorBussen for Fieldsensorer og begynder at polle dem. Der er start implementering på automatisk addresering af Fieldsensorer. 
 
 \subsection{Fieldsensor}
+Fieldsensoren er en skabelon til alle typer af Fieldsensorer. Den er bygget til at det er let at udvikle nye sensor typer baseret på skabelonen. Det eneste der skal tilføjes fra udviklerens side er et nyt typeid, samt sørge for at måledata bliver sendt ind via en af skabelonens LoadValue funktioner. Dette gør det lettere at fx skifte kommunikationsinterface, hvis dette skulle være ønsket, da selve sensor udvikleren på intet tidspunkt har skullet rode med den del af koden. Der er lagt start funktioner til automatisk tildeling af I2C adresser, men dette nåede ikke at blive færdigudviklet.
 
 \subsection{AVSLibrary}
+AVSLibrary er et bibliotek af custom components til PSoC Creator. Dette er lavet da mange af komponenterne bliver brugt af de forskellige enheder PSoC enheder. Derved sikres det at ændringer bliver rullet ud på tværs af enhederne. En positiv bivirkning er at koden på de andre PSoC enheder bliver lettere at læse, da meget af komponent koden er pakket væk. Der er også implementeret en Debug feature de fleste komponenter og enheder bruger, der giver mulighed for at manuelt gå ind og aflæse og manipulere med data.
