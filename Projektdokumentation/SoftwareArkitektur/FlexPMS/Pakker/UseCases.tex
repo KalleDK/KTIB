@@ -1,7 +1,7 @@
 
 \subsubsection{Start manuel vanding}
 
-Bla bla bla
+Når manuel vanding startes for et kar, så skal alle ventiler, som sidder på sensor Ø'er, der er koblet til karret, åbnes. Derefter startes pumpen, som pumper vand ud til Ø'erne. Herefter registreres status i databasen.
 
 \begin{figure}[H]
 	\centering
@@ -13,7 +13,7 @@ Bla bla bla
 
 \subsubsection{Stop manuel vanding}
 
-Bla bla bla
+Når manuel vanding stoppes for et kar, så skal alle ventiler, som sidder på sensor Ø'er, der er koblet til karret, lukkes. Derefter stoppes pumpen. Herefter registreres status i databasen.
 
 \begin{figure}[H]
 	\centering
@@ -23,33 +23,9 @@ Bla bla bla
 \end{figure}
 
 
-\subsubsection{Åben afløbsventil}
-
-Bla bla bla
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=.6]{SoftwareArkitektur/FlexPMS/Diagrammer/Case_OpenOValve.png}
-	\caption{FlexPMS' håndtering af at åbne afløbsventilen}
-	\label{photo:OpenOValveUseCase}
-\end{figure}
-
-
-\subsubsection{Luk afløbsventil}
-
-Bla bla bla
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=.6]{SoftwareArkitektur/FlexPMS/Diagrammer/Case_CloseOValve.png}
-	\caption{FlexPMS' håndtering af at lukke afløbsventilen}
-	\label{photo:CloseOValveUseCase}
-\end{figure}
-
-
 \subsubsection{Åben indløbsventil}
 
-Bla bla bla
+Når indløbsventilen skal åbnes, så sendes en åben-kommando til karret. Herefter registreres status i databasen.
 
 \begin{figure}[H]
 	\centering
@@ -61,12 +37,36 @@ Bla bla bla
 
 \subsubsection{Luk indløbsventil}
 
-Bla bla bla
+Når indløbsventilen skal lukkes, så sendes en luk-kommando til karret. Herefter registreres status i databasen.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=.6]{SoftwareArkitektur/FlexPMS/Diagrammer/Case_CloseIValve.png}
 	\caption{FlexPMS' håndtering af at lukke indløbsventilen}
+	\label{photo:CloseOValveUseCase}
+\end{figure}
+
+
+\subsubsection{Åben afløbsventil}
+
+Når afløbsventilen skal åbnes, så sendes først en åben-kommando til karret, hvorefter pumpen tændes. Pumpen tændes fordi der skal tilstrækkeligt tryk i slangerne til, at vand kan løbe igennem ventilen. Herefter registreres status i databasen.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.6]{SoftwareArkitektur/FlexPMS/Diagrammer/Case_OpenOValve.png}
+	\caption{FlexPMS' håndtering af at åbne afløbsventilen}
+	\label{photo:OpenOValveUseCase}
+\end{figure}
+
+
+\subsubsection{Luk afløbsventil}
+
+Når afløbsventilen skal lukkes, så sendes først en luk-kommando til karret, hvorefter pumpen stoppes. Herefter registreres status i databasen.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.6]{SoftwareArkitektur/FlexPMS/Diagrammer/Case_CloseOValve.png}
+	\caption{FlexPMS' håndtering af at lukke afløbsventilen}
 	\label{photo:CloseOValveUseCase}
 \end{figure}
 
