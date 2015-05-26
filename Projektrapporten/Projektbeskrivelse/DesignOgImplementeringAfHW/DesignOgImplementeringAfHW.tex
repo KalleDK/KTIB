@@ -24,30 +24,31 @@ Bussystemet som er valgt til at kommunikere på er RS485-standarden. Denne beskr
 PSoC4 og Raspberry Pi understøtter dog ikke RS485-kommunikation. De kan begge kommunikere via. RS232/UART. Derfor er der udformet et simpelt RSConverter kredsløb som kan konvertere imellem RS232 og RS485. Kredsløbet benytter sig af MAX3082-kredsen. De eneste eksterne komponenter der er krævet er en pull-down modstand til at trække $TX_{enable}$ lav når den ikke er aktiveret fra PSoC4/Raspberry Pi. Til at terminere buslinjerne kræves en modstand som har samme modstand som det anvendte kabel. Dette gøres for at formindske reflektionen og dermed give det størst mulige signal i modtager-enden.
 
 \subsection{Ventil-/pumpestyring}
-Til at styre den valgte pumpe og ventil benyttes et MOSFET-styringskredsløb. 
+Til at styring af ind- og afløbsventiler, samt vandpumpe benyttes en række MOSFET-styringskredsløb. MOSFET'erne er specifik valgt pga. af deres logic-level-kompatibilitet. Dette betyder at transistorens GATE kan kobles direkte til output-pin'en på PSoC'en, da dens grænseværdier følger CMOS-standarden. på fig.ref{screenshot:ventilStyringskreds}, s.\pageref{screenshot:ventilStyringskreds} ses eksempel på ventilstyringskreds.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.25]{../Hardware/Ventilstyring/Screenshots/VentilStyringskreds}
-	\caption{Styringskredsløb til pumpe og ventil}
+	\includegraphics[scale=0.45]{../Hardware/Ventilstyring/Screenshots/VentilStyringskreds}
+	\caption{Ventilstyringskredsløb}
 	\label{screenshot:ventilStyringskreds}
 \end{figure}
 
-Begge belastninger optræder som en spole da de indeholder et relæ som skal trækkes. Ved denne form for styring at det vigtigt at notere, at når spændingen fra spolen fjernes, vil den modsætte sig denne ændring ved at skabe en modsatrettet spænding. Denne spænding kan i værste fald beskadige nærsiddende komponenter så kredsløbet ikke længere er funktionelt. Til at modvirke dette benyttes der en såkaldt flyback diode. Derudover benyttes der en pull-down modstand til at trække gaten lav når den ikke er aktiveret af PSoC4'en.
+Både ventilerne, og pumpens belastning af styringskredsen har spolekarakter, da de indeholder et relæ som skal trækkes. Ved denne form for styring er det vigtigt at være opmærksom på, at når MOSFET'en går off, og spændingen fra spolen fjernes, hvorved strømmen ikke længere har en løbebane, vil spolen selv inducere en en modsatrettet spænding. Denne spænding kan blive utrolig høj, og i værste fald beskadige nærliggende komponenter så kredsløbet ikke længere er funktionelt.\newline 
+Til at modvirke dette benyttes en flyback diode. Denne implementeres således at strømmen har en løbebane og herved kan spolen aflastes. Derudover benyttes der en pull-down modstand til at trække gat'en lav når den ikke er aktiveret af PSoC4'en.\\\
+
 
 \subsection{Flowsensor}
-Når karret skal fyldes med vand er det vigtigt at vide, hvor meget vand der i realiteten er fyldt i karret. Der er valgt en flow sensor til formålet. Jo mere vand som løber igennem sensorer jo højere en frekvens vil den sende ud på udgangen. Dette kræver dog at der over hele tiden som indløbsventilen er åben, konstant holdes øje med signalet den leverer. Dette kræver alt opmærksomhed fra PSoC4'en. 
-\\\\
-I stedet kan der laves en interrupt som reagere på pulserne fra flowsensoren. Dette vil stadig kræve utrolig meget opmærksomhed fra PSoC4'en. For at fjerne dette problem er der udformet et tæller-kredsløb. Dette kredsløb tæller pulserne fra flowsensoren. Når tælleren ruller over kommer der et interrupt på PSoC4'en. Dette minimerer antallet af interrupts og giver større frihed til PSoC4'en.
+Når karret skal fyldes med vand er det vigtigt at vide, hvor meget vand der i realiteten er fyldt i karret. Det blev derfor valgt at benytte en flowsensor til formålet. Jo mere vand som løber igennem sensoren jo højere en PWM-frekvens vil den sende ud på udgangen. Dette kræver dog, i praksis at der, over hele den tid hvor indløbsventilen er åben konstant skal holdes øje med det signal den leverer. Dette kræver alt opmærksomhed fra PSoC4'en, og i den konfiguration som vi benytter den, er dette ikke en mulighed.\newline
+I stedet sætte karControl-programmet op til at modtage interrupts som triggeres af pulserne fra flowsensoren. Dette vil dog stadig kræve utrolig meget opmærksomhed fra karControl. For at imødekomme dennee problemstilling, er der udarbejdet et eksternt hardware counter-kredsløb. Dette kredsløb tæller pulserne fra flowsensoren, og når der er talt 10 pulser op, går en output-pin høj, og interrupt'et trækkes. Hermed minimeres antallet af interrupts og giver større frihed til karControl-programmet. På fig.\ref{screenshot:counter}, s.\pageref{screenshot:counter} ses schematics af det eksterne counter-kredsløb
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.25]{../Hardware/Flow_Sensor/Screenshots/FlowSensor_Schematics_ver1}
+	\includegraphics[scale=0.45]{../Hardware/Flow_Sensor/Screenshots/FlowSensor_Schematics_ver1}
 	\caption{Counter-kredsløb}
 	\label{screenshot:counter}
 \end{figure}
 
-Kredsløbet er opbygget omkring en 4-bit tæller (74HC393). Dertil er koblet en AND-gate  som gør, at når tælleren rammer 10 giver den interrupt-signalet til PSoC4'en. Det allerførste der sker i ISR-rutinen er at tælleren nulstilles.
+Kredsløbet er opbygget omkring en 4-bit counter (74HC393). Dertil er koblet en AND-gate som gør, at når counter'en rammer 10 giver den interrupt-signalet til PSoC4'en. Det allerførste der sker i ISR-rutinen er at tælleren nulstilles. Dette gøres for at undgå at der fejlagtigt gen-trigges når begge inputs til AND-gaten går høj 4 clockcycles senere når counter rammer 14 counts. 
 
 \subsection{Jordfugtsensor}
 Selve jordfugt sensoren skal måle jordfugten i jorden således systemet kan vide hvornår en plante skal have vand. 
@@ -115,7 +116,8 @@ Spændingen transformeres ned til 12VAC. Spændingen dobbeltensrettes og lades o
 Da der ved fuld belastning afsættes en forholdsvis stor effekt i de 2 regulerings-MOSFETs, er de placeret på en køleplade. 5V-forsyningen trækker en konstant strøm for at forsyne Raspberry Pi, PSoC4 mm. 12V-forsyningen belastes kun når der bruges pumper eller ventiler.
 
 \subsection{Shields til Raspberry og PSoC}
-Systemet består af mange små kredsløb og det er derfor valgt at placere alle disse på såkaldte \emph{shields}. Der skal laves 3 forskellige:
+
+Systemet består af mange små kredsløb, og mange af dem skal kobles til kar-PSoC'en. En almindelig løs kobling giver anledning til en del støj, og det er derfor er det valgt at placere alle disse kredsløb på såkaldte \emph{shields}. Der skal laves 3 forskellige:
 
 \begin{itemize}
 \item PiShield
@@ -123,6 +125,6 @@ Systemet består af mange små kredsløb og det er derfor valgt at placere alle 
 \item Ø-shield
 \end{itemize}
 
-Ved at samle kredsløbene på disse \emph{shields} opnår man langt færre ledninger imellem de forskellige blokke. Dette reducerer samtidig med mulighed for støjindlejring fra omverdenen.
+Ved at samle kredsløbene på disse \emph{shields} opnår man langt færre "løse" ledninger imellem de forskellige blokke, da alle koblinger enten ligger i printlayout'et, eller er forbundet med pin-headers til kar-PSoC'en, som disse \emph{shields} passer sammen med. Dette reducerer samtidig med mulighed for støjindlejring fra omverdenen.
 \\\\
-At udlægge print og teste disse er en forholdsvis stor opgave i forhold til at lave en prototype. Det giver dog et meget bedre overblik over systemet og reducerer muligheden for fejl. Der forekommer også leveringstid på udlagte print og det skaber et endnu større tidspres. Det er dog altid en god idé at designe print sideløbende med at kredsløbene tager form, så det er muligt i f.eks. næste iteration at skabe et fuldt funktionelt system som vil være tæt på det endelige.
+At udlægge prints og teste disse er en forholdsvis stor opgave i forhold til at lave en prototype. Det giver dog et meget bedre overblik over systemet og reducerer muligheden for fejl. Der forekommer også leveringstid på udlagte print og det skaber et endnu større tidspres. Det er dog altid en god idé at designe print sideløbende med at kredsløbene tager form, så det er muligt i f.eks. næste iteration at skabe et fuldt funktionelt system som vil være tæt på det endelige.
