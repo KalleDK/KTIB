@@ -1,0 +1,37 @@
+Denne del af FlexPMS giver GUI'en adgang til at kommunikere direkte med FlexPMS via TCP/IP, og bruges til at informere FlexPMS om handlinger, som skal startes eller stoppes, og er den eneste direkte vej for GUI at kommunikere med FlexPMS.
+
+
+
+\KlasseDiagram{1}{FlexPMS}{SocketServer}
+
+\subsubsection{SocketServer}
+Klassen, som er en specialisering af \textit{Thread}, har det ene formål, at lytte efter indkommende forbindelser fra GUI’en over TCP/IP. Når \textit{SocketServer} modtager en ny forbindelse startes en ny tråd, \textit{SocketClient}, hvori al kommunikation mellem GUI og FlexPMS foregår. Når \textit{SocketServer} har oprettet og startet en ny \textit{SocketClient} mister den al forbindelse til den, og kender derfor ikke til åbne forbindelser til klienter.\\\\
+
+Serveren lytter på adresse 127.0.0.1 (localhost) port 5555.
+
+\StateDiagram{0.5}{FlexPMS}{SocketServer}
+
+
+\subsubsection{SocketClient}
+
+\textit{SocketClient}, som er en specialisering af \textit{MessageThread}, håndterer al kommunikation mellem klienten (GUI) og Bridge. Den bliver oprettet af \textit{SocketServer} når der kommer en ny indkommende forbindelse. Den består desuden af en privat \textit{SocketReader} klasse, hvis eneste formål er, at læse data fra en socket. \textit{SocketReader} er implementeret, så der kan laves blokerende læse-kald fra socket, og på den måde undgår vi, at \textit{SocketClient} står i løkker hvor den laver to ikke-blokerende kald (henholdsvis at læse fra socket, samt at læse fra sin egen besked-kø).\\\\
+
+\textit{SocketClient} modtager beskeder fra enten \textit{SocketReader} eller Bridge. \textit{SocketReader} sender beskeder når der enten er modtaget nyt data fra klienten, eller når klienten lukker forbindelsen. Bridge sender beskeder når der enten er data at sende til klienten, eller når forbindelsen til klienten skal lukkes.\\\\
+
+Når \textit{SocketClient} oprettes får den givet en file-descriptor til den socket, som den skal læse fra og skrive til. Lige efter at klassen er blevet oprettet, registrerer den sig hos Bridge, der svarer tilbage med et unikt sessions ID, som skal gives med hver gang \textit{SocketClient} sender beskeder til Bridge. Bridge bruger dette ID til at identificere klienter i tilfælde, hvor der skal sendes et svar tilbage til klienten. Bridge har derfor en intern mapning af, hvilke sessions sessions ID'er der hører til hvilke \textit{SocketClient} klasser. Det er med andre ord Bridge, og ikke \textit{SocketServer}, som holder styr over åbne forbindelser til klienter.\\\\
+
+Når \textit{SocketClient} er blevet registreret hos Bridge starter den \textit{SocketReader}, som begynder at læse data fra socket. Herefter kan en udveksling af data mellem GUI og FlexPMS begynde.\\\\
+
+\textit{SocketClient} dør når én af tre handlinger finder sted:
+
+\begin{enumerate}
+\item \textit{SocketReader} fik en fejl, da den forsøgte at læse fra socket
+\item \textit{SocketClient} fik en fejl, da den forsøgte at skrive til socket
+\item Bridge giver besked om, at forbindelsen til klienten skal lukkes 
+\end{enumerate}
+
+I de to første tilfælde skal \textit{SocketClient} give Bridge besked om, at forbindelse til klienten er død, og \textit{SocketClient} skal stoppes. I det sidste tilfælde skal \textit{SocketClient} reagere på beskeden og stoppe sig selv. Herefter ved Bridge, at den skal fjerne alle spor af \textit{SocketClient} klassen (herunder session og brugt hukommelse).
+
+\StateDiagram{1}{FlexPMS}{SocketClient}
+
+\SekvensDiagram{1}{FlexPMS}{SocketClient}

@@ -1,0 +1,92 @@
+Systemet benytter sig af en MySQL database. For at forbinde til databasen gennem FlexPMS benyttes det officielle bibliotek fra MySQL til at forbinde gennem C++, \textit{mysqlcppconn}. FlexPMS kører i øvrigt ikke transaktionsbaseret.\\\\
+
+Tilgang til databasen er pakket ind i forskellige domæneklasser, som håndterer de lavpraktiske SQL forespørgsler. Domæneklasserne stiller en højniveau-grænseflade til rådighed for resten af programmet.\\\\
+
+Forbindelsen til databasen oprettes i main.cpp når FlexPMS starter, og holdes åben så længe programmet lever. Der gives en pointer til DB-forbindelsen med til \textit{Bridge}, som er den eneste klasse, der arbejder med domæneklasserne.
+
+
+\KlasseDiagram{1}{FlexPMS}{Database}
+
+\subsubsection{Kar}
+Klassen repræsenterer ét Kar, og stiller en højniveau-grænseflade til rådighed, til at opdatere værdier for et kar i databasen.
+
+\subsubsection{Arkitekturspecifikke metoder}
+
+\funk{void set\_mwstatus(bool s)}{Funktionen sætter status for manuel vanding}{Ingenting}
+{
+\funkArg{s}{Status for manuel vanding. \textKode{True} er tændt, \textKode{False} er slukket}
+}
+
+\funk{void set\_ivalvestatus(bool s)}{Funktionen sætter status for, hvorvidt indløbsventilen er åben eller lukket}{Ingenting}
+{
+\funkArg{s}{Status for indløbsventilen. \textKode{True} er åben, \textKode{False} er lukket}
+}
+
+\funk{void set\_ovalvestatus(bool s)}{Funktionen sætter status for, hvorvidt afløbsventilen er åben eller lukket}{Ingenting}
+{
+\funkArg{s}{Status for afløbsventilen. \textKode{True} er åben, \textKode{False} er lukket}
+}
+
+\funk{void add\_sensor\_data(int type, double value)}{Funktionen registrerer data fra en sensor koblet til karret}{Ingenting}
+{
+\funkArg{type}{Sensor type ID}
+\funkArg{value}{Den målte værdi}
+}
+
+
+\subsubsection{SensorOe}
+Klassen repræsenterer én sensor ø, stiller en højniveau-grænseflade til rådighed, til at opdatere værdier for en sensor ø i databasen.
+
+\subsubsection{Arkitekturspecifikke metoder}
+
+\funk{void set\_valvestatus(bool s)}{Funktionen sætter status for, hvorvidt ventilen er åben eller lukket}{Ingenting}
+{
+\funkArg{s}{Status for ventilen. \textKode{True} er åben, \textKode{False} er lukket}
+}
+
+\funk{void add\_sensor\_data(int type, double value)}{Funktionen registrerer data fra en sensor koblet til sensor ø’en}{Ingenting}
+{
+\funkArg{type}{Sensor type ID}
+\funkArg{value}{Den målte værdi}
+}
+
+
+
+\subsubsection{DBContainer}
+\textit{DBContainer} er en abstrakt basis-klasse for alle klasser, som skal holde på lister af objekter. \textit{DBContainer} implementerer funktionalitet til at tilgå en række af resultater fra et databaseudtræk. Den nedarvede klasse skal selv implementere databaseudtrækket via \textKode{reload()} metoden, men får derudover stillet alle andre nødvendige metoder til rådighed til at tilgå resultaterne.\\\\
+
+\textit{DBContainer} er implementeret med et C++ map (fra STL), hvor nøglen er et unikt ID og værdien er et objekt, som repræsenterer én række i databasen. Da \textit{DBContainer} er en template-klasse kan objekterne være af hvilken som helst type. Nøglerne skal dog være af typen \textKode{unsigned int}.\\\\
+
+Nedarvede klasser skal implementere \textKode{reload()} metoden, som kaldes umiddelbart efter at objektet er blevet instantieret. \textKode{reload()} metodens formål er, at hente data fra databasen, instantiere objekter og tilføje dem til mappet.
+
+\subsubsection{Arkitekturspecifikke metoder}
+
+\funk{T* get(unsigned int id)}{Returnerer en pointer til objektet med nøglen id. Hvis nøglen ikke findes returneres \textKode{NULL}}{En pointer til objektet med nøglen \textKode{id}. Hvis nøglen ikke findes returneres \textKode{NULL}}
+{
+\funkArg{id}{Primærnøglen på det objekt, som skal søges efter}
+}
+
+\funk{bool contains(unsigned int id)}{Tjekker hvorvidt et objekt eksisterer i mappet}{\textKode{True} hvis objektet eksisterer, ellers \textKode{False}}
+{
+\funkArg{id}{Primærnøglen på det objekt, som skal søges efter}
+}
+
+\funk{const unsigned int size()}{Tæller antallet af objekter i mappet}{Antallet af objekter i mappet}
+{}
+
+\funk{void iter()}{Forbereder objektet til at blive itereret over fra begyndelsen}{Ingenting}
+{}
+
+\funk{T* next()}{Returnerer det næste objekt i en iteration. Kald \textKode{iter()} inden iterationen begyndes for at være sikker på, at der startes fra begyndelsen}{Det næste objekt af typen \textKode{T}}
+{}
+
+\funk{virtual void reload() = 0}{Abstrakt metode, som skal implementeres af nedarvede klasser. Dens formål er, at hente data fra databasen og putte det ind i mappet. Funktionen kaldes umiddelbart efter at \textit{DBContainer} bliver instantieret}{Ingenting}
+{}
+
+
+\subsubsection{KarContainer}
+Klasse, som er en specialisering af \textit{DBContainer}, giver mulighed for at arbejde med en liste af \textit{Kar}-objekter.
+
+
+\subsubsection{SensoeOeContainer}
+Klasse, som er en specialisering af \textit{DBContainer}, giver mulighed for at arbejde med en liste af \textit{SensorOe}-objekter.
