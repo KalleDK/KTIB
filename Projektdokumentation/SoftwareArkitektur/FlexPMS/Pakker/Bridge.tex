@@ -6,7 +6,7 @@
 
 
 \textbf{Sessions}\\
-Når Bridge modtager en forespørgsel fra en \textit{SocketClient} om at blive registreret, så tildeler Bridge den forespørgende \textit{SocketClient} det næste ledige sessions ID. Herefter kan \textit{SocketClient} begynde at sende beskeder til Bridge, som videreformidler beskederne til KarBus. Beskeden til KarBus skulle indeholde et sessions ID på den forespørgende \textit{SocketClient}, så i tilfælde af, at \textit{SocketClient} skulle have svar, kunne KarBus sende ID’et med tilbage til Bridge, som kunne identificere hvilken \textit{SocketClient} den skulle sende svaret til. Vi fik dog aldrig brug for at sende svar tilbage til \textit{SocketClient}, så sessions ID'er er ikke blevet implementeret i kommunikationen mellem Bridge og KarBus.\\\\
+Når Bridge modtager en forespørgsel fra en \textit{SocketClient} om at blive registreret, så tildeler Bridge den forespørgende \textit{SocketClient} det næste ledige sessions ID. Herefter kan \textit{SocketClient} begynde at sende beskeder til \textit{Bridge}, som videreformidler beskederne til \textit{KarBus}. Beskeden til \textit{KarBus} skulle indeholde et sessions ID på den forespørgende \textit{SocketClient}, så i tilfælde af, at \textit{SocketClient} skulle have svar, kunne \textit{KarBus} sende ID'et med tilbage til \textit{Bridge}, som kunne identificere hvilken \textit{SocketClient} den skulle sende svaret til. Vi fik dog aldrig brug for at sende svar tilbage til \textit{SocketClient}, så sessions ID'er er ikke blevet implementeret i kommunikationen mellem \textit{Bridge} og \textit{KarBus}.\\\\
 
 Se Figur \ref{fig:SocketClient_SekvensDiagram} for en \textit{SocketClient}'s livscyklus, som inkluderer registrering med sessioner.\\\\
 

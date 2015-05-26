@@ -1,4 +1,4 @@
-Denne del af FlexPMS giver GUI'en adgang til at kommunikere direkte med FlexPMS via TCP/IP, og bruges til at informere FlexPMS om handlinger, som skal startes eller stoppes, og er den eneste direkte vej for GUI at kommunikere med FlexPMS.
+Denne del af FlexPMS giver GUI'en adgang til at kommunikere direkte med FlexPMS via TCP/IP, og bruges til at informere FlexPMS om handlinger, som skal startes eller stoppes, og er den eneste direkte vej for GUI at kommunikere med FlexPMS. Der kommunikeres gennem en GUI Protokol (se Tabel Se Tabel \ref{fig:GUIProtokol}).
 
 
 
@@ -18,7 +18,7 @@ Serveren lytter på adresse 127.0.0.1 (localhost) port 5555.
 
 \textit{SocketClient} modtager beskeder fra enten \textit{SocketReader} eller \textit{Bridge}. \textit{SocketReader} sender beskeder når der enten er modtaget nyt data fra klienten, eller når klienten lukker forbindelsen. \textit{Bridge} sender beskeder når der enten er data at sende til klienten, eller når forbindelsen til klienten skal lukkes.\\\\
 
-Når \textit{SocketClient} oprettes får den givet en file-descriptor til den socket, som den skal læse fra og skrive til. Lige efter at klassen er blevet oprettet, registrerer den sig hos \textit{Bridge}, der svarer tilbage med et unikt sessions ID, som skal gives med hver gang \textit{SocketClient} sender beskeder til \textit{Bridge}. \textit{Bridge} bruger dette ID til at identificere klienter i tilfælde, hvor der skal sendes et svar tilbage til klienten. \textit{Bridge} har derfor en intern mapning af, hvilke sessions sessions ID'er der hører til hvilke \textit{SocketClient} klasser. Det er med andre ord \textit{Bridge}, og ikke \textit{SocketServer}, som holder styr over åbne forbindelser til klienter.\\\\
+Når \textit{SocketClient} oprettes får den givet en file-descriptor til den socket, som den skal læse fra og skrive til. Lige efter at klassen er blevet oprettet, registrerer den sig hos \textit{Bridge}, der svarer tilbage med et unikt sessions ID, som skal gives med hver gang \textit{SocketClient} sender beskeder til \textit{Bridge}. \textit{Bridge} bruger dette ID til at identificere klienter i tilfælde, hvor der skal sendes et svar tilbage til klienten. \textit{Bridge} har derfor en intern mapning af, hvilke sessions ID'er der hører til hvilke \textit{SocketClient}-objekter. Det er med andre ord \textit{Bridge}, og ikke \textit{SocketServer}, som holder styr over åbne forbindelser til klienter.\\\\
 
 Når \textit{SocketClient} er blevet registreret hos \textit{Bridge} starter den \textit{SocketReader}, som begynder at læse data fra socket. Herefter kan en udveksling af data mellem GUI og FlexPMS begynde.\\\\
 

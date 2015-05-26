@@ -1,4 +1,4 @@
-Vi benytter logging til at gemme alle handlinger, som har med sensorer og aktuatorer at gøre. Loggen skrives til en fil med tidsstempel. Det er udelukkende Bridge, som skriver til loggen.\\\\
+Vi benytter logging til at gemme alle handlinger, som har med sensorer og aktuatorer at gøre. Loggen skrives til en fil med tidsstempel. Det er udelukkende \textit{Bridge}, som skriver til loggen.\\\\
 
 Følgende handlinger bliver logget:
 
@@ -19,13 +19,13 @@ Alt andet debugging skrives til FlexPMS' stdout. Det er derfor muligt at omdirig
 \KlasseDiagram{0.5}{FlexPMS}{Logging}
 
 \subsubsection{Log}
-Klassen benyttes til at skrive til loggen. Den er implementeret vha. Singleton, dvs. at kun én instans af klassen kan eksistere på tværs af hele FlexPMS. Instansen bliver oprettet gennem kald fra main.cpp, hvorefter den lever som en statisk member på klassen Log så længe FlexPMS kører.\\\\
+Klassen benyttes til at skrive til loggen. Den er implementeret vha. Singleton, dvs. at kun én instans af klassen kan eksistere på tværs af hele FlexPMS. Instansen bliver første gang oprettet gennem kald fra main.cpp, hvorefter den lever som en statisk member på klassen Log så længe FlexPMS kører.\\\\
 
 Hver gang der skrives til loggen tilføjes tidsstempel samt linjeskift efter teksten.
 
 \subsubsection{Arkitekturspecifikke metoder}
 
-\funk{static Log* getInstance()}{Funktionen returnerer en instans af Log. Hvis en instans endnu ikke er blevet oprettet, så oprettes den først}{Instans af klassen Log}
+\funk{static Log* getInstance()}{Funktionen returnerer en instans af Log. Hvis en instans endnu ikke er blevet oprettet, så oprettes den først}{Instans af klassen \textit{Log}}
 {}
 
 \funk{void write(std::string line)}{Funktionen skriver en linje til logfilen}{Ingenting}
