@@ -50,11 +50,15 @@ I stedet kan der laves en interrupt som reagere på pulserne fra flowsensoren. D
 Kredsløbet er opbygget omkring en 4-bit tæller (74HC393). Dertil er koblet en AND-gate  som gør, at når tælleren rammer 10 giver den interrupt-signalet til PSoC4'en. Det allerførste der sker i ISR-rutinen er at tælleren nulstilles.
 
 \subsection{Jordfugtsensor}
-Planterne kræver at jorden har en hvis jordfugtighed. Dette reguleres ved at vande planterne. For at vide hvornår planterne mangler vand, skal jordfugtigheden måles. Den første idé var at lave en kapacitiv måling. Det viste sig dog ikke at være funktionelt, og idéen blev derfor opgivet.
+Selve jordfugt sensoren skal måle jordfugten i jorden således systemet kan vide hvornår en plante skal have vand. 
+Da vi ønsker at sensoren skal kommunikere over I2C igennem vores egen protokol, ønsker vi samtidig at levere en speciallavet jordfugt sensor med til systemet. Dette kræver at vi selv designer den. 
 \\\\
-Anden idé var at lave en resistiv måling af jorden. Ved at stikke en 2-benet spyd ned i jorden og sætte 5V over de 2 ben kunne strømmen igennem jorden måles. Udfra dette kan ledningsevnen af jorden beregnes. Det viser sig dog at ved denne målemetode forekommer der en ret kraftig elektrolyse af spydet, som medfører kraftig skade på spydet. Dette kan formindske ved kun at sætte spændingen til spydet når der måles.
+Den første ide til at måle jordfugten gik ud på at måle den kapacitivt.  
+Alt afhængig af jorfugtigheden må jordens ledeevne $\epsilon$r ændre sig. Dette kan måles ved hjælp af to elektriske ledende plader med jorden som dielektrikum. Der blev ud af noget printplade opbygget en pladekondensator. Til den hjemmebyggede pladekondensator blev der også opbygget en oscillator som varierede sin udgangsfrekvens afhængig af kondensatorens kapacitet. Dette kredsløb blev bygget med en LM555. Desværre var det umuligt af få oscillator-frekvensen til at være stabil og idéen blev derfor opgivet
 \\\\
-Forventningen var at ledeevnen af jordet ville stige linæert med jordfugtigheden. Dette viste sig dog i stedet at ligne et fjerdegrads polynomium.
+Anden idé var at lave en resistiv måling af jorden. Her stikkes et tobenet spyd ned i jorden og ved at sætte en spænding over det, vil strømmen ændres afhængig af fugtigheden. Dette viste sig også at være en dårlig metode, da der forekommer elektrolyse når der går en strøm i spyddet. For at undgå at slide mere end nødvendigt bruges der derfor en MOSFET til at lede strømmen i det øjeblik der måles.  
+\\\\
+Der blev tørret noget jord i en oven således fugtigheden var 0\%. Efterfølgende blev der tilsat vand i målte mænger, således der kunne tegnes en kurve over strøm afhængig af fugtighed. Ved hjælp af disse data kunne der laves en funktion i en mikroprocessor til at måle og udregne fugtigheden i procent. På figur \ref{photo:jordspyd_diagram} ses et diagram over jordspyddet. 
 
 \begin{figure}[H]
 	\centering 
@@ -63,15 +67,37 @@ Forventningen var at ledeevnen af jordet ville stige linæert med jordfugtighede
 	\label{photo:jordspyd_diagram}
 \end{figure} 
 
-For at undgå elektrolysen af jordspyddet så meget som muligt, indsættes en MOSFET til at lede strømmen når der skal måles. Modstanden og jordspyddet fungerer som en spændingsdeler. Kondensatoren fungerer som en afkobling for at fjerne evt. støj.
+Den valgte mikroprocessor blev en PSoC 4. I figur \ref{photo:PSoC_Creator} ses topdesignet over designet. 
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{../Projektdokumentation/HardwareArkitektur/Sensore/Jordfugt_billeder/SAR_converter.png}
+	\caption{Topdesign i PSoC creator}
+	\label{photo:PSoC_Creator}
+\end{figure} 
+
+Da programmet var skrevet og testet blev der fremkaldt et print hvor selve mikroprocessoren skulle loddes på. Dette viste sig at volde nogle problemer da der ikke kunne komme nogen funktion ud af mikroprocessoren. Det var dog muligt at programmere den og det var derfor svært at finde ud af hvad der gik galt. I stedet blev der bygget et shield til PSoC 4 Pioneer kittet som blev brugt som prototype ved accepttesten. 
 
 \subsection{pH-probe}
-Planterne kræver ikke kun denne rette mændge vand, men også at vandet har den rette pH-værdi. pH-værdien i karret skal derfor måles samtidig med at der doseres gødning i karret. Til denne opgave blev valgt en glasprobe. Det virkede som både den mest effektive men også billigste måde at udføre opgaven på.
+Planterne kræver ikke kun denne rette mændge vand, men også at vandet har den rette pH-værdi. pH-værdien i karret skal derfor måles samtidig med at der doseres gødning i karret. Til denne opgave blev valgt en glasprobe. Det viste sig at at være en meget godt metode at bruge da den både er billig og hurtig.
 \\\\
-Glasproben er fyldt med saltsyre og under-/overskud af H+ ioner generer en spænding. For at gøre målingen så præcis som muligt, kræves det er proben kalibreres i en buffer-væske ($pH = 7$) minimum 1 gang om måneden. Første gang systemet startes op skal proben også kalibreres. 
+Selve proben generere en spænding afhængig af pH-værdien. Det viste sig at proben har en udgangsimpedans på 9,5M\ohm og det tog noget tid at finde ud af hvorfor der ikke kunne måles noget med et oscilloskop. Problemet var at oscilloskopets indgangsimpedans var 1M\ohm og signalet blev derfor dæmpet betydeligt. For at løse problemet blev der koblet en buffer på udgangen af proben. Herefter var det hurtigt at omregne spændingen til pH-værdi i en PSoC 4. 
 \\\\
-I denne måling er der ikke taget højde for, at pH-værdien varierer med temperaturen. Dette ville kræve en temperatur-måling af vandet i karret.
-\\\\
+Fordi at proben vil drifte med tiden kræver det at den kalibreres ca hver måned. Til dette laves der en kalibreringsfunktion på PSoc'en som indlæser værdierne når der trykkes på en knap. På figur \ref{photo:Schematic_ph} ses diagrammet.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{../Projektrapporten/Projektbeskrivelse/DesignOgImplementeringAfHW/pHbilleder/Schematic.png}
+	\caption{Diagram over pH-proben}
+	\label{photo:Schematic_ph}
+\end{figure} 
+På figur \ref{photo:PSoC_Creator_ph} ses topdesignet i PSoC creator.
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{../Projektrapporten/Projektbeskrivelse/DesignOgImplementeringAfHW/pHbilleder/TopDesign.png}
+	\caption{Topdesign i PSoC creator}
+	\label{photo:PSoC_Creator_ph}
+\end{figure} 
 Der er foretaget en støjanalyse af proben ud fra den indhentede viden fra E/EP faget MSE (Mixed Signal Elektronik). Analysen viste at det største støjbidrag kom fra støjstrømmen i bufferen. Ved at lave en støjmåling af proben viste det sig at de forventede værdier var ca. en faktor 10 større. Ved høje impedanser blive strømstøjen meget dominerende. Det er derfor meget vigtigt at tage med i sin tanker/beregninger når det endelig kredsløb skal udformes.
 
 \subsection{PSU}
