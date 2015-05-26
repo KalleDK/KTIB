@@ -1,8 +1,8 @@
 \textit{Bridge}, som er en specialisering af \textit{MessageThread}, er den centrale controller i FlexPMS. Den kommunikerer med både GUI og RS485, og håndterer al den logik der ligger ind imellem. Det er også Bridge, der håndterer timing-baserede events som f.eks. at poll'e data fra kar. Det er også Bridge, der tilgår databasen gennem domænemodeller.
 
-\KlasseDiagram{0.5}{FlexPMS}{Bridge}
+\KlasseDiagram{0.5}{FlexPMS}{Controller}
 
 \subsubsection{Sessions}
 Når Bridge modtager en forespørgsel fra en \textit{SocketClient} om at blive registreret, så tildeler Bridge den forespørgende \textit{SocketClient} det næste ledige sessions ID. Herefter kan \textit{SocketClient} begynde at sende beskeder til Bridge, som videreformidler beskederne til KarBus. Beskeden til KarBus skulle indeholde et sessions ID på den forespørgende \textit{SocketClient}, så i tilfælde af, at \textit{SocketClient} skulle have svar, kunne KarBus sende ID’et med tilbage til Bridge, som kunne identificere hvilken \textit{SocketClient} den skulle sende svaret til. Vi fik dog aldrig brug for at sende svar tilbage til \textit{SocketClient}, så sessions ID'er er ikke blevet implementeret i kommunikationen mellem Bridge og KarBus.\\\\
 
-Se \ref{fig:SocketClient_SekvensDiagram} for en \textit{SocketClient}'s livscyklus, som inkluderer registrering med sessioner.
+Se Figur \ref{fig:SocketClient_SekvensDiagram} for en \textit{SocketClient}'s livscyklus, som inkluderer registrering med sessioner.
