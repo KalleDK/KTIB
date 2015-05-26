@@ -1,12 +1,13 @@
 Kar kommunikations pakken er ansvarlig for at sende beskeder til kar styringen den står altså for grænsefalden ud til sensor og aktautore igennem kommunikation til kar styringen. Linux Man pages er blevet brugt til at finde info om alle de system funktions kald og om hvad linux understøtter/ikke understøtter\footnote{\citet{man7:manpages}}.Den består af 3 klasser der er illustreret  i diagrammet herunder:
 
-\KlasseDiagram{0.82}{FlexPMS}{KarBus}
+\KlasseDiagram{1}{FlexPMS}{KarBus}
 
 \subsubsection{KarBus klassen}
 Den klasse interfacer med resten af flexpms igennem den event baserede kommunikation der driver systemet klassen har således sin egen message kø og tilsvarende event handlers. KarBus har også en RS485 instans og en Protokol instans i sig, Protokol klassen er implementeringen af Karbus protokollen som KarBus klassen bruger til at sende beskeder til karret, RS485 klassen er ikke direkte brugt af KarBus.
 
 
-\subsubsection{funktions beskrivelser}
+\subsubsection{Funktionsbeskrivelser}
+Her er de funktioner der er nævnt for karbus i figur \ref{fig:KarBus_KlasseDiagram} beskrevet
 \funk{void eHandleKarReady(MKarReady* msg)}{Denne eventhandler kalder den relavante funktion i protokol klassen og stykker det relavante svar sammen hvis der bliver returneret et svar fra RS485 bussen}{ingenting}
 {
 \funkArg{msg}{En besked om at tjekke at karret er klar til kommunikation}
@@ -61,7 +62,8 @@ Den klasse interfacer med resten af flexpms igennem den event baserede kommunika
 Denne klasse er en direkte implementering af karbus protokollen det vil sige at den har en funktion per besked der er i protokollen det gør at det er nemt at tilføje beskeder til protokollen men også at andre dele af koden er mindre afhængige af protokollen og hvordan denne håndtere kommunikationen til hardware.
 Klassen har en pointer til RS485 klassen som den bruger til at sende beskederne med, RS485 kunne for så vidt erstattes af en anden klasse hvis det var ønskeligt at kommunikere på anden vis end via RS485. 
 
-\subsubsection{funktions beskrivelser}
+\subsubsection{Funktionsbeskrivelser}
+Her er de funktioner der er nævnt for protokol klassen i figur \ref{fig:KarBus_KlasseDiagram} beskrevet
 \funk{bool sendAndReceive()}{Denne funktion kalder send og modtage funktionerne i RS485 klassen}{Der bliver returneret true hvis en besked blev modtaget ellers false}
 {
 }
@@ -131,10 +133,10 @@ Klassen har en pointer til RS485 klassen som den bruger til at sende beskederne 
 Denne klasse bliver brugt til at sende og modtage data på RS485 bussen, den gør brug af termios interfacet til at skrive data ud serielt fra raspberry pi's GPIO pinde, den kan også styre en GPIO pin der fungere som transmit enable(TxEn). Dette er en nødvendighed da hardware der konvertere fra logisk signal til differentielt signal kan sættes i transmit eller receive mode. Klassen er også ansvarlig for at styre pariteten på de bytes vi sender. Grunden til dette er at KarBus bruger mark/space paritet til at indikere om den byte der sendes er en adresse eller en almindelig data byte. Dette har givet lidt udfordring i forhold til at regne pariteten ud for alle bytes der sendes da kommunikationen ellers ikke ville fungere, i linux kan der officielt kun sendes med odd eller even paritet.
 Selve modtager delen er implementeret som en state machine dette er gjort for at holde styr på adresseringen.
 
-\StateDiagram{0.82}{FlexPMS}{RS485RX}
+\StateDiagram{1}{FlexPMS}{RS485RX}
 
-\subsubsection{funktions beskrivelser}
-
+\subsubsection{Funktionsbeskrivelser}
+Her er de funktioner der er nævnt for RS485 klassen i figur \ref{fig:KarBus_KlasseDiagram} beskrevet
 \funk
 {void initGPIO()}
 {Denne funktion initiere GPIO'en der skal bruges som TxEn}
@@ -179,7 +181,7 @@ Selve modtager delen er implementeret som en state machine dette er gjort for at
 
 \funk
 {void getPacket()}
-{Denne funktion indeholder state machinen der bruger getChar til at indlæse char og bestemmer hvor i bufferen de skal placeres alt efter om det er en char som er en adresse eller det er en data char, den holder også øje med når vi har modtaget en hel besked det gør den via length i selve beskeden}
+{Denne funktion indeholder state machinen fra figur \ref{fig:RS485RX_StateDiagram} der bruger getChar til at indlæse char og bestemmer hvor i bufferen de skal placeres alt efter om det er en char som er en adresse eller det er en data char, den holder også øje med når vi har modtaget en hel besked det gør den via length i selve beskeden}
 {intet}
 {
 }

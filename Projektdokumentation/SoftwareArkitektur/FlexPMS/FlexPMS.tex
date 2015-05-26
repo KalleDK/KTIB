@@ -1,7 +1,9 @@
 \section{FlexPMS}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at erat blandit, vehicula mauris ac, pulvinar ipsum. Nam lobortis neque libero, eget aliquam enim convallis eget. Nunc semper ex faucibus lectus pulvinar, ac molestie ligula vestibulum. Vivamus sagittis massa vitae arcu aliquam scelerisque. Vivamus in dignissim erat. Donec vitae malesuada lorem. Maecenas laoreet pharetra lobortis. Donec ac iaculis metus. Suspendisse potenti. Curabitur tincidunt risus non dui fringilla tincidunt. Fusce dui quam, bibendum non velit nec, gravida sagittis nisi. Maecenas dictum neque sit amet enim pulvinar, ac congue dolor feugiat. Etiam in felis viverra, ultricies justo id, consectetur nisl. Ut sed augue in lacus ullamcorper cursus eget sit amet turpis.\\
+Programmet FlexPMS er designet til at være bindeled mellem brugergrænsefladen og kar/sensorø styringerne, der til får programmet nogle opgaver der hedder sig at programmet skal op sample data og gemme dette i databasen, samt holde en log af det opsamlede data. Programmet skal også facilitere kommunikationen fra brugergrænsefladen til kar/sensorø når der for eksempel bliver bedt om at starte en vanding i brugergrænsefladen eller det ønskes at styre ventiler. FlexPMS kunne også udvides således at programmet selv kan bestemme hvornår der skal vandes baseret på de målinger der er fortaget.\\\\
 
-\PakkeDiagram{0.82}{FlexPMS}{FlexPMS}
+Her under har vi et pakke diagram der viser hvordan de forskellige dele af systemet arbejder sammen, hver enkelt pakke er beskrevet i følgende afsnit hvor der også kan findes klasse beskrivelser af de klasser der bor i de individuelle pakker.
+
+\PakkeDiagram{1}{FlexPMS}{FlexPMS}
 
 \subsection{Use cases}
 \input{SoftwareArkitektur/FlexPMS/Pakker/UseCases}
