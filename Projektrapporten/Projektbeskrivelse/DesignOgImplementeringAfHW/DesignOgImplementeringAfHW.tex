@@ -76,15 +76,28 @@ Den valgte mikroprocessor blev en PSoC 4. I figur \ref{photo:PSoC_Creator} ses t
 	\label{photo:PSoC_Creator}
 \end{figure} 
 
-Da programmet var skrevet og testet blev der fremkaldt et print hvor selve mikroprocessoren skulle loddes på. Dette viste sig at volde nogle problemer da der ikke kunne komme nogen funktion ud af den. Det var dog muligt at programmere den. I stedet blev der bygget et shield til PSoC 4 Pioneer kittet som vi har brugt i vores undervisning. 
+Da programmet var skrevet og testet blev der fremkaldt et print hvor selve mikroprocessoren skulle loddes på. Dette viste sig at volde nogle problemer da der ikke kunne komme nogen funktion ud af mikroprocessoren. Det var dog muligt at programmere den og det var derfor svært at finde ud af hvad der gik galt. I stedet blev der bygget et shield til PSoC 4 Pioneer kittet som blev brugt som prototype ved accepttesten. 
 
 \subsection{pH-probe}
-Planterne kræver ikke kun denne rette mændge vand, men også at vandet har den rette pH-værdi. pH-værdien i karret skal derfor måles samtidig med at der doseres gødning i karret. Til denne opgave blev valgt en glasprobe. Det virkede som både den mest effektive men også billigste måde at udføre opgaven på.
+Planterne kræver ikke kun denne rette mændge vand, men også at vandet har den rette pH-værdi. pH-værdien i karret skal derfor måles samtidig med at der doseres gødning i karret. Til denne opgave blev valgt en glasprobe. Det viste sig at at være en meget godt metode at bruge da den både er billig og hurtig.
 \\\\
-Glasproben er fyldt med saltsyre og under-/overskud af H+ ioner generer en spænding. For at gøre målingen så præcis som muligt, kræves det er proben kalibreres i en buffer-væske ($pH = 7$) minimum 1 gang om måneden. Første gang systemet startes op skal proben også kalibreres. 
+Selve proben generere en spænding afhængig af pH-værdien. Det viste sig at proben har en udgangsimpedans på 9,5M\ohm og det tog noget tid at finde ud af hvorfor der ikke kunne måles noget med et oscilloskop. Problemet var at oscilloskopets indgangsimpedans var 1M\ohm og signalet blev derfor dæmpet betydeligt. For at løse problemet blev der koblet en buffer på udgangen af proben. Herefter var det hurtigt at omregne spændingen til pH-værdi i en PSoC 4. 
 \\\\
-I denne måling er der ikke taget højde for, at pH-værdien varierer med temperaturen. Dette ville kræve en temperatur-måling af vandet i karret.
-\\\\
+Fordi at proben vil drifte med tiden kræver det at den kalibreres ca hver måned. Til dette laves der en kalibreringsfunktion på PSoc'en som indlæser værdierne når der trykkes på en knap. På figur \ref{photo:Schematic_ph} ses diagrammet.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{../Projektrapporten/Projektbeskrivelse/DesignOgImplementeringAfHW/pHbilleder/Schematic.png}
+	\caption{Diagram over pH-proben}
+	\label{photo:Schematic_ph}
+\end{figure} 
+På figur \ref{photo:PSoC_Creator_ph} ses topdesignet i PSoC creator.
+\begin{figure}[H]
+	\centering 
+	\includegraphics[scale=0.8]{../Projektrapporten/Projektbeskrivelse/DesignOgImplementeringAfHW/pHbilleder/TopDesign.png}
+	\caption{Topdesign i PSoC creator}
+	\label{photo:PSoC_Creator_ph}
+\end{figure} 
 Der er foretaget en støjanalyse af proben ud fra den indhentede viden fra E/EP faget MSE (Mixed Signal Elektronik). Analysen viste at det største støjbidrag kom fra støjstrømmen i bufferen. Ved at lave en støjmåling af proben viste det sig at de forventede værdier var ca. en faktor 10 større. Ved høje impedanser blive strømstøjen meget dominerende. Det er derfor meget vigtigt at tage med i sin tanker/beregninger når det endelig kredsløb skal udformes.
 
 \subsection{PSU}
