@@ -24,7 +24,7 @@ Til template er der også anvendt Bootstrap\footnote{http://getbootstrap.com/}, 
 For at sikre at Brugeren ikke skal opdatere websiden, hver gang de vil aflæse nogle nye data eller trykke på en af knapperne er der blevet anvendt nogle jQuery AJAX metoder, som kan bruges til at udveksle data med en server og opdatere dele af en webside uden at genindlæse hele siden.
 
 \subsection{Database}
-FlexPMS databasen er blevet anvendt til at opbevare indtastede data omkring kar og sensorøerne med deres ventil og vandingsstatus, samt aflæste værdier fra de forskellige sensorer, hvor denne database kan tilgås via \glslink{gui}{gui'en}. MySQL er databaseformatet der er valgt, og valget bunder i at denne har alle de kvaliteter systembeskrivelsen og kravspecifikationen foreskriver. Desuden er softwaren til etablering af en sådan server gratis, veldokumenteret og nem at gå til.
+FlexPMS databasen\footnote{\citet{oracle:mysql}} er blevet anvendt til at opbevare indtastede data omkring kar og sensorøerne med deres ventil og vandingsstatus, samt aflæste værdier fra de forskellige sensorer, hvor denne database kan tilgås via \glslink{gui}{gui'en}. MySQL er databaseformatet der er valgt, og valget bunder i at denne har alle de kvaliteter systembeskrivelsen og kravspecifikationen foreskriver. Desuden er softwaren til etablering af en sådan server gratis, veldokumenteret og nem at gå til.
 \\\\
 Databasen indeholder nogle forskellig tabeller som er bestemt ud fra de krav vi skulle tilfredsstilles i kravspecifikation og det design der er lavet i systemarkitekturen. Disse tabeller, deres kolonnenavne og deres datatype er illustreret i figur \ref{fig:DB}. 
 

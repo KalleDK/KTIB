@@ -1,6 +1,6 @@
 %!TEX root = ../../main.tex
 \section{Ventilstyring}
-Til styring af indløb til / afløb fra vandkaret anvendes 2 Hydraelectric Magnetventiler med tilhørende MOSFET-styringskredse. En magnetventil virker ved at det interne relæ bliver aktiveret når der påtrykkes en DC-spænding, evt. i form af et PWM-signal, hvor ved gennemstrømningen kan reguleres, når dette sker åbnes der for gennemgang i ventilen. I det interne relæ sidder en spole, og spolens viklinger medfører en ohmsk modstand. Når der påtrykkes en spænding skabes et magnetfelt omkring spolen, dette felt holder ventilen åben. Når ventilen ønskes lukket, afbrydes spændingen. Dette skaber en problematik hvor strømmen igennem spolen ikke kan ændre sig på samme hurtige måde aom spændingen. Da den fysiske forbindelse til spolen er afbrudt vil spolen selv inducere en modsatrettet spænding for at komme af med strømmen. Dette er et problem da så høje spændinger potentielt er skadeligt for tilkoblede komponenter, men som løsning implementeres en ”flyback diode” parallelt med spolen i reverse bias-konfiguration, derved har strømmen en løbebane, og spolen forhindres i at inducere den høje spænding. Den implementerede kontrolkreds ses på figur \ref{screenshot:ventilStyringskreds} på side \pageref{screenshot:ventilStyringskreds}.
+Til styring af indløb til / afløb fra vandkaret anvendes 2 Hydraelectric Magnetventiler\footnote{\citet{hydra:valve}} med tilhørende MOSFET-styringskredse. En magnetventil virker ved at det interne relæ bliver aktiveret når der påtrykkes en DC-spænding, evt. i form af et PWM-signal, hvor ved gennemstrømningen kan reguleres, når dette sker åbnes der for gennemgang i ventilen. I det interne relæ sidder en spole, og spolens viklinger medfører en ohmsk modstand. Når der påtrykkes en spænding skabes et magnetfelt omkring spolen, dette felt holder ventilen åben. Når ventilen ønskes lukket, afbrydes spændingen. Dette skaber en problematik hvor strømmen igennem spolen ikke kan ændre sig på samme hurtige måde aom spændingen. Da den fysiske forbindelse til spolen er afbrudt vil spolen selv inducere en modsatrettet spænding for at komme af med strømmen. Dette er et problem da så høje spændinger potentielt er skadeligt for tilkoblede komponenter, men som løsning implementeres en ”flyback diode” parallelt med spolen i reverse bias-konfiguration, derved har strømmen en løbebane, og spolen forhindres i at inducere den høje spænding. Den implementerede kontrolkreds ses på figur \ref{screenshot:ventilStyringskreds} på side \pageref{screenshot:ventilStyringskreds}.
 I databladet er oplyst at ventilen benytter 12V, afgiver 6W, dette giver et beregnet strømforbrug på 500mA, se beregning herunder:
 
 \begin{figure}[!h]
@@ -37,7 +37,7 @@ Logic-level kompatible betyder at $ V_{GS(th)} < 5V $ og derved kan MOSFET`en, a
 $ V_{GS(th)} $ er den threshold-spænding hvor transistoren går ”on”.
 
 
-Det ses af grafen på figur \ref{screenshot:GateToSourceVoltage}, at MOSFET`en ved en $ V_{GS} = 5V $, (ved $T_J = 25)$ tillader en strøm på 100A, dette er mere end rigeligt til opgaven.
+Det ses af grafen på figur \ref{screenshot:GateToSourceVoltage}, at MOSFET`en ved en $ V_{GS} = 5V $, (ved $T_J = 25)$ tillader en strøm på 100A, dette er mere end rigeligt til opgaven\footnote{\citet{ir:IRLZ44Z}}.
 
 \begin{figure}[!h]
 	\centering
@@ -114,7 +114,7 @@ Derudover implementere der, som førnævnt en ”flyback” diode, for at give s
 \end{description}
 
 \subparagraph{Diode-strøm} \hspace{0pt} \\
-Strømmen der vil løbe i dioden er givet fra databladet til  3A, derved skal den valgte diode kunne klare at lede max 3A, dette sker i forhold til spolens tidskonstant, $\tau$, hvor efter strømmen vil falde i løbet af $ 5 \tau$.
+Strømmen der vil løbe i dioden er givet fra databladet\footnote{\citet{dinc:1N4007}} til  3A, derved skal den valgte diode kunne klare at lede max 3A, dette sker i forhold til spolens tidskonstant, $\tau$, hvor efter strømmen vil falde i løbet af $ 5 \tau$.
 
 \subparagraph{Peak-spænding} \hspace{0pt} \\
 Peak-spændingen fra spolen er realiseret i laboratoriet til 60V. 
