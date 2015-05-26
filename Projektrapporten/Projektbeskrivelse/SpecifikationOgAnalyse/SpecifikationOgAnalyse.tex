@@ -1,2 +1,15 @@
 %!TEX root = ../../main.tex
 \section{Specifikation og Analyse}
+I vores overvejelser omkring systemet har vi lagt vægt på, at det skal kunne virke over lange afstande og at brugeren sjældent skal have behov for at tilgå hardware ved kar og sensor ø. Det skulle således kun ske når der skal tilføjes nye sensorer eller nye sensor-øer. \\
+Desuden skulle brugergrænsefladen være nem at tilgå. Det gik også op for os at det var en god ide at have systemet inddelt således at brugergrænsefladen stod for sig selv, da systemet så kan udvides med flere kar. Samme argumentation gælder for sensor-øen da et kar kan stå for at vande mange planter og det giver god mening at kunne opsamle data flere steder fra. Det giver også mulighed for bedre at styre vandmængden til forskellige områder af planteområdet.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{Projektbeskrivelse/SpecifikationOgAnalyse/System_Domain_Model.png}
+	\caption{Domæne model for AVS}
+	\label{fig:DomaeneSys}
+\end{figure} 
+
+På modelen herover\ref{fig:DomaeneSys} ses et udlæg af systemet. Her er det lidt svært at se at systemet er meget opdelt, men modellen illustrer data vejen i systemet og hvordan systemet samler data op som det skal bruge til at logging og automatisk vanding.
+\\
+På baggrund af disse tanker har vi valgt at bruge en bus med differentielt signal til at opnå afstandene i systemet, desuden har vi valgt selv at designe vores sensorer.
