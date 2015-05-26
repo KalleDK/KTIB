@@ -13,7 +13,7 @@ Klassen, som er en specialisering af \textit{Thread}, stiller funktionalitet til
 \textit{MessageThread} laver udelukkende blokerende kald til dens besked-kø, og dermed undgår vi, at stå og bruge CPU-tid i løkker, som ikke udfører noget. Det betyder, at alle klasse som nedarver fra \textit{MessageThread} udelukkende håndterer events sendt til dem udefra. På den måde lægges tråde til at sove så længe der ikke er noget at lave, og programmet vil bruge minimalt CPU-tid.
 
 
-\StateDiagram{0.7}{FlexPMS}{MessageThread}
+\StateDiagram{0.5}{FlexPMS}{MessageThread}
 
 \subsubsection{Arkitekturspecifikke metoder}
 
