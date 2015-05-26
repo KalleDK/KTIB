@@ -58,7 +58,6 @@ private:
     void handle_kar_pump_state(MKarPumpState* msg);
     void handle_oe_valve_state(MOeValveState* msg);
     void handle_oe_sensor_data(MOeSensorData* msg);
-    void handle_oe_sensor_type(MOeSensorType* msg);
     
     // Eventhandlers for handling SocketClient sessions
     void handle_hello(Message* msg);

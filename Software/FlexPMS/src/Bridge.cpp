@@ -54,10 +54,6 @@ void Bridge::dispatch(unsigned long event_id, Message* msg) {
             cout << "Bridge: recieved event E_OE_SENSOR_DATA" << endl;
             handle_oe_sensor_data(static_cast<MOeSensorData*>(msg));
             break;
-        case E_OE_SENSOR_TYPE:
-            cout << "Bridge: recieved event E_OE_SENSOR_TYPE" << endl;
-            handle_oe_sensor_type(static_cast<MOeSensorType*>(msg));
-            break;
         
         // -- EVENTS FROM Gui ---------------------------------------------- //
         
@@ -294,11 +290,6 @@ void Bridge::handle_oe_sensor_data(MOeSensorData* msg) {
             cout << "Bridge: handle_oe_sensor_data() got unknown OE address: " << (int)it->address << endl;
         }
     }
-}
-
-
-void Bridge::handle_oe_sensor_type(MOeSensorType* msg) {
-    
 }
 
 
