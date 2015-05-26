@@ -1,0 +1,35 @@
+Vi benytter logging til at gemme alle handlinger, som har med sensorer og aktuatorer at gøre. Loggen skrives til en fil med tidsstempel. Det er udelukkende Bridge, som skriver til loggen.\\\\
+
+Følgende handlinger bliver logget:
+
+\begin{itemize}
+\item Der modtages data fra sensorer på et Kar
+\item Der modtages data fra sensorer på en SensorØ
+\item Der modtages information om, hvorvidt en ventil på et Kar er blevet åbnet eller lukket
+\item Der modtages information om, hvorvidt en ventil på en SensorØ er blevet åbnet eller lukket
+\item Der modtages information om en pumpes status (slukket eller tændt/pumpe-hastighed)
+\item Når GUI anmoder om at starte manuel vanding logges der, for hver SensorØ, at dens ventil blev anmodet om at åbne. Der logges, at Karrets pumpe blev anmodet om at startet
+\item Når GUI anmoder om at stoppe manuel vanding logges der, for hver SensorØ, at dens ventil blev anmodet om at lukke. Der logges, at Karrets pumpe blev anmodet om at stoppet
+\item Når GUI anmoder om at åbne eller lukke indløbs- eller afløbsventil på et Kar
+\end{itemize}
+
+Alt andet debugging skrives til FlexPMS' stdout. Det er derfor muligt at omdirigere stdout til en fil for at logge samtlige debugging udskrifter.
+
+
+\KlasseDiagram{0.5}{FlexPMS}{Log}
+
+\subsubsection{Log}
+Klassen benyttes til at skrive til loggen. Den er implementeret vha. Singleton, dvs. at kun én instans af klassen kan eksistere på tværs af hele FlexPMS. Instansen bliver oprettet gennem kald fra main.cpp, hvorefter den lever som en statisk member på klassen Log så længe FlexPMS kører.\\\\
+
+Hver gang der skrives til loggen tilføjes tidsstempel samt linjeskift efter teksten.
+
+\subsubsection{Arkitekturspecifikke metoder}
+
+\funk{static Log* getInstance()}{Funktionen returnerer en instans af Log. Hvis en instans endnu ikke er blevet oprettet, så oprettes den først}{Instans af klassen Log}
+{}
+
+\funk{void write(std::string line)}{Funktionen skriver en linje til logfilen}{Ingenting}
+{
+\funkArg{line}{Tekst, som skal skrives til logfilen}
+}
+
