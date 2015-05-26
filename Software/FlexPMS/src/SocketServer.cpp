@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include "SocketServer.h"
 #include "SocketClient.h"
+#include "defines.h"
 
 
 using namespace std;

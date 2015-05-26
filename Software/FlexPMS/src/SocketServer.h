@@ -12,10 +12,6 @@
 #include "MessageThread.h"
 
 
-#define SOCK_HOST localhost
-#define SOCK_PORT 5555
-
-
 class SocketClient;
 
 
@@ -23,7 +19,6 @@ class SocketServer : public Thread {
 public:
     SocketServer(MessageThread* b) : bridge_(b) {};
     void run();
-    void remove_client(int client_sock_fd);
 private:
     MessageThread* bridge_;
     int sock_fd_;

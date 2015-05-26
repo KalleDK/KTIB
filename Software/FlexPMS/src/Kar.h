@@ -22,13 +22,9 @@ public:
     bool ivalvestatus;
     bool ovalvestatus;
     
-    unsigned int unanswered_pings;
-    time_t last_ping_sent;
     KarStatus status;
     
-    Kar(sql::Connection* db_conn) : 
-        unanswered_pings(0),
-        last_ping_sent(0), 
+    Kar(sql::Connection* db_conn) :
         status(OFFLINE),
 		db_conn_(db_conn) {};
     
