@@ -4,8 +4,7 @@ Selve jordfugt sensoren skal måle jordfugten i jorden således systemet kan vid
 Da vi ønsker at sensoren skal kommunikere over I2C igennem vores egen protokol, ønsker vi samtidig at levere en speciallavet jordfugt sensor med til systemet. Dette kræver at vi selv designer den. 
 
 \subsection{Kapacitiv måling}
-Den første ide til at måle jordfugten gik ud på at måle den kapacitivt. Efter nogle hurtige søgninger på Google blev der hurtigt fundet frem til følgende dokument
-\footnote {http://www.transeem.org/Upload/files/TEEM/04-13-0038\%28182-186\%29.pdf}.\fxnote{tilføjes til literatur liste}
+Den første ide til at måle jordfugten gik ud på at måle den kapacitivt. Efter nogle hurtige søgninger på Google blev der hurtigt fundet frem til følgende dokument \footnote{\citet{transem:humiditysensor}}
 I pdf filen beskriver to japanske studerende hvordan de med en kapasitet er i stand til at måle den relative luftfugtig. Dette virker ved at når luftfugtigheden ændre sig kan man via to elektrisk ledende plader måle forskellen i luften ved at koble dem som en pladekondensator med luften som dielektrikum. 
 $\epsilon$r ændre sig således med luftfugtigheden. Tanken var nu at det samme måtte gøre sig gældende for jorden og komponenten i figur \ref{photo:Kapsitiv_foeler} blev lavet:
 
@@ -19,7 +18,7 @@ $\epsilon$r ændre sig således med luftfugtigheden. Tanken var nu at det samme 
 Til den hjemmebyggede pladekondensator blev der også opbygget en oscillator som varierede sin udgangsfrekvens afhængig af kondensatorens kapacitet. Dette kredsløb blev bygget med en LM555. Da pladekondensatoren var en kopi fra det før omtalte pdf dokument kom det ikke som en overraskelse at oscillatoren ændrede sin frekvens med næsten 50\% når pladekondensatoren blev holdt over dampen fra en kop kogende vand. Hvad der dog ikke var taget højde for var kapaciteten i tilledningerne, som ændrede sig hver gang pladekondensatoren blev flyttet. Det viste sig også at når pladekondensatoren blev trykket ned i jord stoppede oscillatoren med at oscillere. Det var hellere ikke muligt at måle kapaciteten med et LCR-meter og ideen blev derfor opgivet. 
 
 \subsection{Resistiv måling}
-Næste step var at finde en ny metode til at måle fugtigheden i jorden og denne opstod ved besøg på denne side\footnote{http://gardenbot.org/howTo/soilMoisture/}. \fxnote{tilføjes til literatur liste} På siden bliver det beskrevet hvordan man kan måle fugtigheden i jorden rent resistivt. Desværre bliver der ikke givet nogle værdier på jordens ledeevne i forhold til fugtigheden og var derfor op til en selv at finde den. Ved en størrer søgning blev der fundet frem til oversigten i figur \ref{photo:Ledeevne_grundstoffer} \footnote{Kilde: http://zonge.com/rock-properties-lab/ore-minerals-physical-properties/}\fxnote{tilføjes til litteratur liste}
+Næste step var at finde en ny metode til at måle fugtigheden i jorden og denne opstod ved besøg på denne side \footnote{\citet{gardenbot:soilmoisture}} På siden bliver det beskrevet hvordan man kan måle fugtigheden i jorden rent resistivt. Desværre bliver der ikke givet nogle værdier på jordens ledeevne i forhold til fugtigheden og var derfor op til en selv at finde den. Ved en størrer søgning blev der fundet frem til oversigten i figur \ref{photo:Ledeevne_grundstoffer} Kilde\footnote{\citet{zonge:soilpermability}}
 
 \begin{figure}[H]
 	\centering 

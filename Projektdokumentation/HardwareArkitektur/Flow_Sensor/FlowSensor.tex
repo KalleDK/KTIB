@@ -1,7 +1,7 @@
 %!TEX root = ../../main.tex
 
 \section{Flowsensor}
-Til kontrol at vandflow til systemet, er valgt at benytte en flow sensor af typen YF S201. 
+Til kontrol at vandflow til systemet, er valgt at benytte en flow sensor af typen YF S201\footnote{\citet{nxp:YFS201}}. 
 Dette er en Hall Effect sensor. En Hall Effekt sensor benytter ændringer i et nær-magnetfelt til at 
 ændre sensorens outputspænding, dette genererer et PWM-output der identificerer den mængde vand 
 der flyder igennem sensoren, og kan omregnes til mængde vand pr. enhed.
@@ -37,7 +37,7 @@ Output fra sensoren følger CMOS-standarden, det vil sige at den kan kobles dire
 Under operation sinker sensoren 15mA, derved kan den kan trække sin forsyning direkte fra PSoC'en.
 
 \subsection{Counter-kredsløb}
-For at aflaste Kar-PSoC'en der håndtere flowsensoren, designes et eksternt counter-kredsløb. Herved minimeres det antal interrupts der trækkes på PSoC-programmet. Kredsløbet designes ved brug af en 4-bit counter (74HC393) samt en 2-input AND-gate (74HC08). 
+For at aflaste Kar-PSoC'en der håndtere flowsensoren, designes et eksternt counter-kredsløb. Herved minimeres det antal interrupts der trækkes på PSoC-programmet. Kredsløbet designes ved brug af en 4-bit counter (74HC393\footnote{\citet{nxp:74HC393}}) samt en 2-input AND-gate (74HC08\footnote{\citet{nxp:74HC08}}). 
 Kredsløbet er koblet således at PWM-output fra flowsensoren kobles til clock-input 1 (CP1) på counter'en. Outputs fra denne (Q1, Q3) kobles til AND'gaten.
 Kredsløbet ses på \ref{screenshot:counter} herunder. 
 
