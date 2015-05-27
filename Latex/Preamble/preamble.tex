@@ -1,6 +1,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%Opsætning af format%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[a4paper,oneside]{memoir} %A4papir, to side, størrelse 12, type memoir 
+\documentclass[a4paper,twoside]{memoir} %A4papir, to side, størrelse 12, type memoir 	%TWOSIDE!!!!!!	
+%\documentclass[a4paper,oneside]{memoir} %A4papir, to side, størrelse 12, type memoir 	%ONESIDE!!!!!!
 
 % For dansk opsætning med æ, ø og å, samt pænere orddeling.
 \usepackage[utf8]{inputenc}				% æøå
@@ -9,10 +10,12 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern} 
 %%Høre til under tabel (Pakker, men skal stå før pgfplot pga. default værdier)%%
-\usepackage[table]{xcolor}				
+\usepackage[table]{xcolor}	
+\usepackage{ragged2e}	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setcounter{tocdepth}{4} % inkludere sub + subsubsection i inholdsfortegnelde
+\setcounter{tocdepth}{2} % inkludere sub + subsubsection i inholdsfortegnelde
 \setsecnumdepth{subsection}
 
 \usepackage{titlesec} 
@@ -24,15 +27,18 @@
 % til mellemrum
 
 \titlespacing\section{0pt}
-{18pt plus 4pt minus 2pt}{6pt plus 2pt minus 2pt} %halvt mellemrum efter section
+{24pt plus 4pt minus 2pt}{6pt plus 2pt minus 2pt} %halvt mellemrum efter section
 \titlespacing\subsection{0pt}
-{12pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt} %kun lidt mellemrum efter subsection
+{18pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt} %kun lidt mellemrum efter subsection
 \titlespacing\subsubsection{0pt}
-{12pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt} %kun lidt mellemrum efter subsubsection 
+{18pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt} %kun lidt mellemrum efter subsubsection 
 
 \setlength\parindent{0pt} %Ingen indryk efter ny afsnit
 
+\usepackage[bottom]{footmisc} %fodnoter i bunden af arket
+
 %Marginer indstilles
+\raggedbottom	%Ingen side strech for twopage
 \setlrmarginsandblock{3cm}{3cm}{*}		%Højre - venstre
 \setulmarginsandblock{3cm}{2.5cm}{*}	%Øverst - nederst
 \checkandfixthelayout[nearest]    		%Specifikt valg af højde algoritme
@@ -45,7 +51,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\textit{Automatisk Vandingssystem}}
-\fancyfoot[LO,RE]{\thepage\ af \thelastpage}  	% sættet sidetal tal h/v efter om der er ulige
+\fancyfoot[RO,LE]{\thepage\ af \thelastpage}  	% sættet sidetal tal h/v efter om der er ulige
 												% eller lige sidetal
 \fancypagestyle{plain}{% bruges ved Undtagelser						
   \fancyhf{}%
