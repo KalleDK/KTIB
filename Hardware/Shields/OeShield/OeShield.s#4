@@ -5997,27 +5997,30 @@ W = angled&lt;p&gt;
 <part name="J3" library="con-lsta" deviceset="FE10-1" device=""/>
 <part name="J1" library="con-lsta" deviceset="FE08-1" device=""/>
 <part name="JORDFUGT" library="con-phoenix-254" deviceset="MPT4" device=""/>
+<part name="GND1" library="supply1" deviceset="GND" device=""/>
+<part name="GND3" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="53.34" y="106.68" size="1.778" layer="91">RS Converter
 OeBus</text>
-<text x="66.04" y="20.32" size="1.778" layer="91">Pin configuration ver.1
-Dato: 	20150517
-Author: KE
-
-OePrint - Pinassignment VER 1
-
-P0_0	D_VALVE_CTL
-P0_3	OeRX
-P0_2	OeTX
-P4_0	SCl
-P4_1	SDA
-GND	GND
-+5V	VBUS</text>
 <text x="-60.96" y="109.22" size="1.778" layer="91">Ventilstyring 
 Dosering</text>
+<text x="73.66" y="20.32" size="1.778" layer="91">Pin configuration ver.2
+Dato: 	20150526
+Author: KE
+
+OePrint - Pinassignment ver.2
+
+P0_0  D_VALVE_CTL
+P0_4  Oe_RX
+P0_5  Oe_TX
+P0_7  Oe_TXen
+P4_0  SCl
+P4_1  SDA
+GND   GND
++5V   VBUS</text>
 </plain>
 <instances>
 <instance part="Q1" gate="G$1" x="-27.94" y="86.36"/>
@@ -6096,6 +6099,8 @@ Dosering</text>
 <attribute name="NAME" x="161.036" y="29.845" size="1.778" layer="95"/>
 <attribute name="VALUE" x="164.084" y="24.638" size="1.778" layer="96"/>
 </instance>
+<instance part="GND1" gate="1" x="-48.26" y="10.16" rot="R270"/>
+<instance part="GND3" gate="1" x="25.4" y="22.86" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -6132,14 +6137,14 @@ Dosering</text>
 <junction x="73.66" y="73.66"/>
 </segment>
 <segment>
-<label x="22.86" y="22.86" size="1.778" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="7"/>
 <wire x1="22.86" y1="22.86" x2="12.7" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="GND3" gate="1" pin="GND"/>
 </segment>
 <segment>
-<label x="-45.72" y="10.16" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="J1" gate="G$1" pin="7"/>
 <wire x1="-35.56" y1="10.16" x2="-45.72" y2="10.16" width="0.1524" layer="91"/>
+<pinref part="GND1" gate="1" pin="GND"/>
 </segment>
 <segment>
 <label x="-38.1" y="12.7" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -6190,21 +6195,6 @@ Dosering</text>
 <pinref part="JORDFUGT" gate="-2" pin="1"/>
 <wire x1="162.56" y1="38.1" x2="157.48" y2="38.1" width="0.1524" layer="91"/>
 <label x="157.48" y="38.1" size="1.778" layer="95" rot="R180" xref="yes"/>
-</segment>
-</net>
-<net name="OE_TX_ENA" class="0">
-<segment>
-<pinref part="IC2" gate="G$1" pin="!RE!"/>
-<wire x1="76.2" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="96.52" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
-<pinref part="IC2" gate="G$1" pin="DE"/>
-<wire x1="76.2" y1="91.44" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
-<junction x="73.66" y="96.52"/>
-<label x="71.12" y="96.52" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="R6" gate="G$1" pin="2"/>
-<wire x1="73.66" y1="91.44" x2="73.66" y2="83.82" width="0.1524" layer="91"/>
-<junction x="73.66" y="91.44"/>
 </segment>
 </net>
 <net name="OE_DIFF+" class="0">
@@ -6379,6 +6369,19 @@ Dosering</text>
 <pinref part="J4" gate="G$1" pin="3"/>
 <wire x1="22.86" y1="-15.24" x2="12.7" y2="-15.24" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="!RE!"/>
+<wire x1="76.2" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="96.52" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="IC2" gate="G$1" pin="DE"/>
+<wire x1="76.2" y1="91.44" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
+<junction x="73.66" y="96.52"/>
+<label x="71.12" y="96.52" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="R6" gate="G$1" pin="2"/>
+<wire x1="73.66" y1="91.44" x2="73.66" y2="83.82" width="0.1524" layer="91"/>
+<junction x="73.66" y="91.44"/>
+</segment>
 </net>
 <net name="P0_5" class="0">
 <segment>
@@ -6386,12 +6389,22 @@ Dosering</text>
 <pinref part="J4" gate="G$1" pin="2"/>
 <wire x1="15.24" y1="-17.78" x2="12.7" y2="-17.78" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="DI"/>
+<wire x1="76.2" y1="86.36" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
+<label x="71.12" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
 </net>
 <net name="P0_4" class="0">
 <segment>
 <label x="22.86" y="-20.32" size="1.778" layer="95" xref="yes"/>
 <pinref part="J4" gate="G$1" pin="1"/>
 <wire x1="22.86" y1="-20.32" x2="12.7" y2="-20.32" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="RO"/>
+<wire x1="76.2" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
+<label x="71.12" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="P4" class="0">
@@ -6482,22 +6495,12 @@ Dosering</text>
 <wire x1="-20.32" y1="-2.54" x2="-17.78" y2="-2.54" width="0.1524" layer="91"/>
 <label x="-17.78" y="-2.54" size="1.778" layer="95" xref="yes"/>
 </segment>
-<segment>
-<pinref part="IC2" gate="G$1" pin="DI"/>
-<wire x1="76.2" y1="86.36" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
-<label x="71.12" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
-</segment>
 </net>
 <net name="P0_3" class="0">
 <segment>
 <pinref part="J2" gate="1" pin="3"/>
 <wire x1="-20.32" y1="-5.08" x2="-17.78" y2="-5.08" width="0.1524" layer="91"/>
 <label x="-17.78" y="-5.08" size="1.778" layer="95" xref="yes"/>
-</segment>
-<segment>
-<pinref part="IC2" gate="G$1" pin="RO"/>
-<wire x1="76.2" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
-<label x="71.12" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="VDD" class="0">

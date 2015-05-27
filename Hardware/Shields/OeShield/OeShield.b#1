@@ -2111,11 +2111,13 @@ design rules under a new name.</description>
 <attribute name="MF" value="" x="55.32" y="18.37" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="55.32" y="18.37" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="JORDFUGT" library="con-phoenix-254" package="4POL254" value="" x="38.45" y="65.61">
+<element name="JORDFUGT" library="con-phoenix-254" package="4POL254" value="" x="38.45" y="65.61" smashed="yes">
 <attribute name="OC_NEWARK" value="unknown" x="38.45" y="65.61" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="38.45" y="65.61" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="38.45" y="65.61" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="38.45" y="65.61" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="44.116" y="65.388" size="1.27" layer="25"/>
+<attribute name="VALUE" x="33.116" y="62.562" size="1.27" layer="27"/>
 </element>
 <element name="OE_BUS" library="con-phoenix-254" package="3POL254" value="" x="27.78" y="2.52" smashed="yes" rot="R180">
 <attribute name="OC_NEWARK" value="unknown" x="27.78" y="2.52" size="1.778" layer="27" rot="R180" display="off"/>
@@ -2134,32 +2136,37 @@ design rules under a new name.</description>
 <attribute name="NAME" x="32.045" y="46.137" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="35.934" y="46.0542" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="R7" library="resistor" package="0207/12" value="120" x="27.44" y="12.26"/>
-<element name="+12V" library="con-phoenix-254" package="2POL254" value="" x="14.7" y="65.45">
+<element name="R7" library="resistor" package="0207/12" value="120" x="27.44" y="12.26" smashed="yes">
+<attribute name="NAME" x="24.265" y="13.657" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="28.154" y="13.5742" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="+12V" library="con-phoenix-254" package="2POL254" value="" x="14.7" y="65.45" smashed="yes">
 <attribute name="OC_NEWARK" value="unknown" x="14.7" y="65.45" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="14.7" y="65.45" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="14.7" y="65.45" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="14.7" y="65.45" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="12.906" y="62.228" size="1.27" layer="25"/>
+<attribute name="VALUE" x="11.906" y="62.402" size="1.27" layer="27"/>
 </element>
 </elements>
 <signals>
 <signal name="GND">
-<contactref element="Q1" pad="3"/>
 <contactref element="C1" pad="2"/>
 <contactref element="C5" pad="2"/>
-<contactref element="R1" pad="2"/>
-<contactref element="R6" pad="1"/>
-<contactref element="IC2" pad="5"/>
 <contactref element="J3" pad="7"/>
-<contactref element="J1" pad="7"/>
 <contactref element="J1" pad="6"/>
 <contactref element="OE_BUS" pad="3"/>
 <contactref element="J2" pad="13"/>
 <contactref element="JORDFUGT" pad="4"/>
 <contactref element="+12V" pad="1"/>
-<wire x1="28.87" y1="48.74" x2="42.26" y2="65.61" width="0" layer="19" extent="1-1"/>
-<wire x1="28.99" y1="51.66" x2="28.87" y2="48.74" width="0" layer="19" extent="1-1"/>
-<wire x1="21.36" y1="51.81" x2="28.87" y2="48.74" width="0" layer="19" extent="1-1"/>
+<contactref element="J1" pad="7"/>
+<contactref element="R1" pad="2"/>
+<contactref element="Q1" pad="3"/>
+<contactref element="R6" pad="1"/>
+<contactref element="IC2" pad="5"/>
+<wire x1="28.99" y1="51.66" x2="42.26" y2="65.61" width="0" layer="19" extent="1-1"/>
+<wire x1="28.87" y1="48.74" x2="28.99" y2="51.66" width="0" layer="19" extent="1-1"/>
+<wire x1="21.36" y1="51.81" x2="28.99" y2="51.66" width="0" layer="19" extent="1-1"/>
 <wire x1="21.33" y1="47.51" x2="21.36" y2="51.81" width="0" layer="19" extent="1-1"/>
 <wire x1="13.43" y1="65.45" x2="21.36" y2="51.81" width="0" layer="19" extent="1-1"/>
 <wire x1="3.39" y1="63.69" x2="13.43" y2="65.45" width="0" layer="19" extent="1-1"/>
@@ -2172,13 +2179,6 @@ design rules under a new name.</description>
 </signal>
 <signal name="P0_1">
 <contactref element="J2" pad="16"/>
-</signal>
-<signal name="VCC">
-<contactref element="IC2" pad="8"/>
-<contactref element="C5" pad="1"/>
-<contactref element="+12V" pad="2"/>
-<wire x1="16.28" y1="51.81" x2="15.97" y2="65.45" width="0" layer="19" extent="1-1"/>
-<wire x1="39.84" y1="10.14" x2="16.28" y2="51.81" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="P4_0">
 <contactref element="J3" pad="10"/>
@@ -2337,8 +2337,14 @@ design rules under a new name.</description>
 <contactref element="D_VALVE" pad="1"/>
 <contactref element="D1" pad="C"/>
 <contactref element="C1" pad="1"/>
+<contactref element="IC2" pad="8"/>
+<contactref element="C5" pad="1"/>
+<contactref element="+12V" pad="2"/>
+<wire x1="16.28" y1="51.81" x2="15.97" y2="65.45" width="0" layer="19" extent="1-1"/>
+<wire x1="16.25" y1="47.51" x2="16.28" y2="51.81" width="0" layer="19" extent="1-1"/>
 <wire x1="10.68" y1="40.42" x2="16.25" y2="47.51" width="0" layer="19" extent="1-1"/>
 <wire x1="2.51" y1="48.13" x2="10.68" y2="40.42" width="0" layer="19" extent="1-1"/>
+<wire x1="39.84" y1="10.14" x2="10.68" y2="40.42" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>

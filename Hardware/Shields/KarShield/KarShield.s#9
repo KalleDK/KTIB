@@ -1869,6 +1869,12 @@ Source: http://www.osram.convergy.de/</description>
 <text x="-2.54" y="-2.54" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
 <pin name="VCC" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
+<symbol name="+5V">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+5V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="GND" prefix="GND">
@@ -1888,6 +1894,19 @@ Source: http://www.osram.convergy.de/</description>
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="VCC" symbol="VCC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="+5V" prefix="P+">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+5V" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -7237,6 +7256,9 @@ Grid 2.54 mm&lt;p&gt;
 <part name="OE_BUS" library="con-phoenix-254" deviceset="MPT3" device=""/>
 <part name="O_VALVE" library="con-phoenix-254" deviceset="MPT2" device=""/>
 <part name="I_VALVE" library="con-phoenix-254" deviceset="MPT2" device=""/>
+<part name="FS" library="con-phoenix-254" deviceset="MPT3" device=""/>
+<part name="+5V" library="supply1" deviceset="+5V" device=""/>
+<part name="GND20" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7248,9 +7270,9 @@ Outflow</text>
 <text x="20.32" y="116.84" size="1.778" layer="91">Doseringspumpe</text>
 <text x="81.28" y="114.3" size="1.778" layer="91">RS Converter
 KarBus</text>
-<text x="78.74" y="55.88" size="1.778" layer="91">RS Converter
+<text x="81.28" y="60.96" size="1.778" layer="91">RS Converter
 OeBus</text>
-<text x="134.62" y="12.7" size="1.778" layer="91">pH Sensor</text>
+<text x="83.82" y="12.7" size="1.778" layer="91">pH Sensor</text>
 <text x="5.08" y="68.58" size="1.778" layer="91">Flow Sensor</text>
 <text x="35.56" y="-48.26" size="1.778" layer="91">Pin configuration ver.1
 Dato:  20150517
@@ -7436,6 +7458,19 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="-61.722" y="72.263" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="-85.09" y="69.469" size="1.778" layer="96" rot="R180"/>
 </instance>
+<instance part="FS" gate="-1" x="-71.12" y="25.4" smashed="yes" rot="MR0">
+<attribute name="NAME" x="-66.802" y="27.559" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="-85.09" y="24.511" size="1.778" layer="96" rot="MR0"/>
+</instance>
+<instance part="FS" gate="-2" x="-71.12" y="20.32" smashed="yes" rot="MR0">
+<attribute name="NAME" x="-67.056" y="22.225" size="1.778" layer="95" rot="MR0"/>
+</instance>
+<instance part="FS" gate="-3" x="-71.12" y="15.24" smashed="yes" rot="MR0">
+<attribute name="NAME" x="-67.056" y="17.145" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="-70.104" y="11.938" size="1.778" layer="96" rot="MR0"/>
+</instance>
+<instance part="+5V" gate="1" x="-55.88" y="25.4" rot="R270"/>
+<instance part="GND20" gate="1" x="-55.88" y="15.24" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -7587,6 +7622,11 @@ P0_2 - debugTX -</text>
 <pinref part="GND12" gate="1" pin="GND"/>
 <pinref part="C6" gate="G$1" pin="2"/>
 <wire x1="172.72" y1="7.62" x2="170.18" y2="7.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="FS" gate="-3" pin="1"/>
+<wire x1="-68.58" y1="15.24" x2="-58.42" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="GND20" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="P0_1" class="0">
@@ -7890,6 +7930,11 @@ P0_2 - debugTX -</text>
 <wire x1="111.76" y1="5.08" x2="119.38" y2="5.08" width="0.1524" layer="91"/>
 <label x="119.38" y="5.08" size="1.778" layer="95" xref="yes"/>
 </segment>
+<segment>
+<pinref part="FS" gate="-1" pin="1"/>
+<pinref part="+5V" gate="1" pin="+5V"/>
+<wire x1="-58.42" y1="25.4" x2="-68.58" y2="25.4" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$3" class="0">
 <segment>
@@ -8086,13 +8131,6 @@ P0_2 - debugTX -</text>
 <label x="99.06" y="109.22" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="NC" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="RESERVED"/>
-<wire x1="5.08" y1="-27.94" x2="15.24" y2="-27.94" width="0.1524" layer="91"/>
-<label x="15.24" y="-27.94" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
 <net name="P4" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="IOREF"/>
@@ -8198,6 +8236,11 @@ P0_2 - debugTX -</text>
 <pinref part="74HC393" gate="G$1" pin="!1CP!"/>
 <wire x1="27.94" y1="60.96" x2="15.24" y2="60.96" width="0.1524" layer="91"/>
 <label x="15.24" y="60.96" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="FS" gate="-2" pin="1"/>
+<wire x1="-68.58" y1="20.32" x2="-66.04" y2="20.32" width="0.1524" layer="91"/>
+<label x="-66.04" y="20.32" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
