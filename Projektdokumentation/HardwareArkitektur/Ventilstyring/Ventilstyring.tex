@@ -1,14 +1,14 @@
 %!TEX root = ../../main.tex
 \section{Ventilstyring}
-Til styring af indløb til / afløb fra vandkaret anvendes 2 Hydraelectric Magnetventiler\footnote{\citet{hydra:valve}} med tilhørende MOSFET-styringskredse. En magnetventil virker ved at det interne relæ bliver aktiveret når der påtrykkes en DC-spænding, evt. i form af et PWM-signal, hvor ved gennemstrømningen kan reguleres, når dette sker åbnes der for gennemgang i ventilen. I det interne relæ sidder en spole, og spolens viklinger medfører en ohmsk modstand. Når der påtrykkes en spænding skabes et magnetfelt omkring spolen, dette felt holder ventilen åben. Når ventilen ønskes lukket, afbrydes spændingen. Dette skaber en problematik hvor strømmen igennem spolen ikke kan ændre sig på samme hurtige måde aom spændingen. Da den fysiske forbindelse til spolen er afbrudt vil spolen selv inducere en modsatrettet spænding for at komme af med strømmen. Dette er et problem da så høje spændinger potentielt er skadeligt for tilkoblede komponenter, men som løsning implementeres en ”flyback diode” parallelt med spolen i reverse bias-konfiguration, derved har strømmen en løbebane, og spolen forhindres i at inducere den høje spænding. Den implementerede kontrolkreds ses på figur \ref{screenshot:ventilStyringskreds} på side \pageref{screenshot:ventilStyringskreds}.
-I databladet er oplyst at ventilen benytter 12V, afgiver 6W, dette giver et beregnet strømforbrug på 500mA, se beregning herunder:
+Til styring af indløb til / afløb fra vandkaret anvendes 2 Hydraelectric Magnetventiler\footnote{\citet{hydra:valve}} med tilhørende MOSFET-styringskredse. En magnetventil virker ved at det interne relæ bliver aktiveret når der påtrykkes en DC-spænding, evt. i form af et PWM-signal, hvor ved gennemstrømningen kan reguleres, når dette sker åbnes der for gennemgang i ventilen. I det interne relæ sidder en spole, og spolens viklinger medfører en ohmsk modstand. Når der påtrykkes en spænding skabes et magnetfelt omkring spolen, dette felt holder ventilen åben. Når ventilen ønskes lukket, afbrydes spændingen. Dette skaber en problematik hvor strømmen igennem spolen ikke kan ændre sig på samme hurtige måde som spændingen. Da den fysiske forbindelse til spolen er afbrudt vil spolen selv inducere en modsatrettet spænding for at komme af med strømmen. Dette er et problem da så høje spændinger potentielt er skadeligt for tilkoblede komponenter, men som løsning implementeres en ”flyback diode” parallelt med spolen i reverse bias-konfiguration, derved har strømmen en løbebane, og spolen forhindres i at inducere den høje spænding. Den implementerede kontrolkreds ses på figur \ref{screenshot:ventilStyringskreds} på side \pageref{screenshot:ventilStyringskreds}.
+I databladet er oplyst at ventilen benytter 12V, optager op til 6W, dette giver et beregnet strømforbrug på 500mA, se beregning herunder:
 
 \begin{figure}[!h]
 		\begin{align*}
-			P &= 6 VA \\ 
-			V &= 12 V \\
-			I &= \frac{P}{V} \eqref{1}\\ 
-			&= 500mA
+			P &= 6 W 			\\ 
+			V &= 12 V 			\\
+			I &= \frac{P}{V}	\\ 
+			I &= 500mA
 		\end{align*}
 \label{eq:ventilA}
 \caption{Beregning af strømforbrug i magnetventil}
@@ -21,7 +21,7 @@ Derudover er den interne modstand beregnet til:
 		V &= 12 V \\ 
 		I &= 500 mA \\
 		R &= \frac{V}{I} \\ 
-		&= 24 \Omega
+		R &= 24 \Omega
 	\end{align*}
 \caption{Beregning af indre modstand}
 \label{eq:ventilOhm}
@@ -32,7 +32,7 @@ Styringskredsen skal på baggrund af dette designes til at håndtere en strøm p
 
 \newpage
 \subsection{MOSFET-styringskreds}
-Til styringslkredsen er valgt at benytte en N-channel IRLZ44Z-MOSFET transistor i common-source-konfiguration. Denne type transistor er logic-level kompatibel, og har spænding/strøm-grænseværdier der opfylder ovenstående krav.  
+Til styringskredsen er valgt at benytte en N-channel IRLZ44Z-MOSFET transistor i common-source-konfiguration. Denne type transistor er logic-level kompatibel, og har spænding/strøm-grænseværdier der opfylder ovenstående krav.  
 Logic-level kompatible betyder at $ V_{GS(th)} < 5V $ og derved kan MOSFET`en, alene drives fra en MCU, her en PSoC.
 $ V_{GS(th)} $ er den threshold-spænding hvor transistoren går ”on”.
 
@@ -53,7 +53,7 @@ Følgende værdier hentet fra databladet:
 	\begin{center}
 		\begin{tabular}{ l l }
  			Drain to Source modstand:          & $R_{DS}=11 m\Omega$ \\ 
- 			Strøm der trækkes af af relæet:    & $I = 500 mA$ \\  
+ 			Strøm der trækkes af relæet:    & $I = 500 mA$ \\  
  			Junction-to-Ambient modstand:      & $R_{\theta JA}=62 C/W$ \\   
  			Max junction temp:                 & $Temp_{jun}=175 C$ \\
  			Ambient temp:                      & $Temp_{amb}=25 C$ \\
@@ -67,7 +67,7 @@ Til beregningen benyttes formlen for afsat effekt:
 \begin{figure}[!h]
 		\begin{align*}
 		P_{afsat} &= R_{DS}*I^2 \\ 
-		&= 2.75 mW
+		P_{afsat} &= 2.75 mW
 		\end{align*}
 \caption{Afsat effekt i MOSFET}
 \label{eq:afsatEffektMOSFET}

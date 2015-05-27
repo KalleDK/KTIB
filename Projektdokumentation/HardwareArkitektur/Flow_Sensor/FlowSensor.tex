@@ -1,9 +1,9 @@
 %!TEX root = ../../main.tex
 
 \section{Flowsensor}
-Til kontrol at vandflow til systemet, er valgt at benytte en flow sensor af typen YF S201\footnote{\citet{nxp:YFS201}}. 
+Til at kontrollere vandflowet til systemet, er valgt at benytte en flow sensor af typen YF S201\footnote{\citet{nxp:YFS201}}. 
 Dette er en Hall Effect sensor. En Hall Effekt sensor benytter ændringer i et nær-magnetfelt til at 
-ændre sensorens outputspænding, dette genererer et PWM-output der identificerer den mængde vand 
+ændre sensorens outputspænding, hvilket genererer et PWM-output der identificerer den mængde vand 
 der flyder igennem sensoren, og kan omregnes til mængde vand pr. enhed.
 
 Flowraten udregnes efter formlen: 
@@ -16,7 +16,7 @@ Flowraten udregnes efter formlen:
 \caption{Beregning af flowrate}
 \end{figure}				
 
-Ved denne udregning svarer eks. $16Hz = 2L/min, og 65.5HZ = 8L/min$. \newline
+Ved denne udregning svarer eks. $16Hz = 2L/min$ og $65.5HZ = 8L/min$. \newline
 Denne måde at beregne flowet på giver i midlertidig problemer med implementering på KarPSoC'en, da dette ville kræve at programmet "lagde beslag" på processoren for at udregne flowet over en given tid. Da KarPSoC-programmet har til formål at køre adskillige opgaver vedrørende Karret, er det ganske enkelt ikke en mulighed at følge denne implementering.\newline
 En alternativ implementering blev valgt for at imødekommende denne problematik. Ved praktisk at måle den mængde vand pr. antal PWM-cycle der flyder igennem sensoren, er det muligt at opstille en model for hvor meget vand der flyder til karret baseret på det antal PWM-cycles der modtages af programmet.\newline
 Flowsensoren tilkobles via 3 medfølgende pins.
@@ -48,7 +48,7 @@ Kredsløbet ses på \ref{screenshot:counter} herunder.
 	\label{screenshot:counter}
 \end{figure}
 
-Koblet på denne måde, går gaten "høj" når der når er talt 10 op på counteren. Et logisk høj fra gaten, trigger et INT i PSoC'en. Som det første i ISR'rutinen nulstilles counter'eren via et logisk høj på inputtet MR1. Dette gøres for at forhindre at den dobbelttrigger når counteren efterfølgende rammer 14 counts. Info er hentet fra datasheet, \ref{screenshot:logicTable}
+Koblet på denne måde, går gaten "høj" når counteren rammer 10. Et logisk høj fra gaten, trigger et INT i PSoC'en. Som det første i ISR'rutinen nulstilles counter'eren via et logisk høj på inputtet MR1. Dette gøres for at forhindre at den dobbelttrigger når counteren efterfølgende rammer 14 counts. Info er hentet fra datasheet, \ref{screenshot:logicTable}
 
 \begin{figure}[H]
 	\centering
