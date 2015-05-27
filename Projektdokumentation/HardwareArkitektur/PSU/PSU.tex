@@ -261,8 +261,7 @@ Transformeren tilfører et tab i strømforsyningen i form af følgende:
 \item Magnetisk reaktans.
 \end{itemize}
 
-
-For at beregne disse faktorer foretages der 2 målinger:
+Til at udføre testen kræves der en variabel AC spændingsforsyning, et voltmeter, amperemeter og wattmeter. For at kunne beregne tabene foretages der 2 målinger:
 \begin{itemize}
 \item Short-circuit giver modstanden i vindingerne samt leakage reaktansen.
 \item Open-circuit giver jernkernetabet og den magnetiske reaktans.
@@ -284,29 +283,20 @@ $R_{eq1}$ simulerer tabet i vindingerne. $X_{eq1}$ simulerer leakage reaktansen.
 	I_{max} = \frac{S_{rated}}{V_{rated}} = \frac{160VA}{230V} = 0,696A
 \end{equation} 
 
-
-Spændingen på skille-varioen justeres fra 0VAC indtil strømmen er $I_{max} = 0,696A$. Spændingen aflæses til $V_{sc} = 18V$. Nu kan den aktive effekt beregnes:
-
-\begin{equation}
-	P_{sc} = V_{sc} * I_{max} = 18V * 0,7A = 12,522W
-\end{equation}
-
-
-Nu kan tabene beregnes:
+Spændingen på skille-varioen justeres fra 0VAC indtil strømmen er $I_{max} = 0,696A$. Spændingen aflæses til $V_{sc} = 19,5V$. Den aktive effekt aflæses til $P_{sc} = 14,7W$. Nu kan tabene beregnes:
 
 \begin{equation}
-	R_{eq1} = \frac{P_{sc}}{I_{max}^2} = \frac{12,522W}{(0,696A)^2} = 25,875\ohm
+	R_{eq1} = \frac{P_{sc}}{I_{max}^2} = \frac{14,7}{(0,696A)^2} = 30,35\ohm
 \end{equation}
 \begin{equation}
-	\left|Z_{eq1}\right| = \frac{V_{sc}}{I_{max}} = \frac{18V}{0,696A} = 25,875\ohm
+	\left|Z_{eq1}\right| = \frac{V_{sc}}{I_{max}} = \frac{19,5V}{0,696A} = 28,02\ohm
 \end{equation}
 \begin{equation}
-	X_{eq1} = \sqrt{\left(\left|Z_{eq1}\right|\right)^2 - R_{eq1}^2} = 0
+	X_{eq1} = \sqrt{\left(\left|Z_{eq1}\right|\right)^2 - R_{eq1}^2} = \sqrt{\left(\left|28,02\right|\right)^2 - 30,35^2} = 11,66 * j
 \end{equation}
 \begin{equation}
-	Z_{eq1} = R_{eq1} + j * X_{eq1} = 25,875\ohm
+	Z_{eq1} = R_{eq1} + j * \left|X_{eq1}\right| = 30,35 + 11,66 * j
 \end{equation}
-
 
 Open-circuit testen forbinder en 230V spændingskilde til primær-siden og sekundær-siden står ubelastet.
 
@@ -318,15 +308,14 @@ Open-circuit testen forbinder en 230V spændingskilde til primær-siden og sekun
 \end{figure}
 
 
-Spændingen på skille-varioen sættes til 230VAC. Tomgangsstrømmen skal aflæses og den aktive effekt beregnes:
+Spændingen på skille-varioen sættes til 230VAC. Tomgangsstrømmen og den aktive effekt skal aflæses:
 
 \begin{equation}
-	I_{oc} = 10mA
+	I_{oc} = 9mA
 \end{equation}
 \begin{equation}
-	P_{oc} = V_{rated} * I_{oc} = 230V * 10mA = 2,3W
+	P_{oc} = 1,2W
 \end{equation}
-
 
 Nu kan tabene beregnes:
 
@@ -340,16 +329,16 @@ Nu kan tabene beregnes:
 	V_1 = \frac{N_1}{N_2} * V_{rated} = \frac{12}{230} * 230 = 12V
 \end{equation}
 \begin{equation}
-	G_C = \frac{P_{oc}}{V_1^2} = \frac{2,3W}{12V^2} = 16mS
+	G_c = \frac{P_{oc}}{V_1^2} = \frac{1,2W}{12V^2} = 8,33mS
 \end{equation}
 \begin{equation}
-	\left|Y_m\right| = \frac{\frac{N_2}{N_1} * I_{oc}}{V_1} = \frac{\frac{230}{12} * 10mA}{12V} = 16mS
+	\left|Y_m\right| = \frac{\frac{N_2}{N_1} * I_{oc}}{V_1} = \frac{\frac{230}{12} * 9mA}{12V} = 14,38mS
 \end{equation}
 \begin{equation}
-	B_m = \sqrt{\left|Y_m\right|^2 - G_C^2} = 0
+	B_m = \sqrt{\left|Y_m\right|^2 - G_c^2} = \sqrt{0,01438^2 - 0,00833^2} = 0,01172
 \end{equation}
 \begin{equation}
-	Y_m = G_C = j * B_m = 16mS
+	Y_m = G_c + j * B_m = 8,33*10^{-3} + 11,72^{-3} * j
 \end{equation}
 
 
