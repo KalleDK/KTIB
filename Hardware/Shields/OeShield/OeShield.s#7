@@ -5185,6 +5185,28 @@ Grid 2.54 mm&lt;p&gt;
 <text x="-2.794" y="1.778" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2.794" y="-3.048" size="1.27" layer="27">&gt;VALUE</text>
 </package>
+<package name="4POL254">
+<description>&lt;b&gt;PHOENIX CONNECTOR&lt;/b&gt;</description>
+<wire x1="-5.21" y1="-1.45" x2="5.21" y2="-1.45" width="0.254" layer="21"/>
+<wire x1="5.21" y1="-1.45" x2="5.21" y2="1.45" width="0.254" layer="21"/>
+<wire x1="5.21" y1="1.45" x2="-5.21" y2="1.45" width="0.254" layer="21"/>
+<wire x1="-5.21" y1="1.45" x2="-5.21" y2="-1.45" width="0.254" layer="21"/>
+<wire x1="-5.1" y1="1.1" x2="5.1" y2="1.1" width="0.1524" layer="21"/>
+<wire x1="-4.445" y1="-0.508" x2="-3.302" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="-2.032" y1="-0.254" x2="-0.508" y2="0.127" width="0.1524" layer="51"/>
+<wire x1="0.762" y1="0.635" x2="1.778" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="3.048" y1="0.381" x2="4.572" y2="-0.381" width="0.1524" layer="51"/>
+<circle x="-3.81" y="0" radius="0.889" width="0.1524" layer="51"/>
+<circle x="-1.27" y="0" radius="0.889" width="0.1524" layer="51"/>
+<circle x="1.27" y="0" radius="0.889" width="0.1524" layer="51"/>
+<circle x="3.81" y="0" radius="0.889" width="0.1524" layer="51"/>
+<pad name="1" x="-3.81" y="0" drill="1.2" shape="long" rot="R90"/>
+<pad name="2" x="-1.27" y="0" drill="1.2" shape="long" rot="R90"/>
+<pad name="3" x="1.27" y="0" drill="1.2" shape="long" rot="R90"/>
+<pad name="4" x="3.81" y="0" drill="1.2" shape="long" rot="R90"/>
+<text x="-5.334" y="1.778" size="1.27" layer="25">&gt;NAME</text>
+<text x="-5.334" y="-3.048" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="SKB">
@@ -5238,6 +5260,33 @@ Grid 2.54 mm&lt;p&gt;
 <connects>
 <connect gate="-1" pin="1" pad="1"/>
 <connect gate="-2" pin="1" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="MF" value="" constant="no"/>
+<attribute name="MPN" value="" constant="no"/>
+<attribute name="OC_FARNELL" value="unknown" constant="no"/>
+<attribute name="OC_NEWARK" value="unknown" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MPT4" prefix="X" uservalue="yes">
+<description>&lt;b&gt;PHOENIX CONNECTOR&lt;/b&gt;</description>
+<gates>
+<gate name="-1" symbol="SKB" x="0" y="10.16" addlevel="always"/>
+<gate name="-2" symbol="SKB" x="0" y="5.08" addlevel="always"/>
+<gate name="-3" symbol="SKB" x="0" y="0" addlevel="always"/>
+<gate name="-4" symbol="SKBV" x="0" y="-5.08" addlevel="always"/>
+</gates>
+<devices>
+<device name="" package="4POL254">
+<connects>
+<connect gate="-1" pin="1" pad="1"/>
+<connect gate="-2" pin="1" pad="2"/>
+<connect gate="-3" pin="1" pad="3"/>
+<connect gate="-4" pin="1" pad="4"/>
 </connects>
 <technologies>
 <technology name="">
@@ -5947,14 +5996,25 @@ W = angled&lt;p&gt;
 <part name="J4" library="con-lsta" deviceset="FE08-1" device=""/>
 <part name="J3" library="con-lsta" deviceset="FE10-1" device=""/>
 <part name="J1" library="con-lsta" deviceset="FE08-1" device=""/>
+<part name="JORDFUGT" library="con-phoenix-254" deviceset="MPT4" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="-55.88" y="109.22" size="1.778" layer="91">Ventilstyring
 Inflow</text>
-<text x="81.28" y="60.96" size="1.778" layer="91">RS Converter
+<text x="53.34" y="106.68" size="1.778" layer="91">RS Converter
 OeBus</text>
+<text x="50.8" y="20.32" size="1.778" layer="91">Pin configuration ver.1
+Dato: 	20150517
+Author: KE
+
+OePrint - Pinassignment VER 1
+
+P4_0	SCl
+P4_1	SDA
+GND	GND
++5V	VBUS</text>
 </plain>
 <instances>
 <instance part="Q1" gate="G$1" x="-27.94" y="86.36"/>
@@ -5971,34 +6031,34 @@ OeBus</text>
 <attribute name="VALUE" x="-37.719" y="102.616" size="1.778" layer="96"/>
 </instance>
 <instance part="GND7" gate="1" x="-40.64" y="106.68" rot="R270"/>
-<instance part="IC2" gate="G$1" x="116.84" y="48.26"/>
-<instance part="R6" gate="G$1" x="101.6" y="33.02" rot="R90"/>
-<instance part="P+5" gate="VCC" x="137.16" y="66.04"/>
-<instance part="R7" gate="G$1" x="137.16" y="48.26" smashed="yes" rot="R180">
-<attribute name="NAME" x="137.414" y="52.8574" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="139.954" y="45.212" size="1.778" layer="96" rot="R180"/>
+<instance part="IC2" gate="G$1" x="88.9" y="93.98"/>
+<instance part="R6" gate="G$1" x="73.66" y="78.74" rot="R90"/>
+<instance part="P+5" gate="VCC" x="109.22" y="111.76"/>
+<instance part="R7" gate="G$1" x="109.22" y="93.98" smashed="yes" rot="R180">
+<attribute name="NAME" x="109.474" y="98.5774" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="112.014" y="90.932" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="C5" gate="G$1" x="139.7" y="60.96" smashed="yes" rot="R90">
-<attribute name="NAME" x="143.256" y="65.659" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="143.256" y="58.039" size="1.778" layer="96" rot="R180"/>
+<instance part="C5" gate="G$1" x="111.76" y="106.68" smashed="yes" rot="R90">
+<attribute name="NAME" x="115.316" y="111.379" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="115.316" y="103.759" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND11" gate="1" x="149.86" y="60.96" rot="R90"/>
+<instance part="GND11" gate="1" x="121.92" y="106.68" rot="R90"/>
 <instance part="R1" gate="G$1" x="-30.48" y="78.74" smashed="yes" rot="R270">
 <attribute name="NAME" x="-35.0774" y="78.994" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="-28.956" y="80.264" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="GND16" gate="1" x="101.6" y="25.4"/>
-<instance part="OE_BUS" gate="-1" x="170.18" y="33.02" smashed="yes">
-<attribute name="NAME" x="164.846" y="34.925" size="1.778" layer="95"/>
-<attribute name="VALUE" x="184.15" y="32.131" size="1.778" layer="96"/>
+<instance part="GND16" gate="1" x="73.66" y="71.12"/>
+<instance part="OE_BUS" gate="-1" x="142.24" y="78.74" smashed="yes">
+<attribute name="NAME" x="136.906" y="80.645" size="1.778" layer="95"/>
+<attribute name="VALUE" x="156.21" y="77.851" size="1.778" layer="96"/>
 </instance>
-<instance part="OE_BUS" gate="-2" x="170.18" y="25.4" smashed="yes">
-<attribute name="NAME" x="164.846" y="27.305" size="1.778" layer="95"/>
-<attribute name="VALUE" x="184.15" y="24.511" size="1.778" layer="96"/>
+<instance part="OE_BUS" gate="-2" x="142.24" y="71.12" smashed="yes">
+<attribute name="NAME" x="136.906" y="73.025" size="1.778" layer="95"/>
+<attribute name="VALUE" x="156.21" y="70.231" size="1.778" layer="96"/>
 </instance>
-<instance part="OE_BUS" gate="-3" x="170.18" y="17.78" smashed="yes">
-<attribute name="NAME" x="165.354" y="19.685" size="1.778" layer="95"/>
-<attribute name="VALUE" x="184.15" y="16.891" size="1.778" layer="96"/>
+<instance part="OE_BUS" gate="-3" x="142.24" y="63.5" smashed="yes">
+<attribute name="NAME" x="137.414" y="65.405" size="1.778" layer="95"/>
+<attribute name="VALUE" x="156.21" y="62.611" size="1.778" layer="96"/>
 </instance>
 <instance part="I_VALVE" gate="-1" x="-71.12" y="55.118" smashed="yes" rot="R180">
 <attribute name="NAME" x="-61.976" y="58.293" size="1.778" layer="95" rot="R180"/>
@@ -6020,6 +6080,19 @@ OeBus</text>
 <attribute name="VALUE" x="-39.37" y="10.16" size="1.778" layer="96" rot="R180"/>
 <attribute name="NAME" x="-40.894" y="10.414" size="1.778" layer="95" rot="R180"/>
 </instance>
+<instance part="JORDFUGT" gate="-1" x="165.1" y="43.18" smashed="yes">
+<attribute name="NAME" x="161.036" y="45.085" size="1.778" layer="95"/>
+</instance>
+<instance part="JORDFUGT" gate="-2" x="165.1" y="38.1" smashed="yes">
+<attribute name="NAME" x="161.036" y="40.005" size="1.778" layer="95"/>
+</instance>
+<instance part="JORDFUGT" gate="-3" x="165.1" y="33.02" smashed="yes">
+<attribute name="NAME" x="161.036" y="34.925" size="1.778" layer="95"/>
+</instance>
+<instance part="JORDFUGT" gate="-4" x="165.1" y="27.94" smashed="yes">
+<attribute name="NAME" x="161.036" y="29.845" size="1.778" layer="95"/>
+<attribute name="VALUE" x="164.084" y="24.638" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -6037,7 +6110,7 @@ OeBus</text>
 <segment>
 <pinref part="C5" gate="G$1" pin="2"/>
 <pinref part="GND11" gate="1" pin="GND"/>
-<wire x1="147.32" y1="60.96" x2="144.78" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="106.68" x2="116.84" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND6" gate="1" pin="GND"/>
@@ -6045,15 +6118,15 @@ OeBus</text>
 </segment>
 <segment>
 <pinref part="R6" gate="G$1" pin="1"/>
-<wire x1="101.6" y1="27.94" x2="132.08" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="27.94" x2="132.08" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="73.66" x2="104.14" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="73.66" x2="104.14" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="GND"/>
-<wire x1="132.08" y1="40.64" x2="129.54" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="40.64" x2="144.78" y2="40.64" width="0.1524" layer="91"/>
-<label x="144.78" y="40.64" size="1.778" layer="95" xref="yes"/>
-<junction x="132.08" y="40.64"/>
+<wire x1="104.14" y1="86.36" x2="101.6" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="86.36" x2="116.84" y2="86.36" width="0.1524" layer="91"/>
+<label x="116.84" y="86.36" size="1.778" layer="95" xref="yes"/>
+<junction x="104.14" y="86.36"/>
 <pinref part="GND16" gate="1" pin="GND"/>
-<junction x="101.6" y="27.94"/>
+<junction x="73.66" y="73.66"/>
 </segment>
 <segment>
 <label x="10.16" y="2.54" size="1.778" layer="95" xref="yes"/>
@@ -6072,13 +6145,18 @@ OeBus</text>
 </segment>
 <segment>
 <pinref part="OE_BUS" gate="-3" pin="1"/>
-<wire x1="167.64" y1="17.78" x2="165.1" y2="17.78" width="0.1524" layer="91"/>
-<label x="165.1" y="17.78" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="139.7" y1="63.5" x2="137.16" y2="63.5" width="0.1524" layer="91"/>
+<label x="137.16" y="63.5" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="J2" gate="1" pin="13"/>
 <wire x1="-33.02" y1="-38.1" x2="-30.48" y2="-38.1" width="0.1524" layer="91"/>
 <label x="-30.48" y="-38.1" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="JORDFUGT" gate="-4" pin="1"/>
+<wire x1="162.56" y1="27.94" x2="157.48" y2="27.94" width="0.1524" layer="91"/>
+<label x="157.48" y="27.94" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="P0_1" class="0">
@@ -6114,12 +6192,12 @@ OeBus</text>
 <net name="VCC" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="VCC"/>
-<wire x1="129.54" y1="55.88" x2="137.16" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="101.6" x2="109.22" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
-<wire x1="137.16" y1="63.5" x2="137.16" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="109.22" x2="109.22" y2="106.68" width="0.1524" layer="91"/>
 <pinref part="C5" gate="G$1" pin="1"/>
-<wire x1="137.16" y1="60.96" x2="137.16" y2="55.88" width="0.1524" layer="91"/>
-<junction x="137.16" y="60.96"/>
+<wire x1="109.22" y1="106.68" x2="109.22" y2="101.6" width="0.1524" layer="91"/>
+<junction x="109.22" y="106.68"/>
 </segment>
 </net>
 <net name="I_VALVE_T1" class="0">
@@ -6146,60 +6224,65 @@ OeBus</text>
 <net name="P4_0" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="RO"/>
-<wire x1="104.14" y1="55.88" x2="99.06" y2="55.88" width="0.1524" layer="91"/>
-<label x="99.06" y="55.88" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="76.2" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
+<label x="71.12" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <label x="2.54" y="10.16" size="1.778" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="10"/>
 <wire x1="2.54" y1="10.16" x2="0" y2="10.16" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="JORDFUGT" gate="-2" pin="1"/>
+<wire x1="162.56" y1="38.1" x2="157.48" y2="38.1" width="0.1524" layer="91"/>
+<label x="157.48" y="38.1" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
 </net>
 <net name="OE_TX_ENA" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="!RE!"/>
-<wire x1="104.14" y1="50.8" x2="101.6" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="101.6" y1="50.8" x2="101.6" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="96.52" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="DE"/>
-<wire x1="104.14" y1="45.72" x2="101.6" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="50.8" x2="101.6" y2="50.8" width="0.1524" layer="91"/>
-<junction x="101.6" y="50.8"/>
-<label x="99.06" y="50.8" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="76.2" y1="91.44" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
+<junction x="73.66" y="96.52"/>
+<label x="71.12" y="96.52" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="R6" gate="G$1" pin="2"/>
-<wire x1="101.6" y1="45.72" x2="101.6" y2="38.1" width="0.1524" layer="91"/>
-<junction x="101.6" y="45.72"/>
+<wire x1="73.66" y1="91.44" x2="73.66" y2="83.82" width="0.1524" layer="91"/>
+<junction x="73.66" y="91.44"/>
 </segment>
 </net>
 <net name="OE_DIFF+" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="B"/>
-<wire x1="129.54" y1="50.8" x2="132.08" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="96.52" x2="104.14" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="R7" gate="G$1" pin="2"/>
-<wire x1="132.08" y1="50.8" x2="144.78" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="48.26" x2="132.08" y2="50.8" width="0.1524" layer="91"/>
-<junction x="132.08" y="50.8"/>
-<label x="144.78" y="50.8" size="1.778" layer="95" xref="yes"/>
+<wire x1="104.14" y1="96.52" x2="116.84" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="93.98" x2="104.14" y2="96.52" width="0.1524" layer="91"/>
+<junction x="104.14" y="96.52"/>
+<label x="116.84" y="96.52" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="OE_BUS" gate="-1" pin="1"/>
-<wire x1="167.64" y1="33.02" x2="165.1" y2="33.02" width="0.1524" layer="91"/>
-<label x="165.1" y="33.02" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="139.7" y1="78.74" x2="137.16" y2="78.74" width="0.1524" layer="91"/>
+<label x="137.16" y="78.74" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="OE_DIFF-" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="A"/>
-<wire x1="144.78" y1="45.72" x2="142.24" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="91.44" x2="114.3" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="R7" gate="G$1" pin="1"/>
-<wire x1="142.24" y1="45.72" x2="129.54" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="142.24" y1="48.26" x2="142.24" y2="45.72" width="0.1524" layer="91"/>
-<junction x="142.24" y="45.72"/>
-<label x="144.78" y="45.72" size="1.778" layer="95" xref="yes"/>
+<wire x1="114.3" y1="91.44" x2="101.6" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="93.98" x2="114.3" y2="91.44" width="0.1524" layer="91"/>
+<junction x="114.3" y="91.44"/>
+<label x="116.84" y="91.44" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="OE_BUS" gate="-2" pin="1"/>
-<wire x1="167.64" y1="25.4" x2="165.1" y2="25.4" width="0.1524" layer="91"/>
-<label x="165.1" y="25.4" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="139.7" y1="71.12" x2="137.16" y2="71.12" width="0.1524" layer="91"/>
+<label x="137.16" y="71.12" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="P1_5" class="0">
@@ -6231,8 +6314,13 @@ OeBus</text>
 </segment>
 <segment>
 <pinref part="IC2" gate="G$1" pin="DI"/>
-<wire x1="104.14" y1="40.64" x2="99.06" y2="40.64" width="0.1524" layer="91"/>
-<label x="99.06" y="40.64" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="76.2" y1="86.36" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
+<label x="71.12" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="JORDFUGT" gate="-3" pin="1"/>
+<wire x1="162.56" y1="33.02" x2="157.48" y2="33.02" width="0.1524" layer="91"/>
+<label x="157.48" y="33.02" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="P1_7" class="0">
@@ -6376,6 +6464,11 @@ OeBus</text>
 <label x="-58.42" y="-5.08" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="J1" gate="G$1" pin="5"/>
 <wire x1="-48.26" y1="-5.08" x2="-58.42" y2="-5.08" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="JORDFUGT" gate="-1" pin="1"/>
+<wire x1="162.56" y1="43.18" x2="157.48" y2="43.18" width="0.1524" layer="91"/>
+<label x="157.48" y="43.18" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="VIN" class="0">

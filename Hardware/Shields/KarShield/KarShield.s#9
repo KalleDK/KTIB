@@ -7232,11 +7232,11 @@ Grid 2.54 mm&lt;p&gt;
 <part name="S1" library="switch-omron" deviceset="31-XX" device=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
 <part name="PH_BNC" library="con-coax" deviceset="?227161*" device="1-" technology="-0" value=""/>
-<part name="I_VALVE" library="con-phoenix-254" deviceset="MPT3" device=""/>
-<part name="O_VALVE" library="con-phoenix-254" deviceset="MPT3" device=""/>
 <part name="PUMP" library="con-phoenix-254" deviceset="MPT2" device=""/>
 <part name="KAR_BUS" library="con-phoenix-254" deviceset="MPT3" device=""/>
 <part name="OE_BUS" library="con-phoenix-254" deviceset="MPT3" device=""/>
+<part name="O_VALVE" library="con-phoenix-254" deviceset="MPT2" device=""/>
+<part name="I_VALVE" library="con-phoenix-254" deviceset="MPT2" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7253,7 +7253,7 @@ OeBus</text>
 <text x="134.62" y="12.7" size="1.778" layer="91">pH Sensor</text>
 <text x="5.08" y="68.58" size="1.778" layer="91">Flow Sensor</text>
 <text x="35.56" y="-48.26" size="1.778" layer="91">Pin configuration ver.1
-Dato: 	20150517
+Dato:  20150517
 Author: KE
 
 KarPrint - Pinassignment
@@ -7326,10 +7326,10 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="143.256" y="116.459" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="143.256" y="108.839" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND7" gate="1" x="-53.34" y="111.76" rot="R270"/>
-<instance part="GND8" gate="1" x="-12.7" y="111.76" rot="R270"/>
-<instance part="GND9" gate="1" x="38.1" y="111.76" rot="R270"/>
-<instance part="GND10" gate="1" x="144.78" y="111.76" rot="R90"/>
+<instance part="GND7" gate="1" x="-55.88" y="111.76" rot="R270"/>
+<instance part="GND8" gate="1" x="-15.24" y="111.76" rot="R270"/>
+<instance part="GND9" gate="1" x="33.02" y="111.76" rot="R270"/>
+<instance part="GND10" gate="1" x="149.86" y="111.76" rot="R90"/>
 <instance part="IC2" gate="G$1" x="116.84" y="48.26"/>
 <instance part="R6" gate="G$1" x="101.6" y="33.02" rot="R90"/>
 <instance part="P+5" gate="VCC" x="137.16" y="66.04"/>
@@ -7341,7 +7341,7 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="143.256" y="65.659" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="143.256" y="58.039" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND11" gate="1" x="144.78" y="60.96" rot="R90"/>
+<instance part="GND11" gate="1" x="149.86" y="60.96" rot="R90"/>
 <instance part="R3" gate="G$1" x="48.26" y="83.82" smashed="yes" rot="R270">
 <attribute name="NAME" x="43.6626" y="84.074" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="50.292" y="85.598" size="1.778" layer="96" rot="R270"/>
@@ -7359,7 +7359,7 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="168.656" y="12.319" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="168.656" y="4.699" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND12" gate="1" x="170.18" y="7.62" rot="R90"/>
+<instance part="GND12" gate="1" x="175.26" y="7.62" rot="R90"/>
 <instance part="C7" gate="G$1" x="152.4" y="-2.54" smashed="yes">
 <attribute name="NAME" x="149.479" y="-6.096" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="157.099" y="-6.096" size="1.778" layer="96" rot="R90"/>
@@ -7389,22 +7389,6 @@ P0_2 - debugTX -</text>
 <instance part="PH_BNC" gate="G$1" x="172.72" y="-2.54" smashed="yes" rot="R180">
 <attribute name="VALUE" x="175.26" y="2.54" size="1.778" layer="96" rot="R180"/>
 <attribute name="NAME" x="177.038" y="-10.668" size="1.778" layer="95" rot="R180"/>
-</instance>
-<instance part="I_VALVE" gate="-1" x="-71.12" y="62.738" smashed="yes" rot="R180">
-<attribute name="NAME" x="-61.468" y="66.421" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-85.09" y="63.627" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="I_VALVE" gate="-2" x="-71.12" y="68.58" smashed="yes" rot="R180">
-<attribute name="NAME" x="-61.468" y="72.263" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-85.09" y="69.469" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="O_VALVE" gate="-1" x="-71.12" y="49.53" smashed="yes" rot="R180">
-<attribute name="NAME" x="-59.944" y="53.467" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-85.09" y="50.419" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="O_VALVE" gate="-2" x="-71.12" y="55.88" smashed="yes" rot="R180">
-<attribute name="NAME" x="-60.198" y="59.563" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-85.09" y="56.769" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="PUMP" gate="-1" x="-71.374" y="37.592" smashed="yes" rot="R180">
 <attribute name="NAME" x="-64.516" y="41.021" size="1.778" layer="95" rot="R180"/>
@@ -7438,6 +7422,20 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="165.354" y="19.685" size="1.778" layer="95"/>
 <attribute name="VALUE" x="184.15" y="16.891" size="1.778" layer="96"/>
 </instance>
+<instance part="O_VALVE" gate="-1" x="-71.374" y="49.53" smashed="yes" rot="R180">
+<attribute name="NAME" x="-59.69" y="52.705" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="O_VALVE" gate="-2" x="-71.12" y="55.88" smashed="yes" rot="R180">
+<attribute name="NAME" x="-59.182" y="59.563" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-85.09" y="56.769" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="I_VALVE" gate="-1" x="-71.12" y="62.738" smashed="yes" rot="R180">
+<attribute name="NAME" x="-61.976" y="65.913" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="I_VALVE" gate="-2" x="-71.12" y="68.58" smashed="yes" rot="R180">
+<attribute name="NAME" x="-61.722" y="72.263" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-85.09" y="69.469" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -7461,22 +7459,20 @@ P0_2 - debugTX -</text>
 <segment>
 <pinref part="C1" gate="G$1" pin="2"/>
 <pinref part="GND7" gate="1" pin="GND"/>
-<wire x1="-50.8" y1="111.76" x2="-53.34" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="GND8" gate="1" pin="GND"/>
-<wire x1="-10.16" y1="111.76" x2="-12.7" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
 <pinref part="GND10" gate="1" pin="GND"/>
-<wire x1="142.24" y1="111.76" x2="144.78" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="111.76" x2="144.78" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="2"/>
 <pinref part="GND11" gate="1" pin="GND"/>
-<wire x1="142.24" y1="60.96" x2="144.78" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="60.96" x2="144.78" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
@@ -7540,6 +7536,7 @@ P0_2 - debugTX -</text>
 <wire x1="25.4" y1="45.72" x2="25.4" y2="25.4" width="0.1524" layer="91"/>
 <junction x="25.4" y="25.4"/>
 <pinref part="GND14" gate="1" pin="GND"/>
+<junction x="25.4" y="17.78"/>
 </segment>
 <segment>
 <pinref part="R10" gate="G$1" pin="1"/>
@@ -7581,6 +7578,16 @@ P0_2 - debugTX -</text>
 <wire x1="167.64" y1="17.78" x2="165.1" y2="17.78" width="0.1524" layer="91"/>
 <label x="165.1" y="17.78" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
+<segment>
+<pinref part="C3" gate="G$1" pin="2"/>
+<pinref part="GND9" gate="1" pin="GND"/>
+<wire x1="35.56" y1="111.76" x2="38.1" y2="111.76" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND12" gate="1" pin="GND"/>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="172.72" y1="7.62" x2="170.18" y2="7.62" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="P0_1" class="0">
 <segment>
@@ -7606,6 +7613,11 @@ P0_2 - debugTX -</text>
 <pinref part="C3" gate="G$1" pin="1"/>
 <junction x="53.34" y="111.76"/>
 </segment>
+<segment>
+<pinref part="PUMP" gate="-1" pin="1"/>
+<wire x1="-68.834" y1="37.592" x2="-63.5" y2="37.592" width="0.1524" layer="91"/>
+<label x="-63.5" y="37.592" size="1.778" layer="95" xref="yes"/>
+</segment>
 </net>
 <net name="PUMP_T2_GND" class="0">
 <segment>
@@ -7616,6 +7628,11 @@ P0_2 - debugTX -</text>
 <label x="55.88" y="96.52" size="1.778" layer="95" xref="yes"/>
 <wire x1="53.34" y1="96.52" x2="55.88" y2="96.52" width="0.1524" layer="91"/>
 <junction x="53.34" y="96.52"/>
+</segment>
+<segment>
+<pinref part="PUMP" gate="-2" pin="1"/>
+<wire x1="-68.58" y1="43.18" x2="-63.5" y2="43.18" width="0.1524" layer="91"/>
+<label x="-63.5" y="43.18" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="I_VALVE_T2" class="0">
@@ -7629,9 +7646,9 @@ P0_2 - debugTX -</text>
 <junction x="-40.64" y="96.52"/>
 </segment>
 <segment>
-<pinref part="I_VALVE" gate="-2" pin="1"/>
 <wire x1="-68.58" y1="68.58" x2="-63.5" y2="68.58" width="0.1524" layer="91"/>
 <label x="-63.5" y="68.58" size="1.778" layer="95" xref="yes"/>
+<pinref part="I_VALVE" gate="-2" pin="1"/>
 </segment>
 </net>
 <net name="O_VALVE_T2" class="0">
@@ -7645,9 +7662,9 @@ P0_2 - debugTX -</text>
 <wire x1="0" y1="96.52" x2="2.54" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="O_VALVE" gate="-2" pin="1"/>
 <wire x1="-68.58" y1="55.88" x2="-63.5" y2="55.88" width="0.1524" layer="91"/>
 <label x="-63.5" y="55.88" size="1.778" layer="95" xref="yes"/>
+<pinref part="O_VALVE" gate="-2" pin="1"/>
 </segment>
 </net>
 <net name="KAR_TX_ENA" class="0">
@@ -7741,9 +7758,9 @@ P0_2 - debugTX -</text>
 <junction x="-40.64" y="111.76"/>
 </segment>
 <segment>
-<pinref part="I_VALVE" gate="-1" pin="1"/>
 <wire x1="-68.58" y1="62.738" x2="-64.008" y2="62.738" width="0.1524" layer="91"/>
 <label x="-64.008" y="62.738" size="1.778" layer="95" xref="yes"/>
+<pinref part="I_VALVE" gate="-1" pin="1"/>
 </segment>
 </net>
 <net name="O_VALVE_T1" class="0">
@@ -7762,7 +7779,6 @@ P0_2 - debugTX -</text>
 <junction x="0" y="111.76"/>
 </segment>
 <segment>
-<pinref part="O_VALVE" gate="-1" pin="1"/>
 <wire x1="-68.58" y1="49.53" x2="-63.5" y2="49.53" width="0.1524" layer="91"/>
 <label x="-63.5" y="49.53" size="1.778" layer="95" xref="yes"/>
 </segment>
@@ -7919,13 +7935,6 @@ P0_2 - debugTX -</text>
 <wire x1="20.32" y1="48.26" x2="20.32" y2="30.48" width="0.1524" layer="91"/>
 <pinref part="74HC08" gate="G$1" pin="1B"/>
 <wire x1="20.32" y1="30.48" x2="30.48" y2="30.48" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="PUMP_T2" class="0">
-<segment>
-<pinref part="PUMP" gate="-2" pin="1"/>
-<wire x1="-68.58" y1="43.18" x2="-63.5" y2="43.18" width="0.1524" layer="91"/>
-<label x="-63.5" y="43.18" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="P4_1" class="0">
@@ -8182,13 +8191,6 @@ P0_2 - debugTX -</text>
 <pinref part="U1" gate="G$1" pin="A0"/>
 <wire x1="5.08" y1="-5.08" x2="15.24" y2="-5.08" width="0.1524" layer="91"/>
 <label x="15.24" y="-5.08" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="PUMP_T1" class="0">
-<segment>
-<pinref part="PUMP" gate="-1" pin="1"/>
-<wire x1="-68.834" y1="37.592" x2="-63.5" y2="37.592" width="0.1524" layer="91"/>
-<label x="-63.5" y="37.592" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="COUNT" class="0">
