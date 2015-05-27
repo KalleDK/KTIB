@@ -8,7 +8,7 @@ Bemærk der er 2 ventiler og 2 RS485
 
 \PakkeDiagram{0.82}{Kar}{Kar}
 
-Hovedtrådens opgave er at lytte efter beskeder fra FlexPMS, 
+Mainloopets opgave er at lytte efter beskeder fra FlexPMS, 
 hvis der ingen er, polles en enkelt Sensor Ø. Hvis FlexPMS 
 sender en besked, der kræver at en besked sendes videre til 
 en Sensor Ø, bliver der hverken pollet eller lyttet mere 
@@ -17,6 +17,7 @@ på KarBussen, før der er kommet retursvar.
 \StateDiagram{0.82}{Kar}{Kar}
 
 \subsection{Funktioner}
+Her ses funktionerne der er tilknyttet komponenten.
 
 \funk{void pollKarSensor()}
 {Aflæser alle sensorerne på karret}

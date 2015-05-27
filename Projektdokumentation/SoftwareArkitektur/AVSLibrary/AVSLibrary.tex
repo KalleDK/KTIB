@@ -2,18 +2,18 @@
 
 AVSLibrary'et er en samling af custom Psoc4 komponenter, 
 der gør det lettere at overskue og udvikle selve Kar, Sensor Ø og Fieldsensor. 
-Der er mange ting der bliver lettere, hvis ventilerne skal inverte signalet, 
-er det et enkelt sted dette skal ændres, og så bliver det rettet i alle andre 
-projekter hvor de bruges. Der er også begrænsninger med hensynt til at have 
+Der er mange ting der bliver lettere. Hvis ventilerne skal inverte signalet, 
+er det et enkelt sted dette skal ændres. Derefter bliver det automatisk rettet i alle andre 
+projekter hvor den bruges. Der er også begrænsninger med hensyn til at have 
 shared kode. Enums og Struct er fælles på tværs af komponenterne, for at 
 sikre at Enums har de rigtige værdier og Structs er lettere at håndtere et 
-samlet sted. Fieldsensor er blevet meget strømlinet via dette, da man 
+samlet sted. \\ Fieldsensor er blevet meget strømlinet via dette, da man 
 blot indsætter en SensorBus, konfigurerer I2C adresse og sætter den til 
 at være Fieldsensor. Derefter skal mainloopet blot opdateret high og low 
 værdierne, samt kalde Communicate funktionen. Skulle I2C delen udskiftes 
 med en anden bus ville det kunne gøres uden at påvirke de enkelte Fieldsensors. 
 De vil blot få den nye bus med næste gang den kompileres.
-Selve komponenterne er skrevet i noget "meta" c kode, da der er nogle 
+\\ Selve komponenterne er skrevet i noget "meta" c kode, da der er nogle 
 specielle Psoc macro koder der bruges til at generere den færdige c kode 
 for komponenten. Hvor den mest brugte er `\$INSTANCE\_NAME` som erstattes 
 af det navn brugeren vælger for komponenten, derfor bør alle metoder og variabler 

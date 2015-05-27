@@ -1,12 +1,12 @@
 \subsubsection{Formål}
 Denne komponents formål er at overtage 
-printf funktionen, og sende data strømmen fra denne ud 
+printf() funktionen, og sende data strømmen fra denne ud 
 via en UART. Ideen er at programmet kan kompileres med 
-og uden debug. Hvis debug er deaktiveret bliver printf 
+og uden debug. Hvis debug er deaktiveret bliver debug 
 data strømmen sendt i et sort hul, ellers bliver det 
 sendt ud af en UART. Dette gør at andre komponenter 
 blot skal inludere en header fil, og kan derefter bruge 
-printf uden at skulle tænke videre over det. Desuden giver 
+printf() uden at skulle tænke videre over det. Desuden giver 
 komponenten også mulighed for andre komponenter at koble 
 sig på en debug menu, så man kan sende kommandoer direkte 
 til de individuelle komponenter. Dette er gjort via 
@@ -19,6 +19,7 @@ tilbage til menuen og vælge en ny DebugHandle.
 \StateDiagram{0.82}{AVSLibrary}{DebugMenu}
 
 \subsubsection{Funktioner}
+Her ses funktionerne der er tilknyttet komponenten.
 
 \funk{int Debug\_printf(const char* string, ...)}
 {Er dokumenteret her, da det er en fri funktion, men hører til denne komponent.}
