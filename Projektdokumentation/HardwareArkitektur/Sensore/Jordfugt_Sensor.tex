@@ -1,7 +1,7 @@
 %!TEX root=../../../main.tex
-Selve jordfugt sensoren skal måle jordfugten i jorden således systemet kan vide hvornår en plante skal have vand. 
+Selve jordfugtsensoren skal måle fugten i jorden således at systemet kan vide hvornår et givent medie skal have vand. 
 
-Da vi ønsker at sensoren skal kommunikere over I2C igennem vores egen protokol, ønsker vi samtidig at levere en speciallavet jordfugt sensor med til systemet. Dette kræver at vi selv designer den. 
+Da det ønskes at sensoren skal kommunikere over I2C på en selvdesignet protokol, ønskes det samtidig at levere en speciallavet jordfugtsensor til systemet. Dette kræver at der designes én fra bunden.\newline 
 
 \subsection{Kapacitiv måling}
 Den første ide til at måle jordfugten gik ud på at måle den kapacitivt. Efter nogle hurtige søgninger på Google blev der hurtigt fundet frem til følgende dokument \footnote{\citet{transem:humiditysensor}}
@@ -15,10 +15,10 @@ $\epsilon$r ændre sig således med luftfugtigheden. Tanken var nu at det samme 
 	\label{photo:Kapsitiv_foeler}
 \end{figure}
 
-Til den hjemmebyggede pladekondensator blev der også opbygget en oscillator som varierede sin udgangsfrekvens afhængig af kondensatorens kapacitet. Dette kredsløb blev bygget med en LM555. Da pladekondensatoren var en kopi fra det før omtalte pdf dokument kom det ikke som en overraskelse at oscillatoren ændrede sin frekvens med næsten 50\% når pladekondensatoren blev holdt over dampen fra en kop kogende vand. Hvad der dog ikke var taget højde for var kapaciteten i tilledningerne, som ændrede sig hver gang pladekondensatoren blev flyttet. Det viste sig også at når pladekondensatoren blev trykket ned i jord stoppede oscillatoren med at oscillere. Det var hellere ikke muligt at måle kapaciteten med et LCR-meter og ideen blev derfor opgivet. 
+Til den hjemmebyggede pladekondensator blev der også opbygget en oscillator som varierede sin udgangsfrekvens afhængig af kondensatorens kapacitet. Dette kredsløb blev bygget med en LM555. Da pladekondensatoren var en kopi fra det før omtalte pdf dokument kom det ikke som en overraskelse at oscillatoren ændrede sin frekvens med næsten 50\% når pladekondensatoren blev holdt over dampen fra en kop kogende vand. Hvad der dog ikke var taget højde for var kapaciteten i tilledningerne, som ændrede sig hver gang pladekondensatoren blev flyttet. Det viste sig også at når pladekondensatoren blev trykket ned i jord stoppede oscillatoren med at oscillere. Det var hellere ikke muligt at måle kapaciteten med et LCR-meter og ideen blev derfor opgivet.\newline
 
 \subsection{Resistiv måling}
-Næste step var at finde en ny metode til at måle fugtigheden i jorden og denne opstod ved besøg på denne side \footnote{\citet{gardenbot:soilmoisture}} På siden bliver det beskrevet hvordan man kan måle fugtigheden i jorden rent resistivt. Desværre bliver der ikke givet nogle værdier på jordens ledeevne i forhold til fugtigheden og var derfor op til en selv at finde den. Ved en størrer søgning blev der fundet frem til oversigten i figur \ref{photo:Ledeevne_grundstoffer} Kilde\footnote{\citet{zonge:soilpermability}}
+Næste step var at finde en ny metode til at måle fugtigheden i jorden og denne opstod ved besøg på denne side \footnote{\citet{gardenbot:soilmoisture}} På siden bliver det beskrevet hvordan fugtigheden i jorden kan måles rent resistivt. Desværre bliver der ikke givet nogle værdier på jordens ledeevne i forhold til fugtigheden og var derfor op til én selv at finde den. Ved en større søgning blev der fundet frem til oversigten i figur \ref{photo:Ledeevne_grundstoffer} Kilde\footnote{\citet{zonge:soilpermability}}
 
 \begin{figure}[H]
 	\centering 
@@ -27,7 +27,7 @@ Næste step var at finde en ny metode til at måle fugtigheden i jorden og denne
 	\label{photo:Ledeevne_grundstoffer}
 \end{figure}
 
-Det ses her at Fx. Sandsten varierer fra en ledeevne på 0.5 til 0.003 Siemens/m. Dette er et meget stort spekter og det vil derfor være umuligt at sige noget om ledeevnen i vores jord uden at have målt den. For at kunne gøre dette krævede det at der blev lavet et jordspyd der kunne bruges til at lave målingen med. I figur \ref{photo:Ledeevne_grundstoffer} ses jordspyddet sænket ned i vand fra vandhanen, for at måle vandets ledeevne. Da jordspyddet er isoleret delvist med krympeflex, således at der er et fast areal på begge spyd der er i kontakt med vand vil det være muligt at beregne ledeevnen for vandet.
+Det ses her at f.eks. Sandsten varierer fra en ledeevne på 0.5 til 0.003 Siemens/m. Dette er et meget stort spektrum og det vil derfor være umuligt at sige noget om ledeevnen i jorden uden først at have målt den. For at kunne gøre dette krævede det at der blev lavet et jordspyd der kunne bruges til at lave målingen med. I figur \ref{photo:Ledeevne_grundstoffer} ses jordspyddet sænket ned i vand fra vandhanen, for at måle vandets ledeevne. Da jordspyddet er delvist isoleret med krympeflex er det et fast areal på begge spyd der er i kontakt med vand, og derfor vil det være muligt at beregne ledeevnen for vandet.
 
 \begin{figure}[H]
 	\centering 
@@ -43,14 +43,12 @@ Det ses her at Fx. Sandsten varierer fra en ledeevne på 0.5 til 0.003 Siemens/m
 	\label{photo:Elektrolyse}
 \end{figure}  
 
-På figur \ref{photo:Elektrolyse} ses at der desværre også forekommer elektrolyse ved denne målemetode. Der ses at katoden tiltrækker hydrogen atomer som sætter sig som luftbobler på kobberet. Ved en spænding på 30V var elektrolysen så kraftigt at kobberlaget på anoden ville være væk efter få minutter. Derfor konstanters det også at ved implementering af denne type måling må der kun gå strøm i jordspyddet i det øjeblik målingen bliver foretaget, for at undgå unødvendig slid. 
-\\*
-\\*
-Den mest interessante opdagelse blev gjort ved målingen af jorden. Her var teorien at ledeevnen ville stige lineært med fugtigheden. Det viste sig at være forkert og det lignede i stedet et fjerdegrads stigene polynomium, da måleresultaterne blev tegnet ind i Graph. Forinden havde det været et stort problem at finde ud af hvilken skala der skulle bruges til at måle fugtigheden, da der findes mange definitioner af den. Der blev fundet frem til at fugtigheden i tørvægt var den mest brugbare for geoteknikere og der var derfor den skala der blev valgt. Skalaen siger at hvis der er 100 gram ovntørret jord og 40 gram vand indeholder jorden 40\% fugtighed. I formlen står m for masse.
-$$ \mu = \frac{m_{wet}-m_{dry} }{m_{dry}}$$ 
-\\*
-\\*
-I figur \ref{photo:Opvejning} og \ref{photo:Maetningspunkt} ses hvordan målingerne af jordfugtigheden blev foretaget. 
+På figur \ref{photo:Elektrolyse} ses at der desværre også forekommer elektrolyse ved denne målemetode. Der ses at katoden tiltrækker hydrogen-atomer som sætter sig som luftbobler på kobberet. Ved en spænding på 30V var elektrolysen så kraftigt at kobberlaget på anoden ville være væk efter få minutter. Derfor konstanters det også at ved implementering af denne type måling må der kun gå strøm i jordspyddet i det øjeblik målingen bliver foretaget, for at undgå unødvendig slid.\newline
+
+Den mest interessante opdagelse blev gjort ved måling i jorden. Her var teorien at ledeevnen ville stige lineært med fugtigheden. Denne antagelse viste sig at være forkert, og ved plotning af målepunkterne i koordinatsystem, lignede det trendlinjen i stedet et stigende 4. polynomium. Forinden havde det været et stort problem at finde ud af hvilken måleskala der skulle benyttes til måling af fugtigheden, da der findes mange definitioner heraf. Der blev fundet frem til at fugtigheden i tørvægt var den mest brugbare for geoteknikere og derfor blev denne skala der blev valgt. Skalaen angiver, at hvis der er 100 gram ovntørret jord og 40 gram vand indeholder jorden 40\% fugtighed. I formlen står m for masse.
+$$ \mu = \frac{m_{wet}-m_{dry} }{m_{dry}}$$ \newline
+
+På figur \ref{photo:Opvejning} og \ref{photo:Maetningspunkt} ses hvordan målingerne af jordfugtigheden blev foretaget. 
 
 \begin{figure}[H]
 	\centering 
@@ -66,7 +64,7 @@ I figur \ref{photo:Opvejning} og \ref{photo:Maetningspunkt} ses hvordan målinge
 	\label{photo:Maetningspunkt}
 \end{figure}  
 
-I figur \ref{photo:Maetningspunkt} blev der lavet 7 målinger ved forskellig fugtighed. Ved en fugtighed på 25.6\% begyndte strømmen i jordspyddet at falde igen. Dette bliver et problem i det samlede system da systemet ikke kan vide om den måler i en overvandet plante. figur \ref{photo:Graph_jordfugtighed}. Viser regression af målepunkterne. 
+På figur \ref{photo:Maetningspunkt} blev der foretaget 7 målinger ved varierende fugtighed. Ved en fugtighed på 25.6\% begyndte strømmen i jordspyddet at falde igen. Dette bliver et problem i det samlede system da systemet ikke kan vide om den måler i en overvandet plante. På fig.\ref{photo:Graph_jordfugtighed} ses regression af målepunkterne. 
 
 \begin{figure}[H]
 	\centering 
@@ -75,21 +73,21 @@ I figur \ref{photo:Maetningspunkt} blev der lavet 7 målinger ved forskellig fug
 	\label{photo:Graph_jordfugtighed}
 \end{figure}  
 
-I figur \ref{photo:Graph_jordfugtighed} aflæsete vi regressionen af graften til at være:
+På figur \ref{photo:Graph_jordfugtighed} aflæses regressionen af grafen til:
 $$f(x) = 8.64*10^{-5}x^{3.77} $$
-Funktionen er udtrykket for strømmen i jordspyddet ved en given fugtighed. Dette kan med fordel omskrives til modstand ved brug af ohms lov. Den påtrykte spænding fra spændingsgeneratoren var 5V
+Funktionen er udtryk for strømmen i jordspyddet ved en given fugtighed. Dette kan med fordel omskrives til modstand ved brug af ohms lov. Den påtrykte spænding fra spændingsgeneratoren er 5V
 $$f(x) = \frac{5V}{{8.6388*10^{-5}*x^{3.78}*10^{-3}A}}$$
-Denne funktion kan bruges i en mikroprocessor med en analog til digital konverter, således strømmen kan omregnes til jordfugtigheden i procent.På figur \ref{photo:jordspyd_modstand} ses grafen over funktionen. 
+Denne funktion kan bruges i en MCU med en analog til digital konverter, således strømmen kan omregnes til jordfugtighed i procent. På figur \ref{photo:jordspyd_modstand} ses plot af funktionen. 
 
 \begin{figure}[H]
 	\centering 
 	\includegraphics[scale=0.4]{HardwareArkitektur/Sensore/Jordfugt_billeder/jordspyd_modstand.PNG}
-	\caption{Plot over modstanden i jordspyddet ved en given fugtighed.Grafen er et udsnit fra 10\% til 22\% for at gøre den mere overskuelig}
+	\caption{Plot over modstand i jordspyddet ved en given fugtighed. Grafen er et udsnit fra 10\% til 22\% for at gøre den mere overskuelig}
 	\label{photo:jordspyd_modstand}
 \end{figure}  
 
 \subsection{Test og opbygning}
-Næste punkt var at finde en metode til at måle modstanden i spyddet. Dette kunne gøres ved at koble jordspyddet som en spændingsdeler med en MOSFET transistor til at lede strømmen når der måles. På figur \ref{photo:jordspyd_diagram} ses diagrammet over forklaringen. 
+Næste punkt er at finde en metode til at måle modstanden i spyddet. Dette kan gøres ved at koble jordspyddet som spændingsdeler med en MOSFET-transistor til at lede strømmen når der måles. På figur \ref{photo:jordspyd_diagram} ses diagrammet over forklaringen. 
  
 \begin{figure}[H]
 	\centering 
@@ -98,11 +96,11 @@ Næste punkt var at finde en metode til at måle modstanden i spyddet. Dette kun
 	\label{photo:jordspyd_diagram}
 \end{figure} 
 
-Der opstilles følgende funktion for kredsløbet:
+Følgende funktion opstilles for kredsløbet:
 $$Rspyd=-{\frac {{Vout}\,{R1}}{{Vout}-{Vcc}}}$$
-Ved at isolere x ud fra funktionen på figur \ref{photo:jordspyd_modstand} kan vi få et udtryk for fugtigheden hvis vi kender modstanden. 
+Ved at isolere x i funktionen på fig.\ref{photo:jordspyd_modstand} fås et udtryk for fugtigheden hvis modstanden er kendt. 
 $$fugt=\frac{113.47}{Rspyd^{0.26472}}$$
-Disse to formler blev brugt i PSoC creator til at programmere en CY8C4245AXI-483 med en differentiel koblet analog til digital konverter. På figur \ref{photo:ADC} ses topdesignet i PSoC creator.    
+Disse to formler bliver brugt i PSoC-Creator til at programmere CY8C4245AXI-483 chippen med en differentielkoblet analog til digital konverter. På fig.\ref{photo:ADC} ses topdesignet i PSoC-Creator.    
 
 \begin{figure}[H]
 	\centering 
@@ -111,7 +109,7 @@ Disse to formler blev brugt i PSoC creator til at programmere en CY8C4245AXI-483
 	\label{photo:ADC}
 \end{figure} 
 
-I PSoC creator laves der en funktion der udlæser værdien fra ADC'en og omregner den til fugtighed. På et fumleboard opbygges der et kredsløb med et 4.7k potientometer og en 100ohms modstand koblet serielt. I fugur \ref{photo:debug100} ses debugging af første opbygning af funktionen.
+I PSoC-Creator oprettes en funktion der udlæser værdien fra ADC'en og omregner den til fugtighed. Kredsløbet opbygges på fumlebræt, med et 4.7k potientometer, samt en 100ohms modstand koblet serielt. På fig. \ref{photo:debug100} ses debugging af første iteration af funktionen.
 
 \begin{figure}[H]
 	\centering 
@@ -120,9 +118,9 @@ I PSoC creator laves der en funktion der udlæser værdien fra ADC'en og omregne
 	\label{photo:debug100}
 \end{figure} 
 
-Aflæser vi 100$\Omega$ på figur \ref{photo:jordspyd_modstand} kan vi se at en fugtighed på 33 stemmer fint overens med det forventede og funktion antages efter flere ligende resultater at virke. Efterfølgende er funktionen lavet om således den også kommunikerer med sensor ø'en. Den færdige kode fildes i bilagende. 
+Aflæses 100$\Omega$ på fig.\ref{photo:jordspyd_modstand} ses det at, en fugtighed på 33, stemmer fint overens med det forventede og funktion antages efter flere lignende resultater at virke efter hensigten. Efterfølgende er funktionen lavet om således den også kommunikerer med sensor Ø'en. Den færdige kode findes i bilagene under SoftwareArkitektur.\newline
 
-Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme program tegnet et printlayout. Dette ses på figur \ref{photo:Print_2}.
+Efterfølgende oprettes et kredsløbsdiagram i DesignSpark, og i samme program udarbejdes printlayout. Dette layout ses på fig.\ref{photo:Print_2}.
 
 \begin{figure}[H]
 	\centering 
@@ -131,18 +129,17 @@ Efterfølgende blev der tegnet et diagram i DesignSpark og der blev i samme prog
 	\label{photo:Print_2}
 \end{figure} 
 
-
-Det ses på printet at der er blevet lavet nogle modifikationer. Dette skyldes at der var glemt nogle pull op modstande, samt at DesignSpark havde valgt at ligge stel sammen med forsyningen. 
-Diagrammet blev derfor tegnet om til følgende i figur \ref{photo:Diagram_jordfugt} 
+Det ses på fig.\ref{photo:Print_2} at der er foretaget nogle modifikationer ved printet. Dette skyldes, at der i første iteration var glemt at implementere pull-up modstande, samt at DesignSpark, fejlagtigt havde valgt at ligge stel sammen med forsyningen. 
+Diagrammet blev derfor i 2.iteration modificeret til følgende fig.\ref{photo:Diagram_jordfugt}.
 
 \begin{figure}[H]
 	\centering 
 \includegraphics[scale=0.2]{HardwareArkitektur/Sensore/Jordfugt_billeder/Diagram_jordfugt.png}
-	\caption{Diagram over jordfugtmåleren}
+	\caption{Diagram over jordfugtsensoren}
 	\label{photo:Diagram_jordfugt}
 \end{figure} 
 
-Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket stik ud til at programmere PSoC'en. Ved at forbinde disse til vores Pioneer kit kan vi programmere PSoC'en igennem en PSoC 5 og på den måde undgå at skulle købe en programmeringsenhed. Det viste sig dog at der var flere problemer da det nye print blev lavet. Vi kunne sagens kommunikere med PSoC'en igennem programmerings stikket. Men det var umuligt at få nogen funktionalitet ud af den. Der blev brugt dage på at finde ud af hvad der kunne være galt, uden resultat. Det blev derfor besluttet at lave et shield til pioneer kittet. 
+Det ses af diagrammet på fig.\ref{photo:Diagram_jordfugt} at der er trukket pins ud til at programmere PSoC'en. Ved at forbinde disse til Pioneer-kittet kan PSoC'en programmeres igennem en PSoC-5, og på denne måde undgå at skulle købe en ekstern programmeringsenhed. Det viste sig dog at der var flere problemer da det nye print blev lavet. Der kunne sagens kommunikeres med PSoC'en igennem programmerings-pins'ne. Men derimod var det umuligt at få nogen funktionalitet ud af den. Der blev brugt dage på at finde en løsning på problem med desværre uden resultat. Det blev derfor besluttet at lave et shield til pioneer-kittet.
 
 \begin{figure}[H]
 	\centering 
@@ -159,7 +156,7 @@ Det ses på diagrammet i figur \ref{photo:Diagram_jordfugt} at der er trukket st
 \end{figure} 
 
 \subsubsection{Præcision og afvigelse}
-Vi kørte en test med det nye shield med jord taget fra blomsterbedet, foran Edison bygningen, ved ingeniørhøjskolen i Århus. Da vi ikke kendte ledeevnen i jorden eller fugtigheden målte vi først jorden da den var tør. Her målte vi fugtigheden til 3,5\%. Efterfølgende tilsatte vi 10\% vand og brugte denne blanding til at udregnede afvigelsen. Afvigelsen fik vi til 1,58\% med 95\% konfidens. 
+Der blev kørt et testprogram med det nye shield på måling i jord. Da hverken ledeevnen eller fugtigheden i jorden er kendt, måltes først jorden da den var tør. Her måltes fugtigheden til 3,5\%. Efterfølgende tilsattes 10\% vand og brugte denne blanding til at udregnede afvigelsen. Afvigelsen blev beregnet til 1,58\% med 95\% konfidens. 
 
 \begin{figure}[H]
 	\centering 
@@ -175,9 +172,4 @@ Vi kørte en test med det nye shield med jord taget fra blomsterbedet, foran Edi
 	\label{photo:shield}
 \end{figure} 
 
-Selve præcisionen af proben er 12 bit og 5V. Dette giver en opløsning på 1.2mV. Omregnet til opløsning af procentenheden bliver det 0.061. 
-
-\subsubsection{Fremtidigt arbejde}
-Det bedste fremtidige arbejde vil være at lave målingen kapacitivt, dette vil dog kræve en del arbejde. Skal der laves forbedringer på den resistive måling, skal der findes ud af hvorfor PSoC'en ikke ville virke på print samt finde et materiale som ikke så let forgår som kobber og lave jordspyddet af det. 
-
-   
+Selve præcisionen af proben er 12 bit og 5V. Dette giver en opløsning på 1.2mV. Omregnet til opløsning af procentenheden bliver det 0.061.
