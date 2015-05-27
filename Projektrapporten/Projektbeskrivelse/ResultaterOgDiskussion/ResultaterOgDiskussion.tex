@@ -4,23 +4,17 @@
 \subsection{Støjproblemer i prototype-setup}
 
 Ved realisering af system-prototypen til styring af indløb- og afløbsventiler samt doseringspumpe blev styringskredsløb til disse implementeret på samme veroboard. 
-Dette gav nogle uforudsete støjproblemer, idet pumpen (når denne kørte på 100\% effekt, og trak 2.2A) støjede så meget at der lå nok spænding over styringen af ventilerne til at få dem til at gå "on" og "off".
-Et OSC-screenshot af støjen ses p fig.1 XX\\
-
-	INDSÆT SCR- støj.\\ 
+Dette gav nogle uforudsete støjproblemer, idet pumpen (når denne kørte på 100\% effekt, og trak 2.2A) støjede så meget at der lå nok spænding over styringen af ventilerne til at få dem til at gå "on" og "off".\newline
 
 Problemet synes at kunne komme flere steder fra: 
 Dels at designet er implementeret på veroboard og afstanden imellem de fortrykte copperbaner kan give anledning til støjoverlejring
 Dels at Kar-PSoC'en ved teststillingen var en "fuglerede" af tilslutninger. 
-Dels var ventilerne "kun" er afkoblede med 100nF caps, og dette sikre dem deværre ikke imod denne type støj.\\\\
+Dels var ventilerne "kun" er afkoblede med 100nF caps, og dette sikre dem desværre ikke imod denne type støj.\newline
 
 Der blev prøvet flere løsninger til dette problemet: 
 Fysisk blev printet med doseringspumpe-styringen adskilt adskilt fra ventilstyringerne, så muligheden for overlejring her blev elimineret. 
-Derudover blev det forsøgt at skifte PSoC'ens output ben til pumpestyringen. Dette havde desværre heller ikke den ønskede effekt.\\\\ 
+Derudover blev det forsøgt at skifte PSoC'ens output ben til pumpestyringen. Dette havde desværre heller ikke den ønskede effekt. \newline
 
 Det var også på tale om støjen evt. kunne løbe tilbage igennem strømforsyningen, og dermed forstyrre hele 12V linjen. 
-Da vi ikke fandt noget endegyldigt svar på problemet. Blev løsningen at nedjustere doseringspumpens "100\%" således at den ved max. kun trækker 1,8A, dette var rigeligt til formålet, og samtidig gav det ikke problemer med nogle af de andre tilkoblede kredsløb.\\\\
-
-
-Videre arbejde:
-Ved en videreudvikling af systemet kan styringen af doseringspumpe og ventilstyringen forberedes ved bedre afkobling.
+Da vi ikke fandt noget endegyldigt svar på problemet. Blev løsningen at nedjustere doseringspumpens "100\%" således at den ved max. kun trækker 1,8A, dette var rigeligt til formålet, og samtidig gav det ikke problemer med nogle af de andre tilkoblede kredsløb.
+\newline
