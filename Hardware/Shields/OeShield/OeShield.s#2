@@ -5998,6 +5998,7 @@ W = angled&lt;p&gt;
 <part name="J1" library="con-lsta" deviceset="FE08-1" device=""/>
 <part name="JORDFUGT" library="con-phoenix-254" deviceset="MPT4" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
+<part name="GND3" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6099,6 +6100,7 @@ GND   GND
 <attribute name="VALUE" x="164.084" y="24.638" size="1.778" layer="96"/>
 </instance>
 <instance part="GND1" gate="1" x="-48.26" y="10.16" rot="R270"/>
+<instance part="GND3" gate="1" x="25.4" y="22.86" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -6135,9 +6137,9 @@ GND   GND
 <junction x="73.66" y="73.66"/>
 </segment>
 <segment>
-<label x="22.86" y="22.86" size="1.778" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="7"/>
 <wire x1="22.86" y1="22.86" x2="12.7" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="GND3" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="7"/>

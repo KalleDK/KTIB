@@ -5999,6 +5999,8 @@ W = angled&lt;p&gt;
 <part name="JORDFUGT" library="con-phoenix-254" deviceset="MPT4" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
+<part name="+12V" library="con-phoenix-254" deviceset="MPT2" device=""/>
+<part name="P+2" library="supply1" deviceset="VCC" device="" value="+12V"/>
 </parts>
 <sheets>
 <sheet>
@@ -6008,7 +6010,7 @@ OeBus</text>
 <text x="-60.96" y="109.22" size="1.778" layer="91">Ventilstyring 
 Dosering</text>
 <text x="73.66" y="20.32" size="1.778" layer="91">Pin configuration ver.2
-Dato: 	20150526
+Dato:  20150526
 Author: KE
 
 OePrint - Pinassignment ver.2
@@ -6101,6 +6103,9 @@ GND   GND
 </instance>
 <instance part="GND1" gate="1" x="-48.26" y="10.16" rot="R270"/>
 <instance part="GND3" gate="1" x="25.4" y="22.86" rot="R90"/>
+<instance part="+12V" gate="-1" x="-71.12" y="33.02" rot="R180"/>
+<instance part="+12V" gate="-2" x="-71.12" y="38.1" rot="R180"/>
+<instance part="P+2" gate="VCC" x="-60.96" y="38.1" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -6166,6 +6171,11 @@ GND   GND
 <wire x1="162.56" y1="27.94" x2="157.48" y2="27.94" width="0.1524" layer="91"/>
 <label x="157.48" y="27.94" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
+<segment>
+<pinref part="+12V" gate="-1" pin="1"/>
+<wire x1="-68.58" y1="33.02" x2="-63.5" y2="33.02" width="0.1524" layer="91"/>
+<label x="-63.5" y="33.02" size="1.778" layer="95" xref="yes"/>
+</segment>
 </net>
 <net name="P0_1" class="0">
 <segment>
@@ -6183,6 +6193,11 @@ GND   GND
 <pinref part="C5" gate="G$1" pin="1"/>
 <wire x1="109.22" y1="106.68" x2="109.22" y2="101.6" width="0.1524" layer="91"/>
 <junction x="109.22" y="106.68"/>
+</segment>
+<segment>
+<pinref part="+12V" gate="-2" pin="1"/>
+<wire x1="-68.58" y1="38.1" x2="-63.5" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="P+2" gate="VCC" pin="VCC"/>
 </segment>
 </net>
 <net name="P4_0" class="0">

@@ -6001,20 +6001,23 @@ W = angled&lt;p&gt;
 <sheets>
 <sheet>
 <plain>
-<text x="-55.88" y="109.22" size="1.778" layer="91">Ventilstyring
-Inflow</text>
 <text x="53.34" y="106.68" size="1.778" layer="91">RS Converter
 OeBus</text>
-<text x="50.8" y="20.32" size="1.778" layer="91">Pin configuration ver.1
-Dato:  20150517
+<text x="66.04" y="20.32" size="1.778" layer="91">Pin configuration ver.1
+Dato: 	20150517
 Author: KE
 
 OePrint - Pinassignment VER 1
 
-P4_0 SCl
-P4_1 SDA
-GND GND
-+5V VBUS</text>
+P0_0	D_VALVE_CTL
+P0_3	OeRX
+P0_2	OeTX
+P4_0	SCl
+P4_1	SDA
+GND	GND
++5V	VBUS</text>
+<text x="-60.96" y="109.22" size="1.778" layer="91">Ventilstyring 
+Dosering</text>
 </plain>
 <instances>
 <instance part="Q1" gate="G$1" x="-27.94" y="86.36"/>
@@ -6161,13 +6164,6 @@ GND GND
 </net>
 <net name="P0_1" class="0">
 <segment>
-<pinref part="Q1" gate="G$1" pin="G"/>
-<wire x1="-30.48" y1="83.82" x2="-35.56" y2="83.82" width="0.1524" layer="91"/>
-<label x="-35.56" y="83.82" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="R1" gate="G$1" pin="1"/>
-<junction x="-30.48" y="83.82"/>
-</segment>
-<segment>
 <pinref part="J2" gate="1" pin="16"/>
 <wire x1="-35.56" y1="-20.32" x2="-45.72" y2="-20.32" width="0.1524" layer="91"/>
 <label x="-45.72" y="-20.32" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -6222,11 +6218,6 @@ GND GND
 </segment>
 </net>
 <net name="P4_0" class="0">
-<segment>
-<pinref part="IC2" gate="G$1" pin="RO"/>
-<wire x1="76.2" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
-<label x="71.12" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
-</segment>
 <segment>
 <label x="15.24" y="30.48" size="1.778" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="10"/>
@@ -6311,11 +6302,6 @@ GND GND
 <label x="22.86" y="27.94" size="1.778" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="9"/>
 <wire x1="12.7" y1="27.94" x2="22.86" y2="27.94" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="IC2" gate="G$1" pin="DI"/>
-<wire x1="76.2" y1="86.36" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
-<label x="71.12" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="JORDFUGT" gate="-3" pin="1"/>
@@ -6408,6 +6394,13 @@ GND GND
 <pinref part="J2" gate="1" pin="14"/>
 <wire x1="-35.56" y1="-17.78" x2="-38.1" y2="-17.78" width="0.1524" layer="91"/>
 <label x="-38.1" y="-17.78" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="Q1" gate="G$1" pin="G"/>
+<wire x1="-30.48" y1="83.82" x2="-35.56" y2="83.82" width="0.1524" layer="91"/>
+<label x="-35.56" y="83.82" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="R1" gate="G$1" pin="1"/>
+<junction x="-30.48" y="83.82"/>
 </segment>
 </net>
 <net name="P3_7" class="0">
@@ -6526,12 +6519,22 @@ GND GND
 <wire x1="-20.32" y1="-2.54" x2="-17.78" y2="-2.54" width="0.1524" layer="91"/>
 <label x="-17.78" y="-2.54" size="1.778" layer="95" xref="yes"/>
 </segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="DI"/>
+<wire x1="76.2" y1="86.36" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
+<label x="71.12" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
 </net>
 <net name="P0_3" class="0">
 <segment>
 <pinref part="J2" gate="1" pin="3"/>
 <wire x1="-20.32" y1="-5.08" x2="-17.78" y2="-5.08" width="0.1524" layer="91"/>
 <label x="-17.78" y="-5.08" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="RO"/>
+<wire x1="76.2" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
+<label x="71.12" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="VDD" class="0">

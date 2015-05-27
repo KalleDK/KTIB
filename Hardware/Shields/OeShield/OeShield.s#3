@@ -5997,27 +5997,29 @@ W = angled&lt;p&gt;
 <part name="J3" library="con-lsta" deviceset="FE10-1" device=""/>
 <part name="J1" library="con-lsta" deviceset="FE08-1" device=""/>
 <part name="JORDFUGT" library="con-phoenix-254" deviceset="MPT4" device=""/>
+<part name="GND1" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="53.34" y="106.68" size="1.778" layer="91">RS Converter
 OeBus</text>
-<text x="66.04" y="20.32" size="1.778" layer="91">Pin configuration ver.1
-Dato: 	20150517
-Author: KE
-
-OePrint - Pinassignment VER 1
-
-P0_0	D_VALVE_CTL
-P0_3	OeRX
-P0_2	OeTX
-P4_0	SCl
-P4_1	SDA
-GND	GND
-+5V	VBUS</text>
 <text x="-60.96" y="109.22" size="1.778" layer="91">Ventilstyring 
 Dosering</text>
+<text x="73.66" y="20.32" size="1.778" layer="91">Pin configuration ver.2
+Dato: 	20150526
+Author: KE
+
+OePrint - Pinassignment ver.2
+
+P0_0  D_VALVE_CTL
+P0_4  Oe_RX
+P0_5  Oe_TX
+P0_7  Oe_TXen
+P4_0  SCl
+P4_1  SDA
+GND   GND
++5V   VBUS</text>
 </plain>
 <instances>
 <instance part="Q1" gate="G$1" x="-27.94" y="86.36"/>
@@ -6096,6 +6098,7 @@ Dosering</text>
 <attribute name="NAME" x="161.036" y="29.845" size="1.778" layer="95"/>
 <attribute name="VALUE" x="164.084" y="24.638" size="1.778" layer="96"/>
 </instance>
+<instance part="GND1" gate="1" x="-48.26" y="10.16" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -6137,9 +6140,9 @@ Dosering</text>
 <wire x1="22.86" y1="22.86" x2="12.7" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<label x="-45.72" y="10.16" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="J1" gate="G$1" pin="7"/>
 <wire x1="-35.56" y1="10.16" x2="-45.72" y2="10.16" width="0.1524" layer="91"/>
+<pinref part="GND1" gate="1" pin="GND"/>
 </segment>
 <segment>
 <label x="-38.1" y="12.7" size="1.778" layer="95" rot="R180" xref="yes"/>
