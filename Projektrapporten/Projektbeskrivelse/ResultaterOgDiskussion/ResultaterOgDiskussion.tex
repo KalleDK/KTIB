@@ -1,5 +1,14 @@
 %!TEX root = ../../main.tex
 \section{Resultater og Diskussion}
+I bund og grund opnåede vi meget af det vi ville i forhold til en første iteration/prototype. Der blev lavet en grafisk brugergrænseflade, der kører godt, som kan det den skal i forhold til de krav der er sat. FlexPMS kører godt og har den basale funktionalitet, men her er plads udvidelser, blandt andet i forhold til automatisering.\\
+Der var en del besvær i forhold til kommunikationen mellem FlexPMS og Kar. RS485-bussen blev udvidet med en selvudviklet protokol, der indeholdte addresering. I denne sammenhæng var adresseringen et problem, da vi brugte paritetsbit'en i UART data-frames til at indikere adresser. Dog var der ingen understøttelse for dette på Linux-platformen. Her kunne protokollen forbedres og implementeringen kan sagtens optimeres.\\
+Kar- og Ø-styringerne har også den basale funktionalitet på plads. Ø'en kan skanne og finde fieldsensorer, så her er opnået lidt af den automatisering, der skulle implementeres.\\
+I forhold til hardwaren er der blevet lavet nogle gode udlæg til print for jordfugtsensoreren. Der var desværre en fejl i de udlagte print men prototypen virkede efter hensigten. \\
+Ventilstyringen fungere også ganske godt, dog var der lidt problemer i forhold til støj fra pumpe-styringen.\\
+Strømforsyningen virker ganske godt og kan levere det, som den skal. \\
+Flowsensoren virkede også, men der var dog en udfordring i forhold til at kunne måle rate of flow, da PSoC'en ikke har et begreb omkring tid.\\
+Der er også blevet designet print til alle PSoCs samt Raspberry pi. Vi har dog ikke nået at implementere dem til denne rapports aflevering.
+   
 
 \subsection{Støjproblemer i prototype-setup}
 
