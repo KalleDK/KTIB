@@ -1,6 +1,6 @@
 %!TEX root=../../../main.tex
 
-Kravet til pH-proben er at den skal virke omgående når der hældes gødning i vandet. Dette vil sige at den skal omgående kunne fortælle systemet når der er den korrekte pH-værdi, når der doseres gødning. Efter nogle søgninger på Google blev der fundet frem til at en glasprobe var det meste effektive, men samtidig og så det billigste. 
+Kravet til pH-proben er at den skal virke omgående når der hældes gødning i vandet. Dette vil sige at den løbende skal kunne informere systemet når der er den korrekte pH-værdi, under dosering af gødning. Efter nogle søgninger på Google blev der fundet frem til, at en glasprobe var den mest effektive, og samtidig også den billigste løsning. 
 
 \begin{figure}[H]
 	\centering 
@@ -9,7 +9,7 @@ Kravet til pH-proben er at den skal virke omgående når der hældes gødning i 
 	\label{photo:pH-probe}
 \end{figure}     
 
-pH værdi er en måde at angive hvor mange hydrogen-ioner der er i væsken. Definitionen af en syre er at den modtager hydrogen-ionerne og definitionen af en base er at den afgiver hydrogen-ioner. Vand kan både optræde som en syre og en base, dette skyldes at vand vil modtage hydrogen-ionerne når der hældes en base i, men det vil afgive hydrogen-ioner når der hældes en syre i. På figur \ref{photo:pH-skala} ses at har vi $10^{-14}$ mol/l af H+ ioner har vi en pH-værdi på 14. 
+pH-værdi er en måde at angive hvor mange hydrogen-ioner der er i en given væske. Definitionen af en syre, er at den modtager hydrogen-ionerne, og definitionen af en base er at den afgiver hydrogen-ioner. Vand kan både optræde som en syre og en base, dette skyldes, at vand vil modtage hydrogen-ionerne når der blandes base i, og afgive hydrogen-ioner når der blandes syre i. På fig. \ref{photo:pH-skala} ses at hvis der findes $10^{-14}$ mol/l af H+ ioner, ligger pH-værdien på 14. 
 
  \begin{figure}[H]
 	\centering 
@@ -18,7 +18,7 @@ pH værdi er en måde at angive hvor mange hydrogen-ioner der er i væsken. Defi
 	\label{photo:pH-skala}
 \end{figure}   
 
-Måden glasproben virker på at at den internt er fyldt op med saltsyre HCL. I figur \ref{photo:pH-probe} punkt 3 er koncentrationen $1*10^{-7}$ mol/l. I punkt 6 er koncentrationen $0.1$ mol/l. På denne måde bliver der genereret en spænding når der er et overskud eller underskud af H+ ioner på ydersiden af punkt 1. H+ ionerne vil tiltrække CL- ionerne som ses i punkt 4. Punkt 2 og 5 er elektroderne som vi måler spændingen over. I figur  \ref{photo:probeslope} ses outputtet fra proben i forhold til pH-værdien i den væske den er i. 
+Glasproben virker ved at at den, internt er fyldt op med saltsyre HCL. På fig.\ref{photo:pH-probe} punkt 3 er koncentrationen $1*10^{-7}$ mol/l. I punkt 6 er koncentrationen $0.1$ mol/l. På denne måde bliver der genereret en spænding når der er overskud eller underskud af H+ ioner på ydersiden af punkt 1. H+ ionerne vil tiltrække CL-ionerne som ses i punkt 4. Punkt 2 og 5 er elektroderne som der måles spændingen over. På fig.\ref{photo:probeslope} ses outputtet fra proben i forhold til pH-værdien af den væske den befinder sig i. 
 
  \begin{figure}[H]
 	\centering 
@@ -27,7 +27,7 @@ Måden glasproben virker på at at den internt er fyldt op med saltsyre HCL. I f
 	\label{photo:probeslope}
 \end{figure} 
 
-For at få en præcis måling af væsken kræver det at der laves en kaliberering af pH-proben en gang hver måned, da proben vil drifte med tiden. Det ses også på figur \ref{photo:probeslope} at en ny probe vil give en højrer spænding en en ældre. Dette betyder at den skal kalibreres en gang i mellem. Til kalibrering af proben skal der bruges noget buffervæske. En buffervæske er en væske med en præcis pH-værdi således at proben kan indstilles efter det. Måden vi vil gøre det på er ved at have en buffer med pH-værdi 7. Når systemet startes op skal proben kalibreres og der vil være en rød LED på karet der lyser. For at kalibrere proben sættes proben ned i buffervæsken og efter ca 30 sekunder trykkes der på en knap som sidder på karet og karet indlæser herved værdien til kalibrering. På figur \ref{photo:buffer_vaeske} ses at buffervæsken varierer sin pH-værdi ved temperaturforskelle. Dette vil også være gældende for andre væsker, dette er ikke noget vi tager højde for i vores målinger, men det burde blive implementeret i et salgsklart system. 
+For at få en præcis måling af væsken kræver det at der laves en kalibrering af pH-proben én gang hver måned. Dette skyldes at proben vil drift'e med tiden. Det ses også på fig.\ref{photo:probeslope} at en ny probe vil give en højere spænding end en ældre probe. Til kalibrering af proben skal der anvendes en buffervæske. Buffervæske er en væske med en præcis pH-værdi således at proben kan indstilles efter det. Måden dette gøres på er at benytte en buffer med pH-værdi 7. Når systemet startes op skal proben kalibreres og der vil her være en rød LED på karet der lyser. For at kalibrere proben sættes den ned i buffervæsken, og efter ca. 30 sekunder trykkes der på kalibrerings-knappen som sidder på karet og værdien indlæses herved. På fig.\ref{photo:buffer_vaeske} ses at buffervæsken varierer sin pH-værdi ved forskel temperatur. Dette vil også være gældende for andre væsker, dog er dette ikke noget der tages højde for i disse målinger, men dette bør implementeres i et salgsklart system. 
 
  \begin{figure}[H]
 	\centering 
@@ -35,13 +35,13 @@ For at få en præcis måling af væsken kræver det at der laves en kalibererin
 	\caption{Temperaturens indflydelse på pH-værdien i buffervæsken}
 	\label{photo:buffer_vaeske}
 \end{figure} 
-Nedenfor ses koden til pH-proben. Koden er klar til at blive implementeret i kar-softwaren. Men for overskuelighedens skyld vælges det at vise den individuelle kode her. Der er oprettet en funktion getPhVal() som returnerer pH-værdien.
+Nedenfor ses koden til pH-proben-software'en. Koden er herefter klar til at blive implementeret i kar-softwaren. For overskuelighedens skyld vælges det at vise den individuelle kode her. Der er oprettet en funktion getPhVal() som returnerer pH-værdien.
 
 \lstinputlisting[language=c]{HardwareArkitektur/Sensore/Kode/pH_kode.c} 
 
 \subsection{Støj}
 
-For at få en præcis måling vælger vi at analysere proben for dens støj. Dette gøres ved at lave et nyt PSoC projekt. I Mixed Signal Electronic's har vi arbejdet med dette og vi kopierer derfor et kredsløb derfra. Det skal dog siges at projektet er til PSoC5 og her i Projektet bruger vi en PSoC4. PSoC5 har den fordel at den har en DeltaSigma ADC som er bedre til at sample lavfrekvente signaler. I PSoC4 er den eneste mulighed en SAR converter. På figur \ref{photo:Topdesign_stoj} ses topdesignet i PSoC creator. 
+For at få en præcis måling analyseres proben for dens egenstøj. Dette gøres ved at lave et nyt PSoC projekt. I Mixed Signal Electronic's har vi arbejdet med dette og herfra kopieres derfor et følgende kredsløb. Det skal dog siges at projektet er til PSoC5 og her i Projektet benyttes en PSoC4. PSoC5 har den fordel at den har en DeltaSigma ADC som er bedre til at sample lavfrekvente signaler. I PSoC4 er den eneste mulighed en SAR-konverter. På fig.\ref{photo:Topdesign_stoj} ses topdesignet i PSoC Creator. 
  \begin{figure}[H]
 	\centering 
 	\includegraphics[scale=0.8]{HardwareArkitektur/Sensore/pH_probe_billeder/Topdesign_stoj.png}
@@ -49,10 +49,10 @@ For at få en præcis måling vælger vi at analysere proben for dens støj. Det
 	\label{photo:Topdesign_stoj}
 \end{figure} 
 
-For at kunne beregne støjen fra proben skal vi måle dens indre modstang og derefter bruge Johnson Nyquist formel for termisk støj. 
+For at kunne beregne støjen fra proben måles dens indre modstang og derefter benytte Johnson Nyquist formel for termisk støj. 
 $$ V_n = \sqrt{4*K*T*R*\Delta f} $$
 
-For at måle den indre modstand i proben kobler vi den med en buffer i PSoC4. Vi prøvede at måle selve indgangsimpedansen i bufferen da den ikke var opgivet i databladet. Dette var desværre ikke muligt da støj på indgangen fik den til at klippe på udgangen. Vi antager derfor at indgangsimpedansen er uendelig og kan for at måle udgangsspændingen ubelastet, opstille kredsløbet i figur \ref{photo:Non_inv_buf}. 
+For at måle den indre modstand i proben kobles den med en buffer i PSoC4. Det blev forsøgt at måle selve indgangsimpedansen i bufferen da denne ikke var opgivet i databladet. Dette var desværre ikke muligt da støj på indgangen fik den til at klippe på udgangen. Det antages derfor at indgangsimpedansen er uendelig stor, for at måle udgangsspændingen ubelastet opstilles kredsløbet som ses på fig.\ref{photo:Non_inv_buf}. 
 
  \begin{figure}[H]
 	\centering 
@@ -61,7 +61,7 @@ For at måle den indre modstand i proben kobler vi den med en buffer i PSoC4. Vi
 	\label{photo:Non_inv_buf}
 \end{figure} 
 
-Der måltes 178mV på udgangen af bufferen med proben sat ned i en buffervæske med en pH-værdi på 4. Derefter blev proben sat direkte i oscilloskopet som har en indgangsimpedans på 1M\ohm . Nedenstående kredsløb opstilles for denne måling figur \ref{photo:Kredslob_RI}. 
+Der måltes 178mV over udgangen af bufferen med proben sat ned i buffervæske med en pH-værdi på 4. Derefter blev proben sat direkte i oscilloskopet som har en indgangsimpedans på 1M\ohm . Nedenstående kredsløb opstilles for denne måling, fig. \ref{photo:Kredslob_RI}. 
 
 
  \begin{figure}[H]
@@ -71,21 +71,21 @@ Der måltes 178mV på udgangen af bufferen med proben sat ned i en buffervæske 
 	\label{photo:Kredslob_RI}
 \end{figure} 
 
-Vi udregner med ohms lov den indre modstand til at være 9.5M\ohm . Vi kan derfor udregne støjbidraget til at være
-$$ V_n = \sqrt{4*1.3806488*10^{-23}*297*9.5*10^{6}*100} = 3.9uV $$
-Selve bufferen har også et støjstrøms bidrag som vil resultere i en støjspænding over modstanden i proben. Vi har i MSE øvelse 5 arbejdet med disse støjstrømme og kan pga. viden derfra antage at bufferen bidrager med $5pA$ i støjstrøm. I PSoC bruger vi et digitalt filter på 100Hz. Vi ville gerne have kørt det ned til 1Hz, men det mindste vi kunne implementere var 100Hz.
+Med Ohms-lov beregnes den indre modstand til at være 9.5M\ohm . Derfor beregnes støjbidraget til at være
+$$ V_n = \sqrt{4*1.3806488*10^{-23}*297*9.5*10^{6}*100} = 3.9uV $$.
+Selve bufferen har også et støjstrøms bidrag som vil resultere i en støjspænding over modstanden i proben. I MSE øvelse 5 blev der arbejdet med disse støjstrømme og der kan med viden herfra antages at bufferen bidrager med $5pA$ i støjstrøm. I PSoC'en benyttes et digitalt filter på 100Hz. Optimalt set have fc været på 1Hz, men det mindste det lykkedes at implementere var fc = 100Hz.
 $$ V_n = I_{rms}*R_i*\sqrt{\Delta f} = 5pA*9.5M\ohm *\sqrt{100} = 475uV $$
 Støj fra bufferen:
 $$ V_n = 1.3uV * \sqrt{100} = 13uV $$
 Støj fra ADC'en:
 $$ V_n = 10uV * \sqrt{100} = 100uV $$
-For at addere støjbidragene adderer vi dem kvadratisk da vores værdier er RMS støj:
+For at addere støjbidragene adderes disse kvadratisk da de udregnes støj er RMS-værdier:
 $$ V_{ntot} = \sqrt{3.9uV^2 + 475uV^2 + 13uV^2 + 100uV^2} = 485uV $$
-Det ses at det største og mest betydende støjbidrag er støjstrømmen fra bufferen. 
+Det ses at det største og mest betydende støjbidrag er støjstrømmen fra bufferen.\newline 
 
 \subsubsection{Måling af støj}
 
-For at måle støjen åbner vi teraterm og udlæser værdien. I projektet er der lavet funktioner til at skrive støjværdierne ud. For at måle den samlede støj sættes proben ned i en buffervæske med pH-værdi = 4. På figur \ref{photo:stoj_teraterm} ses en måling af den samlede støj på ca 4.8mV.
+For at måle støjen åbnes TeraTerm og udlæser værdien. I projektet er der lavet funktioner til at udskrive støjværdierne over UART. Proben sættes nu i en buffervæske med pH-værdi = 4. På fig.\ref{photo:stoj_teraterm} ses måling af den samlede støj på ca 4.8mV.
 
  \begin{figure}[H]
 	\centering 
@@ -102,7 +102,7 @@ For at måle støjen åbner vi teraterm og udlæser værdien. I projektet er der
 \end{figure} 
 
 \subsubsection{Responstid}
-For at måle responstiden, sættes proben i en buffer 7 og derefter direkte over i en buffer 4. Da H+ ionerne stadig vil sidde på proben når den trækkes op af buffer 7, sker der først en reaktion når den kommer ned i buffer 4.  Denne respons ses på figur \ref{photo:respons} . Her aflæses responstiden til 1.4 sekunder.
+For at måle responstiden, sættes proben i buffer 7 og derefter direkte over i buffer 4. Da H+ ionerne stadig vil sidde på proben når den trækkes op af buffer 7, sker der først en reaktion når den kommer i kontakt med buffer 4. Denne respons ses på fig. \ref{photo:respons}. Her aflæses responstiden til 1.4 sekunder.
 
  \begin{figure}[H]
 	\centering 
@@ -112,7 +112,7 @@ For at måle responstiden, sættes proben i en buffer 7 og derefter direkte over
 \end{figure} 
 
 \subsubsection{Probens præcision}
-Selve proben vil have en afvigelse. Denne afvigelse tages der tildels højde for ved kalibreringen, men dette er kun den systematiske fejl der bliver reguleret ind. Der vil også være et antal tilfældige fejl, som vil være umulige at justere ind. For at få et overblik over fejlprocenten laver vi 10 målinger efter kalibrering af buffer 7. Her sætter vi proben ned i en kop vand, for derefter at sætte den ned i pH-bufferen igen. Vi venter i 2 minutter og aflæser derefter i debuggin mode hvad pH-værdien er. Målingerne skrives ind i et excel-regneark således vi kan udregne standardafvigelsen ved en konfidens på 95. Det skal dog siges at dette er en meget simplificeret metode, da der her ikke taget højde for temperatur forskelle. Der laves også kun 10 målinger ved en bestemt pH-værdi. Der burde laves målinger over hele aksen, for at dække usikkerheden helt ind.    
+Selve proben vil have en måleafvigelse. Denne afvigelse tages der tildels højde for ved kalibreringen, men dette er kun den systematiske fejl der bliver reguleret ind. Der vil også være et antal tilfældige fejl, som vil være umulige at justere ind. For at få et overblik over fejlprocenten udføres der 10 målinger efter kalibrering af buffer 7. Her sættes proben ned i en kop vand, for derefter at sætte den ned i pH-bufferen igen. Der ventes i 2 minutter og pH-værdien aflæses herefter i debugging-mode.\newline Målingerne indskrives i et excel-dokument således at der kan udregne standardafvigelsen ved en konfidens på 95. Det skal dog siges at dette er en meget simplificeret metode, da der her ikke taget højde for temperaturforskelle. Der udføres også kun 10 målinger ved en bestemt pH-værdi. Der burde udføres målinger over hele aksen, for at afdække hele måleusikkerheden.    
 
  \begin{figure}[H]
 	\centering 

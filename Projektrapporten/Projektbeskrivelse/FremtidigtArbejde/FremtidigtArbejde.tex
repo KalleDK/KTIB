@@ -16,6 +16,9 @@ Ved opsætning og test af prototypen blev det klarlagt at styringen til ventiler
 
 \subsubsection{Flowsensor}
 Flowsensoren, som den er implementeret i den fungerende prototype, midler som førnævnt over de counts der kommer fra sensoren, dermed er det kun en tilnærmet værdi af vandmægnden der beregnes. En optimering heraf ville være at implementere SW-delen af flowsensormodulet på en ekstern MCU således at denne kun skal tage sig af dén ene opgave. Hermed kan en præcis værdi af vandmængden beregnes. Derudover ville counter-kredsløbet skulle redesignes således at MCU'en fik det fulde antal counts.\newline
+
+\subsubsection{pH-sensor}
+Vi så i denne del at vores beregnede støj var ca en faktor 10 større ved realiseringen end beregningerne. Dette kan skyldes at der er støj i tilledningerne da vi arbejder med ekstremt høje impedanser. Vi kan hermed konkludere at ved meget høje impedanser bliver ens udstyr meget støjfølsomt og det er derfor vigtigt at tage det med i beregningerne når der udlægges print, samt ved beslutning om hvilken terminering der skal benyttes. Fremtidigt arbejde kan være at lave kalibreringsfunktionen således den selv giver besked, når der er gået en måned, om at det er tid til kalibrering. 
  
 \subsubsection{Jordfugtsensor}
 Det bedste fremtidige arbejde vil være at lave målingen kapacitivt, dette vil dog kræve en del arbejde. Skal der laves forbedringer på den resistive måling, skal der findes ud af hvorfor PSoC'en ikke ville virke på print samt finde et materiale som ikke så let forgår som kobber og lave jordspyddet af det. 
