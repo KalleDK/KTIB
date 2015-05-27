@@ -7270,9 +7270,9 @@ Outflow</text>
 <text x="20.32" y="116.84" size="1.778" layer="91">Doseringspumpe</text>
 <text x="81.28" y="114.3" size="1.778" layer="91">RS Converter
 KarBus</text>
-<text x="78.74" y="55.88" size="1.778" layer="91">RS Converter
+<text x="81.28" y="60.96" size="1.778" layer="91">RS Converter
 OeBus</text>
-<text x="134.62" y="12.7" size="1.778" layer="91">pH Sensor</text>
+<text x="83.82" y="12.7" size="1.778" layer="91">pH Sensor</text>
 <text x="5.08" y="68.58" size="1.778" layer="91">Flow Sensor</text>
 <text x="35.56" y="-48.26" size="1.778" layer="91">Pin configuration ver.1
 Dato:  20150517
@@ -7469,8 +7469,8 @@ P0_2 - debugTX -</text>
 <attribute name="NAME" x="-67.056" y="17.145" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="-70.104" y="11.938" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="+5V" gate="1" x="-60.96" y="25.4" rot="R270"/>
-<instance part="GND20" gate="1" x="-60.96" y="15.24" rot="R90"/>
+<instance part="+5V" gate="1" x="-55.88" y="25.4" rot="R270"/>
+<instance part="GND20" gate="1" x="-55.88" y="15.24" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -7625,7 +7625,7 @@ P0_2 - debugTX -</text>
 </segment>
 <segment>
 <pinref part="FS" gate="-3" pin="1"/>
-<wire x1="-68.58" y1="15.24" x2="-63.5" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="-68.58" y1="15.24" x2="-58.42" y2="15.24" width="0.1524" layer="91"/>
 <pinref part="GND20" gate="1" pin="GND"/>
 </segment>
 </net>
@@ -7933,7 +7933,7 @@ P0_2 - debugTX -</text>
 <segment>
 <pinref part="FS" gate="-1" pin="1"/>
 <pinref part="+5V" gate="1" pin="+5V"/>
-<wire x1="-63.5" y1="25.4" x2="-68.58" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="25.4" x2="-68.58" y2="25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -8239,8 +8239,8 @@ P0_2 - debugTX -</text>
 </segment>
 <segment>
 <pinref part="FS" gate="-2" pin="1"/>
-<wire x1="-68.58" y1="20.32" x2="-63.5" y2="20.32" width="0.1524" layer="91"/>
-<label x="-63.5" y="20.32" size="1.778" layer="95" xref="yes"/>
+<wire x1="-68.58" y1="20.32" x2="-66.04" y2="20.32" width="0.1524" layer="91"/>
+<label x="-66.04" y="20.32" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
