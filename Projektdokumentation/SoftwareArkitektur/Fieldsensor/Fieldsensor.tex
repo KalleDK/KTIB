@@ -4,6 +4,7 @@ Fieldsensor projektet er en skabelon til alle
 Fieldsensorer. Hvis en ny type sensor skal 
 udvikles, er det blot at indsætte den nye sensor 
 og bruge SB\_LoadValue\_Float32 eller SB\_LoadValue 
+(Se under AVSLibrary for mere information) 
 til at overføre data til SensorBus kommunikationen. 
 Der skal desuden også tilføjes et type id for denne 
 sensor, så systemet kan identificere den senere. Typen 
@@ -14,7 +15,7 @@ og en DebugUart (optional).
 
 \SekvensDiagram{0.82}{Fieldsensor}{Fieldsensor}
 
-Der er indlagt en "dummy" tæller for at main loopet er 
+Der er indlagt en "dummy" tæller, for at main loopet er 
 mest muligt aktivt, og samtidig mindske hvor ofte en 
 given sensor bliver aflæst. Dette prøver at sikre 
 at kommunikation ikke går tabt mens der ventes. 

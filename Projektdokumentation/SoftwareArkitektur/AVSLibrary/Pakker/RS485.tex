@@ -2,9 +2,9 @@
 Denne komponent er en UART udbygget til at virke via en RS485 bus. 
 Der er tilføjet en TX Pin der skal være høj under transmission, og 
 ellers lav. UARTen er bygget via interrupts og buffer, 
-hvilket sikre bedre mod tab af beskedr. TX benet er implementeret ved 
+hvilket sikre bedre mod tab af beskeder. TX benet er implementeret ved 
 at disable RX og enable TX, tænde for TX Pin og vente 20 ms. Derefter 
-sende komandoen samt eventuelle argumenter. Når alt er sendt disables 
+sende kommandoen samt eventuelle argumenter. Når alt er sendt disables 
 TX Pin, samt enables RX og TX disables. Da der ingen collison detection 
 er, er protokollen lavet til at kun masteren snakker, og slaves kun 
 svarer når master forventer dette. Modtagelsen af beskeder sker via interrupts 
@@ -12,7 +12,7 @@ og det er først relevant at kalde RS485\_GetRxMessage når beskeden er helt
 modtaget. Mark Space adresseringen er indbygget i UART komponenten, eller 
 er modtage statemachinen ca det samme som kan ses under \ref{fig:RS485RX_StateDiagram}. 
 Afsendelsen er lidt mere kompliceret, da afsendelsen af UART beskederne sker 
-i hardwaren og ikke software. Derfor er vi nød til at aktivere interrupts 
+i hardwaren og ikke software. Derfor er vi nødt til at aktivere interrupts 
 når sender bufferen er tom, og først derefter slukke for TX benet.
 
 \StateDiagram{0.82}{AVSLibrary}{RS485TX}
