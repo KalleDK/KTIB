@@ -17,8 +17,11 @@ Ved opsætning og test af prototypen blev det klarlagt at styringen til ventiler
 \subsubsection{Flowsensor}
 Flowsensoren, som den er implementeret i den fungerende prototype, midler som førnævnt over de counts der kommer fra sensoren, dermed er det kun en tilnærmet værdi af vandmægnden der beregnes. En optimering heraf ville være at implementere SW-delen af flowsensormodulet på en ekstern MCU således at denne kun skal tage sig af dén ene opgave. Hermed kan en præcis værdi af vandmængden beregnes. Derudover ville counter-kredsløbet skulle redesignes således at MCU'en fik det fulde antal counts.\newline
  
+\subsubsection{Jordfugtsensor}
+Det bedste fremtidige arbejde vil være at lave målingen kapacitivt, dette vil dog kræve en del arbejde. Skal der laves forbedringer på den resistive måling, skal der findes ud af hvorfor PSoC'en ikke ville virke på print samt finde et materiale som ikke så let forgår som kobber og lave jordspyddet af det. 
  
-\subsection{SW} 
+ 
+ \subsection{SW} 
 \subsubsection{Automatisk vanding}
 Baseret på, at Bruger kan indtaste en ønsket værdi på jordfugtigheden, aflæse data fra en jordfugtsensor, samt vande plantere via en GUI i en webbrowser, kunne det være en kæmpe fordel, hvis systemmet blev implementeret så vandingen skete automatisk. Her ville vandingen eks. være baseret på om den målte jordfugtighed er for lav i forhold til den indtastede. Herefter vil systemet selv starte vandingen.\newline 
 

@@ -1,6 +1,6 @@
 %!TEX root = ../../main.tex
 
-\section{Shields}
+\section{Design af Shields}
 \subsection{Kar-shield}
 
 Til at styre interaktion med karret implementeres følgende eksterne kredsløb, der alle køres fra karPsoC'en: 
@@ -55,21 +55,8 @@ Disse værdier benyttes til at skabe følgende footprint, og dette mappes til pi
 \end{figure}
 	
 Det samme foretages for AND-gate IC'en. 
-Herefter kan modellerne indsættes på Kar-shield'et og herefter kan GND frit routes, som det ses på det færdige print, fig.\ref{screenshot:karShield}, s.\pageref{screenshot:karShield}.
+Herefter kan modellerne indsættes på Kar-shield'et og GND kan frit routes. Det færdige print ses på Bilag 1.
 
-
-\newpage
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1]{../Hardware/Shields/Screenshots/KarShield}
-	\caption{Screenshot: Det færdige KarShield}
-	\label{screenshot:karShield}
-\end{figure}
-
-\fxnote{Siden med KarShield-diagram skal være A3}
-
-
-\newpage
 \subsection{Ø-shield}
 
 På samme måde som karShield oprettes også et shield til sensor Ø'en. Dette shield indeholder følgende komponenter: 
@@ -83,20 +70,9 @@ På samme måde som karShield oprettes også et shield til sensor Ø'en. Dette s
 Her implementeres doseringsventilen, der kontrollere om dosering til gromediet er muligt. Derudover findes RS-konverter til Ø-bussen. Sidst findes I2C kommuniktation med jordfugtsensor-PSoC'en. 
 Shield'et monteres på Ø-PSoC'en.
 
-Det færdige print ses på fig.\ref{screenshot:OeShield}, s.\pageref{screenshot:OeShield}.
-
-\newpage
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1]{../Hardware/Shields/Screenshots/OeShield}
-	\caption{Screenshot: Det færdige ØShield}
-	\label{screenshot:OeShield}
-\end{figure}
-
-\fxnote{Siden med ØShield-diagram skal være A3}
+Det færdige print ses på Bilag 2.
 
 
-\newpage
 \subsection{PiShield}
 
 Ligeledes oprettes der et shield til Rasparry Pi'en. Dette shield indeholder følgende komponenter: 
@@ -105,19 +81,9 @@ Ligeledes oprettes der et shield til Rasparry Pi'en. Dette shield indeholder fø
  \item[•] RS-konverter til karBus
 \end{description}
 
-Printet designes på samme måde som de 2 forrige, og det færdige print ses på på fig.\ref{screenshot:PiShield}, s.\pageref{screenshot:PiShield}.
+Printet designes på samme måde som de 2 forrige, og det færdige print ses på på Bilag 3.
 
-\newpage
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1]{../Hardware/Shields/Screenshots/PiShield}
-	\caption{Screenshot: Det færdige ØShield}
-	\label{screenshot:PiShield}
-\end{figure}
 
-\fxnote{Siden med PiShield-diagram skal være A3}
-
-\newpage
 \subsection{Printlayout}
 På baggrund at disse schematics designes de 3 boards og deres printbaner lægges ud. Her tages der hensyn til følgende: 
 
