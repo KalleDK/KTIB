@@ -1,26 +1,31 @@
 %!TEX root = ../../main.tex
 \section{Fremtidigt Arbejde}
-Projektforløbet har endt ud i en funktionel prototype. Prototypen gennemførte accepttesten og var et godt \emph{proof-of-concept}. Under dette afsnit vil vi diskutere det fremtidige arbejde som ville opstå i tilfælde af, at projektet skulle færdigudvikles. I forlængelse af projektet er der nemlig flere muligheder for, hvordan produktet kan videreudvikles. Mange af ideerne, fremlagt i opgaveformuleringen, er stadig en realistisk del af et endeligt produkt. Disse ideer vil blive delt op i 3 punkter.
+Projektforløbet er endt ud i en funktionel prototype. Prototypen gennemførte accepttesten og var et godt \emph{proof-of-concept}. I det følgende afsnit vil det fremtidige arbejde og videreudvikling af systemet blive diskuteret. I forlængelse af projektet er der nemlig flere muligheder for, hvordan produktet kan videreudvikles. Mange af ideerne, fremlagt i projektformuleringen, er stadig en realistisk del af et endeligt produkt. Disse ideer vil blive delt op i 3 punkter.\newline
 
 \subsection{HW}
-
 \subsubsection{PSU}
-Strømforsyningsprototypen opfyldte deres funktion med små fejl og mangler. Spændingsreguleringen var opsat således, at spænding baserede sig på flere komponent som alle kommer med en tolerance. Dette gør at spænding vil variere fra produkt til produkt, og i værste tilfælde ikke være i stand til at opfylde dens funktion. Derudover var der ved hård belastning (ca. 50\% af den maksimale effekt), en tendens til at der opstod en 100Hz rippel på spændingen. Der er foreslået 2 ændringer til at løse disse problemer:
+Strømforsyningsprototypen opfyldte dens funktion med små fejl og mangler. Spændingsreguleringen var opsat således, at spænding baserede sig på flere komponent som alle kommer med en tolerance. Dette gør at spænding vil variere fra produkt til produkt, og i værste tilfælde ikke være i stand til at opfylde dens funktion. Derudover var der ved hård belastning (ca. 50\% af den maksimale effekt), en tendens til at der opstod en 100Hz rippel på spændingen. Der er foreslået 2 ændringer til at løse disse problemer:\newline
 
 \begin{itemize}
 \item Indføre flere elektrolytter på udgangen for at stabilisere spændingen ved hårde belastninger.
 \item Indsætte et potentiometer i spændingsføleren som derved kunne indstille spændingen på udgangen.
 \end{itemize}
 
+\subsubsection{Ventil/Pumpestyring}
+Ved opsætning og test af prototypen blev det klarlagt at styringen til ventiler og pumpen opfyldte de opstillede krav og fungerede efter hensigten. Dog kunne kredsløbene optimeres med relativt få midler. Vi oplevede en del støj i setup'et kommende fra pumpestyringen. Denne støj påvirkede styring af ventilerne, og en fremtidig plan ville være at afkoble både pumpe- samt ventilstyringskredsene endnu bedre end allerede gjort. Derudover er shields til hhv. KarPSoC, Ø-PSoC, samt Raspberry Pi under udarbejdelse, når kredsløbene kommer på prints vil det også afhjælpe støjproblemerne.\newline
 
+\subsubsection{Flowsensor}
+Flowsensoren, som den er implementeret i den fungerende prototype, midler som førnævnt over de counts der kommer fra sensoren, dermed er det kun en tilnærmet værdi af vandmægnden der beregnes. En optimering heraf ville være at implementere SW-delen af flowsensormodulet på en ekstern MCU således at denne kun skal tage sig af dén ene opgave. Hermed kan en præcis værdi af vandmængden beregnes. Derudover ville counter-kredsløbet skulle redesignes således at MCU'en fik det fulde antal counts.\newline
+ 
+ 
 \subsection{SW} 
 \subsubsection{Automatisk vanding}
-Baseret på at en Bruger kan indtaste en ønsket værdi på jordfugtigheden, aflæse data fra en jordfugtsensor og vande plantere via en GUI, kunne det være en kæmpe fordel, hvis systemmet blev implementeret så vandingen skete automatisk. Her ville vandingen være baseret ske når den målte jordfugtighed er for lav i forhold til den indtastede. 
+Baseret på, at Bruger kan indtaste en ønsket værdi på jordfugtigheden, aflæse data fra en jordfugtsensor, samt vande plantere via en GUI i en webbrowser, kunne det være en kæmpe fordel, hvis systemmet blev implementeret så vandingen skete automatisk. Her ville vandingen eks. være baseret på om den målte jordfugtighed er for lav i forhold til den indtastede. Herefter vil systemet selv starte vandingen.\newline 
 
 \subsubsection{Manuel vanding}
-Ved manuel vanding kunne man give brugeren mulighed for at vælge hvilke Sensor Øer der skal vandes ved i stedet for at der bliver vandet alle steder 
+Ved manuel vanding gives Bruger mulighed for at vælge hvilke Sensor Øer der skal vandes ved, fremfor at vandingen sker alle steder på én gang.\newline 
 
 \subsection{Fælles}
-Hvis en doseringspumpe der doserer gødning/pH-væske, blev implementeret, kunne de give Brugeren mulighed for at gøde vandet til den pH-værdi der er ønsket, da Brugeren allerede har mulighed for at aflæse pH-værdien, dette kunne styres via GUI'en. Hvis dette kunne lade sig gøre, kunne denne proces ske automatisk baseret på at Brugeren kan indtaste en ønskede pH-værdi, og systemmet kan styre ind- /og afløbsventil. 
-\\\\
-Der kunne være en flowsensor implementeret på udgangen af karet, så det var muligt at beregne hvor meget vand karet indeholdte i stedet for kun at aflæse hvor meget vand der kommer igennem indløbsventilen. 
+Hvis en doseringspumpe der doserer gødning/pH-væske, blev implementeret, kunne den give Bruger mulighed for at gøde vandet således at en ønsket pH-værdi opnås. Bruger har hele tiden mulighed for at følge, aflæse elle ændre pH-værdien, dette styres via GUI'en. Hvis dette kunne lade sig gøre, kunne denne proces ske automatisk baseret på at Bruger kan indtaste en ønskede pH-værdi, og systemmet kan styre ind- /og afløbsventil.\newline
+
+Det kunne ligeledes være en fremtidig plan at implementere endnu en flowsensor, denne koblet på udgangen af karet, så det var muligt at beregne hvor meget vand karet indeholdte i stedet for kun at aflæse hvor meget vand der kommer igennem indløbsventilen. 
